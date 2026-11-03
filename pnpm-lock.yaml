@@ -149,6 +149,9 @@ importers:
 
   packages/engines/image:
     dependencies:
+      '@niftyfix/constraints':
+        specifier: workspace:*
+        version: link:../../constraints
       '@niftyfix/tool-sdk':
         specifier: workspace:*
         version: link:../../tool-sdk

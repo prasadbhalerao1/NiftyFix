@@ -3,6 +3,7 @@ import {
   allChecksPassed,
   formatBytes,
   formatBytesExact,
+  describeByteRange,
   isCategoryId,
   kilobytesToByteLimit,
   sniffFormat,
@@ -46,6 +47,13 @@ describe('kilobyte conventions', () => {
   it('explicit conventions', () => {
     expect(kilobytesToByteLimit(50, 'max', 'kib1024')).toBe(51_200);
     expect(kilobytesToByteLimit(50, 'min', 'kb1000')).toBe(50_000);
+  });
+
+  it('describes byte ranges', () => {
+    expect(describeByteRange({ minBytes: 20_480, maxBytes: 50_000 })).toBe('20.5 KB – 50.0 KB');
+    expect(describeByteRange({ maxBytes: 20_000 })).toBe('at most 20.0 KB');
+    expect(describeByteRange({ minBytes: 900 })).toBe('at least 900 bytes');
+    expect(describeByteRange({})).toBe('any');
   });
 
   it('formats sizes', () => {

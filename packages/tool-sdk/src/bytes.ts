@@ -21,6 +21,17 @@ export function formatBytes(bytes: number): string {
   return `${(bytes / 1_000_000).toFixed(2)} MB`;
 }
 
+/** "20.5 KB – 50.0 KB", "at most 50.0 KB", "at least 10.2 KB" or "any". */
+export function describeByteRange(range: { minBytes?: number; maxBytes?: number }): string {
+  const { minBytes, maxBytes } = range;
+  if (minBytes !== undefined && maxBytes !== undefined) {
+    return `${formatBytes(minBytes)} – ${formatBytes(maxBytes)}`;
+  }
+  if (maxBytes !== undefined) return `at most ${formatBytes(maxBytes)}`;
+  if (minBytes !== undefined) return `at least ${formatBytes(minBytes)}`;
+  return 'any';
+}
+
 /** "48.2 KB (48,213 bytes)" — exact byte counts matter when a portal is strict. */
 export function formatBytesExact(bytes: number): string {
   return `${formatBytes(bytes)} (${bytes.toLocaleString('en-US')} bytes)`;

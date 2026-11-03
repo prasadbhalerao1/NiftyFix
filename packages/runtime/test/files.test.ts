@@ -3,7 +3,12 @@ import { unzipSync } from 'fflate';
 import { ToolError, type FileInputSpec } from '@niftyfix/tool-sdk';
 import { classifyDevice, poolSizeFor } from '../src/device';
 import { zipFiles } from '../src/download';
-import { outputFileName, sanitizeBaseName, uniqueFileNames } from '../src/filenames';
+import {
+  outputFileName,
+  resolveOutputName,
+  sanitizeBaseName,
+  uniqueFileNames,
+} from '../src/filenames';
 import { validateFile, validateFileCount } from '../src/validate-file';
 
 const JPEG = [0xff, 0xd8, 0xff, 0xe0, 0, 0x10, 0x4a, 0x46, 0x49, 0x46, 0];
@@ -92,6 +97,18 @@ describe('filenames', () => {
       'a (3).jpg',
       'b',
     ]);
+  });
+});
+
+describe('resolveOutputName', () => {
+  it('prefers a sanitised custom name and keeps dots inside it', () => {
+    expect(resolveOutputName('IMG_1.HEIC', '  signature ', '140x60', 'jpg')).toBe('signature.jpg');
+    expect(resolveOutputName('a.jpg', 'v1.2 final', 'x', 'png')).toBe('v1.2 final.png');
+    expect(resolveOutputName('a.jpg', '../../x', 'x', 'jpg')).toBe('x.jpg');
+  });
+
+  it('falls back to the original name with a suffix', () => {
+    expect(resolveOutputName('scan.png', '', '140x60', 'jpg')).toBe('scan-140x60.jpg');
   });
 });
 

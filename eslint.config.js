@@ -1,5 +1,6 @@
 import js from '@eslint/js';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
+// Maintained fork of eslint-plugin-jsx-a11y (es-tooling) that supports ESLint 10; same rules.
+import jsxA11y from 'eslint-plugin-jsx-a11y-x';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -31,7 +32,7 @@ export default tseslint.config(
   },
   {
     files: ['**/*.tsx'],
-    ...jsxA11y.flatConfigs.strict,
+    ...jsxA11y.configs.strict,
     settings: {
       'jsx-a11y': {
         components: { Button: 'button' },

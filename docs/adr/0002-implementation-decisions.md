@@ -3,19 +3,20 @@
 **Date:** 4 Nov 2026 · **Status:** Accepted
 Records every place the implementation differs from, or refines, the research pack and ADR 0001.
 
-## 1. Dependency versions (verified on the npm registry, 4 Nov 2026)
+## 1. Dependency versions (verified on the npm registry, 4 Nov 2026; updated in sprint 2)
 
-| Area         | Chosen     | Latest available | Why not latest                                                                                                                                                             |
-| ------------ | ---------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Astro        | **6.4.8**  | 7.4.5            | Astro 7 requires Node ≥ 22.23.4; this machine has 22.17.1. Astro 6 is what ADR-01 specified. **Upgrade path:** install Node ≥ 22.23.4, bump `astro` and Vite 7→8 together. |
-| Vite         | 7.3.7      | 8.3.5            | Must match Astro 6's Vite (`^7.3.2`) so site and frame share one toolchain.                                                                                                |
-| Preact       | 10.29.8    | 11.1.1           | `@astrojs/preact` 5.x (the Astro 6 line) supports Preact 10 only.                                                                                                          |
-| TypeScript   | **6.0.3**  | 7.0.2            | TS 7 (native compiler) is not yet supported by `typescript-eslint` (< 6.1) or `@astrojs/check` (^5 \|\| ^6).                                                               |
-| ESLint       | **9.39.5** | 10.14.0          | `eslint-plugin-jsx-a11y` 6.10.2 supports ESLint ≤ 9; accessibility linting outranks the newest ESLint.                                                                     |
-| Vitest       | 5.1.0      | 5.1.0            | —                                                                                                                                                                          |
-| Playwright   | 1.64.1     | 1.64.1           | —                                                                                                                                                                          |
-| Tailwind CSS | 4.3.4      | 4.3.4            | —                                                                                                                                                                          |
-| Valibot      | 1.5.0      | 1.5.0            | Chosen over Zod for tree-shaken size (ADR-04).                                                                                                                             |
+| Area         | Chosen      | Latest available  | Notes                                                                                                                                                       |
+| ------------ | ----------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node         | **22.23.4** | 22.23.4 (24.22.2) | Sprint 2: upgraded from 22.17.1 for Astro 7. Stayed on the 22 LTS line (smallest migration); pinned in `.nvmrc`.                                            |
+| Astro        | **7.4.5**   | 7.4.5             | Sprint 2: upgraded from 6.4.8 to clear security advisories (ADR 0003).                                                                                      |
+| Vite         | **8.3.5**   | 8.3.5             | Sprint 2: Astro 7 requires `^8.3.5`; frame and tools use the same version.                                                                                  |
+| Preact       | 10.29.8     | 11.1.1            | The site does not use `@astrojs/preact`; Preact runs only in the frame. A major bump has no driver yet; revisit with a dedicated test pass.                 |
+| TypeScript   | **6.0.3**   | 7.0.2             | TS 7 (native compiler) is not yet supported by `typescript-eslint` (< 6.1) or `@astrojs/check` (^5 \|\| ^6).                                                |
+| ESLint       | **10.14.0** | 10.14.0           | Sprint 2: ESLint 9 reached end of support. A11y rules now from `eslint-plugin-jsx-a11y-x` 0.2.0 (maintained fork; original plugin lacks ESLint 10 support). |
+| Vitest       | 5.1.0       | 5.1.0             | —                                                                                                                                                           |
+| Playwright   | 1.64.1      | 1.64.1            | —                                                                                                                                                           |
+| Tailwind CSS | 4.3.4       | 4.3.4             | —                                                                                                                                                           |
+| Valibot      | 1.5.0       | 1.5.0             | Chosen over Zod for tree-shaken size (ADR-04).                                                                                                              |
 
 ## 2. Main-thread fallback when workers lack OffscreenCanvas
 

@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import type { AstroIntegration } from 'astro';
 import { defineConfig } from 'astro/config';
 import { loadEnv } from 'vite';
-import { siteHeaders, renderHeadersFile } from './src/seo/headers';
+import { siteHeaders, renderHeadersFile } from './src/seo/headers.ts';
 
 const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), 'PUBLIC_');
 const siteOrigin = env.PUBLIC_SITE_ORIGIN ?? 'http://localhost:4321';

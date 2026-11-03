@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import preact from '@preact/preset-vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
-import { frameHeaders, renderHeadersFile } from './src/security/headers';
+import { frameHeaders, renderHeadersFile } from './src/security/headers.ts';
 
 const DEV_SITE_ORIGIN = 'http://localhost:4321';
 

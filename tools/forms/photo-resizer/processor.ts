@@ -206,14 +206,14 @@ async function verifyOutput(
   const checks: VerificationCheck[] = [];
   const wantDims = `${options.width} × ${options.height} px`;
 
-  let decoded: { width: number; height: number } | null = null;
-  try {
-    const bitmap = await createImageBitmap(blob);
-    decoded = { width: bitmap.width, height: bitmap.height };
-    bitmap.close();
-  } catch {
-    decoded = null;
-  }
+  const decoded = await createImageBitmap(blob).then(
+    (bitmap) => {
+      const size = { width: bitmap.width, height: bitmap.height };
+      bitmap.close();
+      return size;
+    },
+    () => null,
+  );
   checks.push({
     id: 'dimensions',
     label: 'Dimensions',

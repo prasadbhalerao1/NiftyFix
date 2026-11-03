@@ -31,12 +31,13 @@ export function recordRequests(page: Page): {
 } {
   const log = { requests: [] as { url: string; method: string; frameUrl: string }[] };
   page.on('request', (request: Request) => {
-    let frameUrl = '';
-    try {
-      frameUrl = request.frame().url();
-    } catch {
-      frameUrl = '(service worker or detached)';
-    }
+    const frameUrl = ((): string => {
+      try {
+        return request.frame().url();
+      } catch {
+        return '(service worker or detached)';
+      }
+    })();
     log.requests.push({ url: request.url(), method: request.method(), frameUrl });
   });
   return log;

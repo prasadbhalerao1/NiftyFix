@@ -1,0 +1,29 @@
+{
+  "name": "@niftyfix/tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./registry": "./registry.generated.ts",
+    "./loaders": "./loaders.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@niftyfix/constraints": "workspace:*",
+    "@niftyfix/engine-image": "workspace:*",
+    "@niftyfix/portal-specs": "workspace:*",
+    "@niftyfix/registry": "workspace:*",
+    "@niftyfix/runtime": "workspace:*",
+    "@niftyfix/tool-sdk": "workspace:*",
+    "@niftyfix/ui": "workspace:*",
+    "preact": "10.29.8",
+    "valibot": "1.5.0"
+  },
+  "devDependencies": {
+    "vite": "7.3.7",
+    "vitest": "5.1.0"
+  }
+}

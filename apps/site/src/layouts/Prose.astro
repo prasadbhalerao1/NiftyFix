@@ -1,0 +1,27 @@
+---
+import Base from './Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE_NAME } from '../data/registry';
+
+export interface Props {
+  title: string;
+  description: string;
+  path: string;
+  /** Placeholder pages awaiting legal review stay out of search results. */
+  noindex?: boolean;
+}
+const { title, description, path, noindex = false } = Astro.props;
+---
+
+<Base title={`${title} | ${SITE_NAME}`} description={description} path={path} noindex={noindex}>
+  <Breadcrumbs
+    items={[
+      { name: 'Home', path: '/' },
+      { name: title, path },
+    ]}
+  />
+  <article class="prose-nf">
+    <h1 class="mb-6 text-3xl font-bold tracking-tight">{title}</h1>
+    <slot />
+  </article>
+</Base>

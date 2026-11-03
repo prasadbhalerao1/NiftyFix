@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+@import '@niftyfix/ui/theme.css';
+
+@source '../../../packages/ui/src';
+@source '../../../tools';
+
+body {
+  background: transparent;
+}
+
+.loading {
+  @apply p-6 text-center text-sm text-stone-600 dark:text-stone-400;
+}

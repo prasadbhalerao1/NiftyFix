@@ -1,0 +1,11 @@
+pnpm-lock.yaml
+dist/
+.astro/
+.turbo/
+fixtures/
+bigads.md
+docs/research/
+test-results/
+playwright-report/
+.playwright-mcp/
+tools/registry.generated.ts

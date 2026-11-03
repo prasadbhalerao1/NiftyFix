@@ -1,0 +1,56 @@
+---
+import Prose from '../layouts/Prose.astro';
+import { FRAME_ORIGIN } from '../data/registry';
+---
+
+<Prose
+  title="Verify our privacy"
+  description="How to check for yourself that NiftyFix does not upload your files, and how we test it automatically."
+  path="/privacy-verification/"
+>
+  <p>
+    "Your file stays on your device" should be something you can check, not something you have to
+    trust. Here is how.
+  </p>
+
+  <h2>Check it yourself in two minutes</h2>
+  <ol>
+    <li>Open a tool, for example the Form Photo Resizer.</li>
+    <li>
+      Open your browser's developer tools (F12, or right-click → Inspect) and select the Network
+      tab.
+    </li>
+    <li>Choose a photo and run the tool.</li>
+    <li>
+      Look at the requests. You will see the tool's own scripts loading from{' '}
+      <code>{FRAME_ORIGIN}</code>, and no request that sends your file anywhere.
+    </li>
+  </ol>
+
+  <h2>Why it cannot upload your file</h2>
+  <p>
+    Tools run inside a frame on a separate origin. That frame's Content Security Policy only permits
+    connections to its own origin, which serves static files and has no upload endpoint. The
+    surrounding page cannot read the frame's contents, and the frame can send the page only its
+    height and a few coarse events, checked against a fixed list.
+  </p>
+
+  <h2>How we test it</h2>
+  <p>
+    Our automated browser tests process real files and record every network request the frame makes.
+    A test fails if any request goes to another origin or uses a method other than GET while a file
+    is being processed. These tests run on every change.
+  </p>
+
+  <h2>Limits of this guarantee</h2>
+  <ul>
+    <li>
+      It covers the tool frame. If advertising or analytics are added to the outer page in future,
+      they will be outside the frame and unable to read your files, and we will say so here.
+    </li>
+    <li>
+      Browser extensions you install can read pages you visit, including this one. We cannot control
+      that.
+    </li>
+  </ul>
+</Prose>

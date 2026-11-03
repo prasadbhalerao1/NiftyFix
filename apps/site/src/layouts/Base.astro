@@ -1,0 +1,121 @@
+---
+import '../styles/global.css';
+import { absoluteUrl, registry, SITE_NAME } from '../data/registry';
+import { categoryPath } from '@niftyfix/registry';
+import { CATEGORIES } from '@niftyfix/tool-sdk';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Path of this page, e.g. "/forms/photo-resizer/". Used for the canonical URL. */
+  path: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, path, noindex = false, jsonLd = [] } = Astro.props;
+const canonical = absoluteUrl(path);
+const categories = registry.activeCategories();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : null}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#0f766e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <slot name="head" />
+    {jsonLd.map((data) => (
+      <script type="application/ld+json" set:html={JSON.stringify(data)} />
+    ))}
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded focus:bg-white focus:px-3 focus:py-2"
+    >
+      Skip to content
+    </a>
+    <header class="border-b border-stone-200 bg-white/90 dark:border-stone-800 dark:bg-stone-950/90">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3">
+        <a href="/" class="text-lg font-bold tracking-tight">
+          Nifty<span class="text-teal-700 dark:text-teal-400">Fix</span>
+        </a>
+        <nav aria-label="Categories">
+          <ul class="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+            {categories.map((id) => (
+              <li>
+                <a
+                  href={categoryPath(id)}
+                  class="text-stone-700 hover:text-teal-800 dark:text-stone-300 dark:hover:text-teal-300"
+                >
+                  {CATEGORIES[id].name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+      <slot />
+    </main>
+    <footer class="border-t border-stone-200 py-8 text-sm text-stone-600 dark:border-stone-800 dark:text-stone-400">
+      <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 sm:flex-row sm:justify-between">
+        <p>
+          © {new Date().getFullYear()} {SITE_NAME}. Files are processed on your device.
+        </p>
+        <nav aria-label="Site">
+          <ul class="flex flex-wrap gap-x-4 gap-y-1">
+            <li>
+              <a href="/about/" class="hover:underline">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="/contact/" class="hover:underline">
+                Contact
+              </a>
+            </li>
+            <li>
+              <a href="/privacy-verification/" class="hover:underline">
+                Verify our privacy
+              </a>
+            </li>
+            <li>
+              <a href="/security/" class="hover:underline">
+                Security
+              </a>
+            </li>
+            <li>
+              <a href="/privacy/" class="hover:underline">
+                Privacy
+              </a>
+            </li>
+            <li>
+              <a href="/terms/" class="hover:underline">
+                Terms
+              </a>
+            </li>
+            <li>
+              <a href="/licenses/" class="hover:underline">
+                Licences
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

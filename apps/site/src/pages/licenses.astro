@@ -1,0 +1,38 @@
+---
+import Prose from '../layouts/Prose.astro';
+
+/** Third-party code shipped to browsers. Keep in sync with the licence allowlist check. */
+const shipped = [
+  { name: 'Preact', license: 'MIT', url: 'https://github.com/preactjs/preact' },
+  { name: 'Valibot', license: 'MIT', url: 'https://github.com/fabian-hiller/valibot' },
+];
+const buildTools = [
+  { name: 'Astro', license: 'MIT', url: 'https://github.com/withastro/astro' },
+  { name: 'Vite', license: 'MIT', url: 'https://github.com/vitejs/vite' },
+  { name: 'Tailwind CSS', license: 'MIT', url: 'https://github.com/tailwindlabs/tailwindcss' },
+];
+---
+
+<Prose
+  title="Third-party licences"
+  description="Open-source software used by NiftyFix and its licences."
+  path="/licenses/"
+>
+  <p>NiftyFix is built with open-source software. We are grateful to its authors.</p>
+  <h2>Code that runs in your browser</h2>
+  <ul>
+    {shipped.map((item) => (
+      <li>
+        <a href={item.url}>{item.name}</a> — {item.license}
+      </li>
+    ))}
+  </ul>
+  <h2>Build tools (not shipped to your browser)</h2>
+  <ul>
+    {buildTools.map((item) => (
+      <li>
+        <a href={item.url}>{item.name}</a> — {item.license}
+      </li>
+    ))}
+  </ul>
+</Prose>

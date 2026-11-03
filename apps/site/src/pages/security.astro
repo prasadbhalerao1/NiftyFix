@@ -1,0 +1,41 @@
+---
+import Prose from '../layouts/Prose.astro';
+---
+
+<Prose
+  title="Security"
+  description="How NiftyFix isolates and validates the files you process."
+  path="/security/"
+>
+  <h2>Isolation</h2>
+  <ul>
+    <li>Every tool runs on a separate registrable domain, inside a sandboxed frame.</li>
+    <li>
+      The frame's Content Security Policy only allows loading its own static files and connecting to
+      its own origin; form submissions, nested frames, plugins and base-URL changes are blocked.
+    </li>
+    <li>
+      The page around the tool can receive only two kinds of message from it: the frame's height and
+      coarse events such as "tool started". Messages are validated against a fixed schema that has
+      no field able to carry file data.
+    </li>
+    <li>
+      Processing happens in Web Workers. A crashed, cancelled or stalled worker is terminated and
+      replaced, so one file cannot affect another.
+    </li>
+  </ul>
+  <h2>Input validation</h2>
+  <ul>
+    <li>File types are identified from their content signature, never from the file name alone.</li>
+    <li>
+      Image dimensions are read from the file header before decoding, and oversized images are
+      rejected to prevent memory exhaustion.
+    </li>
+    <li>File size limits depend on the device class, and every job has a time limit.</li>
+    <li>
+      Settings are validated against a schema inside the worker, so tampered settings are rejected.
+    </li>
+  </ul>
+  <h2>Reporting a vulnerability</h2>
+  <p>A security contact address will be published here before launch.</p>
+</Prose>

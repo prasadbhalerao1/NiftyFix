@@ -1,0 +1,32 @@
+---
+import Prose from '../layouts/Prose.astro';
+---
+
+<Prose
+  title="Privacy policy"
+  description="NiftyFix privacy policy (draft pending legal review)."
+  path="/privacy/"
+  noindex
+>
+  <p>
+    <strong>Draft — pending legal review.</strong> This page will be replaced by a reviewed policy
+    before launch.
+  </p>
+  <h2>Facts this policy will be built on</h2>
+  <ul>
+    <li>
+      All current tools process files in your browser. File contents, file names and text you enter
+      are not sent to NiftyFix servers.
+    </li>
+    <li>
+      Tools run on a separate web origin inside a sandboxed frame whose security policy blocks
+      network connections to any other site.
+    </li>
+    <li>No analytics, advertising or tracking scripts are loaded at present.</li>
+    <li>
+      If analytics or advertising are added later, they will run only on the outer page, never
+      inside the tool frame, and this policy and the consent controls required for your region will
+      be updated first.
+    </li>
+  </ul>
+</Prose>

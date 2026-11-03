@@ -1,0 +1,53 @@
+---
+import { FRAME_ORIGIN } from '../data/registry';
+
+export interface Props {
+  toolId: string;
+  title: string;
+}
+const { toolId, title } = Astro.props;
+const src = `${FRAME_ORIGIN}/?tool=${encodeURIComponent(toolId)}`;
+---
+
+<!--
+  The tool runs on a separate origin in a sandboxed frame. This page never
+  receives file data: the frame may only send height and coarse events.
+-->
+<iframe
+  src={src}
+  title={title}
+  data-tool-frame
+  data-frame-origin={FRAME_ORIGIN}
+  sandbox="allow-scripts allow-same-origin allow-downloads allow-forms"
+  referrerpolicy="no-referrer"
+  loading="eager"
+  class="block min-h-80 w-full border-0"
+></iframe>
+
+<script>
+  import { parseFrameMessage } from '@niftyfix/analytics-schema';
+
+  for (const frame of document.querySelectorAll<HTMLIFrameElement>('iframe[data-tool-frame]')) {
+    const origin = frame.dataset.frameOrigin;
+    window.addEventListener('message', (event) => {
+      if (event.origin !== origin || event.source !== frame.contentWindow) return;
+      const message = parseFrameMessage(event.data);
+      if (message === null) return;
+      if (message.type === 'resize') {
+        frame.style.height = `${message.height}px`;
+        return;
+      }
+      if (message.type === 'reveal') {
+        // Scroll only if the requested part of the frame is not already fully visible.
+        const top = frame.getBoundingClientRect().top + message.top;
+        const bottom = top + message.height;
+        if (top < 0 || bottom > window.innerHeight) {
+          window.scrollTo({ top: window.scrollY + top - 16, behavior: 'smooth' });
+        }
+        return;
+      }
+      // Analytics hook point: coarse, content-free events only (see analytics-schema).
+      document.dispatchEvent(new CustomEvent('niftyfix:tool-event', { detail: message }));
+    });
+  }
+</script>

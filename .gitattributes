@@ -1,0 +1,10 @@
+# Consistent LF everywhere (Prettier and the generated-registry freshness check expect LF).
+* text=auto eol=lf
+
+# Test fixtures are byte-exact inputs; never convert line endings.
+fixtures/** binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.heic binary

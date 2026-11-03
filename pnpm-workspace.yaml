@@ -1,0 +1,28 @@
+packages:
+  - apps/*
+  - packages/*
+  - packages/engines/*
+  - tools
+
+# Security: Astro 6 pins sharp ^0.34 (libvips/libheif/librsvg CVEs). We never invoke
+# Astro's image service, so the patched major is safe to force. Remove after Astro 7.
+overrides:
+  sharp: 0.35.5
+
+# TEMPORARY, LAUNCH-BLOCKING: advisories fixed only in Astro 7 (requires Node >= 22.23.4).
+# Reachability analysed in docs/adr/0003-astro-security-advisories.md — none is reachable in a
+# static build with first-party content, no image service, no View Transitions, no middleware.
+# Remove this block when upgrading to Astro 7.
+auditConfig:
+  ignoreGhsas:
+    - GHSA-26w7-cxv4-gfx2
+    - GHSA-f48w-9m4c-m7f5
+    - GHSA-7pw4-f3q4-r2p2
+    - GHSA-4g3v-8h47-v7g6
+    - GHSA-376h-93r7-7g6f
+    - GHSA-98hj-9722-w3j8
+    - GHSA-g7r4-m6w7-qqqr
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

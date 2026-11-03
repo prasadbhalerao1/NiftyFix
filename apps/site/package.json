@@ -1,0 +1,27 @@
+{
+  "name": "@niftyfix/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "preview": "astro preview --port 4321",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@niftyfix/analytics-schema": "workspace:*",
+    "@niftyfix/registry": "workspace:*",
+    "@niftyfix/tool-sdk": "workspace:*",
+    "@niftyfix/tools": "workspace:*",
+    "@niftyfix/ui": "workspace:*",
+    "astro": "6.4.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@tailwindcss/vite": "4.3.4",
+    "tailwindcss": "4.3.4",
+    "typescript": "6.0.3",
+    "vite": "7.3.7"
+  }
+}

@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ToolCard from '../../components/ToolCard.astro';
+import { registry, SITE_NAME } from '../../data/registry';
+import { categoryPath } from '@niftyfix/registry';
+import { CATEGORIES, type CategoryId } from '@niftyfix/tool-sdk';
+
+export function getStaticPaths() {
+  return registry
+    .activeCategories()
+    .map((category) => ({ params: { category }, props: { category } }));
+}
+
+interface Props {
+  category: CategoryId;
+}
+
+const { category } = Astro.props;
+const info = CATEGORIES[category];
+const tools = registry.inCategory(category);
+const path = categoryPath(category);
+const allBeta = tools.every((tool) => tool.manifest.status !== 'live');
+---
+
+<Base
+  title={`${info.h1} | ${SITE_NAME}`}
+  description={info.description}
+  path={path}
+  noindex={allBeta}
+>
+  <Breadcrumbs
+    items={[
+      { name: 'Home', path: '/' },
+      { name: info.name, path },
+    ]}
+  />
+  <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{info.h1}</h1>
+  <p class="mt-2 max-w-[72ch] text-stone-700 dark:text-stone-300">{info.description}</p>
+  <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {tools.map((tool) => (
+      <ToolCard manifest={tool.manifest} />
+    ))}
+  </div>
+</Base>

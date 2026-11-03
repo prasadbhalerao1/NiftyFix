@@ -211,6 +211,9 @@ importers:
       '@niftyfix/constraints':
         specifier: workspace:*
         version: link:../constraints
+      '@niftyfix/engine-image':
+        specifier: workspace:*
+        version: link:../engines/image
       '@niftyfix/runtime':
         specifier: workspace:*
         version: link:../runtime

@@ -6,4 +6,8 @@ export * from './cx';
 export * from './feedback';
 export * from './fields';
 export * from './focus';
+export * from './image-source';
+export * from './OutputSpecForm';
+export * from './results';
 export * from './tool-ui';
+export * from './use-tool-job';

@@ -1,8 +1,8 @@
 import type { CategoryId } from '@niftyfix/tool-sdk';
 
 /**
- * Every tool on the roadmap (docs/tool-catalogue-v3.md and the consolidated
- * workspace list, verified in docs/catalogue-verification.md), by workspace.
+ * Every tool on the roadmap (from docs/tool-catalogue-v3.md, with duplicates
+ * merged), by workspace.
  *
  * Shown on category hubs as "coming soon" without a link: a planned tool gets
  * its own page only when it is built, because an empty page helps no one and

@@ -258,3 +258,48 @@ export function RangeInput({
     </FieldShell>
   );
 }
+
+export interface CheckboxInputProps {
+  label: string;
+  checked: boolean;
+  onChange(checked: boolean): void;
+  hint?: string;
+  disabled?: boolean;
+  testId?: string;
+}
+
+/** A labelled checkbox with a large touch target. */
+export function CheckboxInput({
+  label,
+  checked,
+  onChange,
+  hint,
+  disabled,
+  testId,
+}: CheckboxInputProps) {
+  const id = useId();
+  return (
+    <div class="flex items-start gap-3">
+      <input
+        id={id}
+        type="checkbox"
+        class="mt-0.5 size-5 shrink-0 accent-teal-700"
+        checked={checked}
+        disabled={disabled}
+        data-testid={testId}
+        aria-describedby={hint ? `${id}-hint` : undefined}
+        onChange={(event) => onChange(event.currentTarget.checked)}
+      />
+      <div class="flex flex-col gap-0.5">
+        <label for={id} class="text-sm font-medium text-stone-800 dark:text-stone-200">
+          {label}
+        </label>
+        {hint ? (
+          <p id={`${id}-hint`} class="text-xs text-stone-600 dark:text-stone-400">
+            {hint}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+}

@@ -6,10 +6,11 @@ export interface CropBoxProps {
   imageUrl: string;
   /** Source image size in pixels (after EXIF orientation). */
   image: Size;
-  /** Locked aspect ratio (width / height) of the crop. */
-  aspect: number;
+  /** Locked aspect ratio (width / height), or null for a free crop. */
+  aspect: number | null;
   crop: Rect;
   onChange(crop: Rect): void;
+  hint?: string;
 }
 
 /** Largest crop width for the aspect inside the image. */
@@ -27,14 +28,25 @@ function resizeAroundCentre(crop: Rect, width: number, aspect: number, image: Si
 const MIN_FRACTION = 0.1;
 
 /**
- * Aspect-locked crop selector.
- * Pointer: drag the frame to move it, drag the corner handle to resize.
+ * Crop selector, aspect-locked or free.
+ * Pointer: drag the frame to move it, drag the corner handle to resize (free
+ * mode resizes width and height independently).
  * Keyboard (frame focused): arrows move (Shift = larger steps), + / − resize.
+ * The slider and + / − keep the current shape.
  */
-export function CropBox({ imageUrl, image, aspect, crop, onChange }: CropBoxProps) {
+export function CropBox({
+  imageUrl,
+  image,
+  aspect,
+  crop,
+  onChange,
+  hint = 'Drag the frame to position your face. Use the handle or this slider to zoom.',
+}: CropBoxProps) {
   const frame = useRef<HTMLButtonElement>(null);
-  const maxWidth = maxCropWidth(image, aspect);
+  const shape = aspect ?? crop.width / crop.height;
+  const maxWidth = maxCropWidth(image, shape);
   const minWidth = Math.max(1, maxWidth * MIN_FRACTION);
+  const minSide = Math.max(8, Math.min(image.width, image.height) * 0.02);
 
   const startDrag = (event: PointerEvent, mode: 'move' | 'resize'): void => {
     const container = frame.current?.parentElement;
@@ -52,6 +64,14 @@ export function CropBox({ imageUrl, image, aspect, crop, onChange }: CropBoxProp
       const dy = (move.clientY - start.y) * scale;
       if (mode === 'move') {
         onChange(clampRect({ ...start.crop, x: start.crop.x + dx, y: start.crop.y + dy }, image));
+        return;
+      }
+      if (aspect === null) {
+        onChange({
+          ...start.crop,
+          width: Math.min(Math.max(minSide, start.crop.width + dx), image.width - start.crop.x),
+          height: Math.min(Math.max(minSide, start.crop.height + dy), image.height - start.crop.y),
+        });
         return;
       }
       const delta = Math.abs(dx) > Math.abs(dy * aspect) ? dx : dy * aspect;
@@ -90,7 +110,7 @@ export function CropBox({ imageUrl, image, aspect, crop, onChange }: CropBoxProp
         maxWidth,
         Math.max(minWidth, crop.width + (event.key === '-' ? -step : step)),
       );
-      onChange(resizeAroundCentre(crop, width, aspect, image));
+      onChange(resizeAroundCentre(crop, width, shape, image));
     }
   };
 
@@ -137,7 +157,8 @@ export function CropBox({ imageUrl, image, aspect, crop, onChange }: CropBoxProp
           </span>
           <span
             aria-hidden="true"
-            class="absolute -right-3 -bottom-3 size-6 cursor-nwse-resize rounded-full border-2 border-white bg-teal-600"
+            data-testid="crop-handle"
+            class="absolute right-0.5 bottom-0.5 size-6 cursor-nwse-resize rounded-full border-2 border-white bg-teal-600"
             onPointerDown={(event) => startDrag(event, 'resize')}
           />
         </button>
@@ -148,11 +169,15 @@ export function CropBox({ imageUrl, image, aspect, crop, onChange }: CropBoxProp
         max={100}
         step={1}
         value={Math.round((crop.width / maxWidth) * 100)}
-        format={(value) => `${value}%`}
+        // Source pixels, not a percentage: "100 %" read as "whole image" even when it was not.
+        format={(value) => {
+          const width = (value / 100) * maxWidth;
+          return `${Math.round(width)} × ${Math.round(width / shape)} px`;
+        }}
         onChange={(value) =>
-          onChange(resizeAroundCentre(crop, (value / 100) * maxWidth, aspect, image))
+          onChange(resizeAroundCentre(crop, (value / 100) * maxWidth, shape, image))
         }
-        hint="Drag the frame to position your face. Use the handle or this slider to zoom."
+        hint={hint}
       />
     </div>
   );

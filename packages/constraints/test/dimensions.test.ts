@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { centredCropForAspect, clampRect, cmToPixels, upscaleFactor } from '../src/dimensions';
+import {
+  centredCropForAspect,
+  clampRect,
+  cmToPixels,
+  expandToAspect,
+  upscaleFactor,
+} from '../src/dimensions';
 import { positionInRange, validateRange } from '../src/byte-range';
 
 describe('centredCropForAspect', () => {
@@ -31,6 +37,30 @@ describe('clampRect', () => {
     expect(
       clampRect({ x: -10, y: 950, width: 100, height: 100 }, { width: 500, height: 1000 }),
     ).toEqual({ x: 0, y: 900, width: 100, height: 100 });
+  });
+});
+
+describe('expandToAspect', () => {
+  it('widens a tall box to the aspect around its centre without shrinking it', () => {
+    expect(
+      expandToAspect({ x: 100, y: 50, width: 100, height: 100 }, 2, { width: 1000, height: 500 }),
+    ).toEqual({ x: 50, y: 50, width: 200, height: 100 });
+  });
+
+  it('heightens a wide box', () => {
+    expect(
+      expandToAspect({ x: 100, y: 100, width: 300, height: 50 }, 3, { width: 1000, height: 500 }),
+    ).toEqual({ x: 100, y: 75, width: 300, height: 100 });
+  });
+
+  it('fits within bounds when the expanded box would not fit', () => {
+    const r = expandToAspect({ x: 0, y: 0, width: 900, height: 100 }, 1, {
+      width: 1000,
+      height: 500,
+    });
+    expect(r.width).toBeCloseTo(500);
+    expect(r.height).toBeCloseTo(500);
+    expect(r.x + r.width).toBeLessThanOrEqual(1000);
   });
 });
 

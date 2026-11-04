@@ -4,6 +4,7 @@
  * the tool frame's main thread with a regular <canvas>.
  */
 import { ToolError, FILE_FORMATS } from '@niftyfix/tool-sdk';
+import type { Pixels } from './enhance';
 
 export type EncodableFormat = 'jpeg' | 'png' | 'webp';
 
@@ -73,7 +74,7 @@ function context2d(canvas: Canvas): Context2D {
  * single bilinear downscale produces.
  */
 export function renderCropped(
-  source: ImageBitmap,
+  source: ImageBitmap | Canvas,
   crop: CropRect,
   width: number,
   height: number,
@@ -105,6 +106,50 @@ export function renderCropped(
   }
   ctx.drawImage(current, cx, cy, cw, ch, 0, 0, width, height);
   return output;
+}
+
+/**
+ * Scale the whole `source` to fit inside `width × height` without cropping or
+ * distortion, centred on `background` (null = transparent).
+ */
+export function fitInto(
+  source: Canvas,
+  width: number,
+  height: number,
+  background: string | null,
+): Canvas {
+  const scale = Math.min(width / source.width, height / source.height);
+  const fitWidth = Math.max(1, Math.round(source.width * scale));
+  const fitHeight = Math.max(1, Math.round(source.height * scale));
+  const scaled = renderCropped(
+    source,
+    { x: 0, y: 0, width: source.width, height: source.height },
+    fitWidth,
+    fitHeight,
+    null,
+  );
+  const output = createCanvas(width, height);
+  const ctx = context2d(output);
+  if (background !== null) {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, width, height);
+  }
+  ctx.drawImage(scaled, Math.floor((width - fitWidth) / 2), Math.floor((height - fitHeight) / 2));
+  return output;
+}
+
+/** Read a canvas into a pure RGBA buffer (see enhance.ts). */
+export function readPixels(canvas: Canvas): Pixels {
+  const image = context2d(canvas).getImageData(0, 0, canvas.width, canvas.height);
+  return { data: image.data, width: image.width, height: image.height };
+}
+
+/** Write an RGBA buffer to a new canvas of the same size. */
+export function writePixels(pixels: Pixels): Canvas {
+  const canvas = createCanvas(pixels.width, pixels.height);
+  const image = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
+  context2d(canvas).putImageData(image, 0, 0);
+  return canvas;
 }
 
 function toBlob(canvas: Canvas, type: string, quality: number | undefined): Promise<Blob | null> {

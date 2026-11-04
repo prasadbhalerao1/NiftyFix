@@ -36,6 +36,30 @@ export function clampRect(rect: Rect, bounds: Size): Rect {
   };
 }
 
+/**
+ * Grow `rect` around its centre until it has `aspect` (never shrinking it, so
+ * nothing inside is cut), then fit it inside `bounds`. Used to turn an
+ * auto-detected content box into an aspect-locked crop.
+ */
+export function expandToAspect(rect: Rect, aspect: number, bounds: Size): Rect {
+  if (!(aspect > 0)) throw new RangeError('Aspect ratio must be positive.');
+  let width = rect.width;
+  let height = rect.height;
+  if (width / height < aspect) width = height * aspect;
+  else height = width / aspect;
+  if (width > bounds.width) {
+    width = bounds.width;
+    height = width / aspect;
+  }
+  if (height > bounds.height) {
+    height = bounds.height;
+    width = height * aspect;
+  }
+  const cx = rect.x + rect.width / 2;
+  const cy = rect.y + rect.height / 2;
+  return clampRect({ x: cx - width / 2, y: cy - height / 2, width, height }, bounds);
+}
+
 /** Pixels needed for a physical size at a given DPI (e.g. 3.5 cm at 200 DPI → 276 px). */
 export function cmToPixels(centimetres: number, dpi: number): number {
   return Math.round((centimetres / 2.54) * dpi);

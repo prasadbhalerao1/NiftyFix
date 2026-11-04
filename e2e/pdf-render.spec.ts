@@ -110,3 +110,38 @@ test.describe('PDF to JPG / PNG', () => {
     );
   });
 });
+
+test.describe('Extract Text from PDF', () => {
+  test('extracts every page in order, with page markers', async ({ page }) => {
+    const frame = await openPdfTool(page, '/pdf/pdf-to-text/', /Choose a PDF/);
+    await choose(frame, await makePdf('notes.pdf', 3));
+    const { name, bytes } = await download(page, frame);
+    expect(name).toBe('notes-text.txt');
+    const text = new TextDecoder().decode(bytes);
+    expect(text.indexOf('--- Page 1 ---')).toBeLessThan(text.indexOf('notes.pdf page 1'));
+    expect(text.indexOf('notes.pdf page 1')).toBeLessThan(text.indexOf('notes.pdf page 2'));
+    expect(text).toContain('notes.pdf page 3');
+  });
+
+  test('names scanned pages that have no text layer', async ({ page }) => {
+    const doc = await PDFDocument.create();
+    const font = await doc.embedFont(StandardFonts.Helvetica);
+    doc.addPage([300, 300]).drawText('Typed page', { x: 20, y: 150, size: 14, font });
+    const png = await doc.embedPng(
+      Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAIAAAB7QOjdAAAAD0lEQVR4nGP4z8DwnwEIABf2A/2IoRWBAAAAAElFTkSuQmCC',
+        'base64',
+      ),
+    );
+    doc.addPage([300, 300]).drawImage(png, { x: 0, y: 0, width: 300, height: 300 });
+    const frame = await openPdfTool(page, '/pdf/pdf-to-text/', /Choose a PDF/);
+    await choose(frame, {
+      name: 'mixed.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from(await doc.save()),
+    });
+    const { bytes } = await download(page, frame);
+    expect(new TextDecoder().decode(bytes)).toContain('Typed page');
+    await expect(frame.getByTestId('result-warning')).toContainText('No text on page 2');
+  });
+});

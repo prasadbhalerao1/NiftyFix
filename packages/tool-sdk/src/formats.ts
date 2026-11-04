@@ -13,6 +13,8 @@ export const FILE_FORMATS = {
   heic: { label: 'HEIC', mime: 'image/heic', extensions: ['heic', 'heif'] },
   pdf: { label: 'PDF', mime: 'application/pdf', extensions: ['pdf'] },
   zip: { label: 'ZIP', mime: 'application/zip', extensions: ['zip'] },
+  // Output only: plain text has no signature to detect.
+  txt: { label: 'Text', mime: 'text/plain', extensions: ['txt'] },
 } as const satisfies Record<string, { label: string; mime: string; extensions: readonly string[] }>;
 
 export type FileFormatId = keyof typeof FILE_FORMATS;

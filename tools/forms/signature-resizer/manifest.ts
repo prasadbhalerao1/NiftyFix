@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'signature-resizer',
   category: 'forms',
-  status: 'beta',
+  status: 'live',
   name: 'Signature Resizer',
   h1: 'Resize and clean up a signature for an application form',
   tagline:

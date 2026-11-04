@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'compress-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Compress PDF',
   h1: 'Compress a PDF to a smaller size',
   tagline:

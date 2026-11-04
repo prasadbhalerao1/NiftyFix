@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'pdf-to-text',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Extract Text from PDF',
   h1: 'Extract text from a PDF',
   tagline:

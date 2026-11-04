@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'split-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Split PDF',
   h1: 'Split a PDF into separate files',
   tagline:

@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'organize-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Organize PDF Pages',
   h1: 'Organize PDF pages: reorder, rotate and delete',
   tagline:

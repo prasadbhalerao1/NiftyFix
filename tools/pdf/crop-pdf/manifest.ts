@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'crop-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Crop and Resize PDF Pages',
   h1: 'Crop PDF margins or resize pages to A4',
   tagline:

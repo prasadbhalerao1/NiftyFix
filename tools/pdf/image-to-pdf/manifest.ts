@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'image-to-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'JPG to PDF',
   h1: 'Convert JPG and other images to PDF',
   tagline:

@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'pdf-metadata',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'PDF Metadata Editor',
   h1: 'Edit or remove PDF metadata',
   tagline:

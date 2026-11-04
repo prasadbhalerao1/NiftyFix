@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'watermark-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Watermark PDF',
   h1: 'Add a watermark to a PDF',
   tagline:

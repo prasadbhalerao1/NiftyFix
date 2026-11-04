@@ -55,8 +55,8 @@ test.describe('site', () => {
       'href',
       `http://localhost:4321${TOOL_PATH}`,
     );
-    // Beta tools stay out of the index until they pass the acceptance checklist.
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+    // Live tools are open to search engines: no robots restriction on the page.
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
     const jsonLd = await page.locator('script[type="application/ld+json"]').allTextContents();
     const types = jsonLd.map((text) => (JSON.parse(text) as { '@type': string })['@type']);
     expect(types).toEqual(['BreadcrumbList', 'WebApplication']);
@@ -79,7 +79,15 @@ test.describe('site', () => {
   test('sitemap, robots and static pages', async ({ page, request }) => {
     const sitemap = await (await request.get('/sitemap.xml')).text();
     expect(sitemap).toContain('<loc>http://localhost:4321/</loc>');
-    expect(sitemap).not.toContain('photo-resizer'); // beta tools are not submitted for indexing
+    // Live tools and their category hubs are submitted for indexing.
+    for (const path of [
+      '/forms/photo-resizer/',
+      '/pdf/',
+      '/pdf/merge-pdf/',
+      '/pdf/compress-pdf/',
+    ]) {
+      expect(sitemap).toContain(`<loc>http://localhost:4321${path}</loc>`);
+    }
     expect(await (await request.get('/robots.txt')).text()).toContain(
       'Sitemap: http://localhost:4321/sitemap.xml',
     );

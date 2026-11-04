@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'add-page-numbers',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Add Page Numbers',
   h1: 'Add page numbers to a PDF',
   tagline:

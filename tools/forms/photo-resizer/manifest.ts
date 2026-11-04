@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'photo-resizer',
   category: 'forms',
-  status: 'beta',
+  status: 'live',
   name: 'Form Photo Resizer',
   h1: 'Resize a photo for an application form',
   tagline:

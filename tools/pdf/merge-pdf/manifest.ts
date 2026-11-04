@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'merge-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Merge PDF',
   h1: 'Merge PDF files into one',
   tagline:

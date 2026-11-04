@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'rotate-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Rotate PDF',
   h1: 'Rotate PDF pages',
   tagline:

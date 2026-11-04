@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'flatten-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Flatten PDF',
   h1: 'Flatten a PDF form',
   tagline:

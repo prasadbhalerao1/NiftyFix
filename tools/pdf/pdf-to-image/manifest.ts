@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'pdf-to-image',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'PDF to JPG / PNG',
   h1: 'Convert PDF pages to JPG or PNG images',
   tagline:

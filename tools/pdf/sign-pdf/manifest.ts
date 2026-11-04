@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'sign-pdf',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Sign PDF',
   h1: 'Sign a PDF online',
   tagline:

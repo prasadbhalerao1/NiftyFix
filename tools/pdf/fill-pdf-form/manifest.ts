@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'fill-pdf-form',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Fill PDF Form',
   h1: 'Fill in a PDF form online',
   tagline:

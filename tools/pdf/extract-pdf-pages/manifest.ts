@@ -7,7 +7,7 @@ export default defineManifest({
   version: 1,
   slug: 'extract-pdf-pages',
   category: 'pdf',
-  status: 'beta',
+  status: 'live',
   name: 'Extract PDF Pages',
   h1: 'Extract pages from a PDF',
   tagline:

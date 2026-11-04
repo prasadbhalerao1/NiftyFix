@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { expandToAspect, type Rect, type Size } from '@niftyfix/constraints';
 import { DEFAULT_ENHANCE, NO_ENHANCE, type EnhanceSettings } from '@niftyfix/engine-image';
 import { downloadBlob, ObjectUrlRegistry } from '@niftyfix/runtime';
-import { toSerializedError, type SerializedToolError } from '@niftyfix/tool-sdk';
+import { parseKbPreset, toSerializedError, type SerializedToolError } from '@niftyfix/tool-sdk';
 import {
   Button,
   CheckboxInput,
@@ -36,10 +36,14 @@ const percent = (value: number): string => `${Math.round(value * 100)}%`;
 const signedPercent = (value: number): string =>
   `${value > 0 ? '+' : ''}${Math.round(value * 100)}%`;
 
-export default function SignatureResizer({ manifest, device, run, report }: ToolUiProps) {
+export default function SignatureResizer({ manifest, device, run, report, preset }: ToolUiProps) {
   const urls = useRef(new ObjectUrlRegistry());
   const [source, setSource] = useState<ImageSource | null>(null);
-  const [settings, setSettings] = useState<SignatureSettings>(DEFAULT_SETTINGS);
+  // Intent pages such as "signature 10 to 20 KB" open with that size range filled in.
+  const [settings, setSettings] = useState<SignatureSettings>(() => ({
+    ...DEFAULT_SETTINGS,
+    ...parseKbPreset(preset),
+  }));
   const [crop, setCrop] = useState<Rect | null>(null);
   const [autoCropped, setAutoCropped] = useState<boolean | null>(null);
   const [showOriginal, setShowOriginal] = useState(false);

@@ -69,6 +69,27 @@ export interface ToolContent {
   limits: readonly string[];
   example?: { title: string; input: string; settings: string; output: string };
   faqs: readonly { question: string; answer: string }[];
+  /**
+   * Search-intent pages built on this tool ("compress pdf to 200kb"): each has
+   * its own URL, title and explanation, and opens the tool with a preset.
+   * Only for intents with genuinely different needs — never thin duplicates.
+   */
+  variants?: readonly ToolVariant[];
+}
+
+export interface ToolVariant {
+  /** URL slug in the tool's category, e.g. "compress-pdf-to-200kb". */
+  slug: string;
+  /** Preset id the tool UI understands, e.g. "target-200kb"; omit to open the tool as is. */
+  preset?: string;
+  /** Short label for links between variants, e.g. "200 KB". */
+  label: string;
+  h1: string;
+  seoTitle: string;
+  seoDescription: string;
+  /** What is specific about this intent (shown above the tool's own content). */
+  intro: string;
+  faqs?: readonly { question: string; answer: string }[];
 }
 
 /** Identity helpers that give authors full type checking. */

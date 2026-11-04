@@ -38,4 +38,24 @@ export default defineContent({
         'No. PDF cropping only changes the visible area. Anyone can restore it with a PDF editor. Never rely on cropping to hide private details.',
     },
   ],
+  variants: [
+    {
+      slug: 'resize-pdf-to-a4',
+      preset: 'resize-a4',
+      label: 'Resize to A4',
+      h1: 'Resize a PDF to A4',
+      seoTitle: 'Resize PDF to A4 online, free | NiftyFix',
+      seoDescription:
+        'Fit every page of a PDF onto A4 paper — letter-size, legal or odd-sized scans — without cropping or stretching. Free, nothing is uploaded.',
+      intro:
+        'Portals and printers often expect A4, but PDFs arrive as US Letter, Legal or whatever size a phone scanner chose. This page opens with Resize to A4 selected: each page is scaled to fit A4 and centred, keeping its proportions, so nothing is cut off or stretched.',
+      faqs: [
+        {
+          question: 'Will resizing to A4 make the text smaller?',
+          answer:
+            'Only if the page was bigger than A4 or a different shape. Content is scaled to fit and never stretched; a Letter-size page shrinks very slightly and gains a thin margin.',
+        },
+      ],
+    },
+  ],
 });

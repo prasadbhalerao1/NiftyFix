@@ -72,4 +72,35 @@ export default defineContent({
         'No. Processing runs in your browser inside an isolated frame that cannot connect to other sites. See the privacy verification page to check this yourself.',
     },
   ],
+  variants: [
+    {
+      slug: 'signature-resize-10-to-20kb',
+      preset: '10-to-20kb',
+      label: '10–20 KB',
+      h1: 'Resize a signature to 10–20 KB',
+      seoTitle: 'Signature resize 10 to 20 KB online, free | NiftyFix',
+      seoDescription:
+        'Resize a scanned or photographed signature to between 10 and 20 KB at the pixel size your form needs. Cleans the background too. Free, private.',
+      intro:
+        'Forms that ask for a signature between 10 and 20 KB reject files that are too small as well as too large. The range is already set: choose a photo of your signature, enter the pixel size the form gives, and the tool lands the file inside 10–20 KB and shows the exact size.',
+      faqs: [
+        {
+          question: 'Why is my signature rejected for being too small?',
+          answer:
+            'A plain signature on white paper compresses very well, so it often ends up under the minimum. The tool raises quality until the file is above 10 KB, using 1024 bytes per KB for the minimum so it passes either way a portal counts.',
+        },
+      ],
+    },
+    {
+      slug: 'signature-resize-10-to-50kb',
+      preset: '10-to-50kb',
+      label: '10–50 KB',
+      h1: 'Resize a signature to 10–50 KB',
+      seoTitle: 'Signature resize 10 to 50 KB online, free | NiftyFix',
+      seoDescription:
+        'Get a signature image between 10 and 50 KB at exact pixel dimensions, with a clean white background. Free, and nothing is uploaded.',
+      intro:
+        'A 10–50 KB range is easy to meet once the background is clean: the tool whitens the paper, darkens the ink, and keeps the file inside the range. The range is already set; choose your signature photo and enter the pixel size your form asks for.',
+    },
+  ],
 });

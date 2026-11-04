@@ -4,23 +4,38 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ToolCard from '../../components/ToolCard.astro';
 import ToolFrame from '../../components/ToolFrame.astro';
 import { absoluteUrl, registry, SITE_NAME } from '../../data/registry';
-import { categoryPath, toolPath, type ToolEntry } from '@niftyfix/registry';
-import { CATEGORIES, FILE_FORMATS } from '@niftyfix/tool-sdk';
+import { categoryPath, toolPath, variantPath, type ToolEntry } from '@niftyfix/registry';
+import { CATEGORIES, FILE_FORMATS, type ToolVariant } from '@niftyfix/tool-sdk';
 
+/** One page per tool, plus one per search intent of a live tool ("compress PDF to 200 KB"). */
 export function getStaticPaths() {
-  return registry.tools.map((entry) => ({
-    params: { category: entry.manifest.category, slug: entry.manifest.slug },
-    props: { entry },
-  }));
+  return [
+    ...registry.tools.map((entry) => ({
+      params: { category: entry.manifest.category, slug: entry.manifest.slug },
+      props: { entry, variant: undefined },
+    })),
+    ...registry.variantPages().map(({ entry, variant }) => ({
+      params: { category: entry.manifest.category, slug: variant.slug },
+      props: { entry, variant },
+    })),
+  ];
 }
 
 interface Props {
   entry: ToolEntry;
+  variant: ToolVariant | undefined;
 }
 
-const { manifest, content } = Astro.props.entry;
+const { entry, variant } = Astro.props;
+const { manifest, content } = entry;
 const category = CATEGORIES[manifest.category];
-const path = toolPath(manifest);
+const path = variant ? variantPath(manifest, variant) : toolPath(manifest);
+const page = variant ?? manifest;
+const faqs = [...(variant?.faqs ?? []), ...content.faqs];
+// Every intent page links to the tool and its siblings, so each is reachable and gets context.
+const intents = (manifest.status === 'live' ? (content.variants ?? []) : []).filter(
+  (other) => other.slug !== variant?.slug,
+);
 const related = registry.related(manifest.id);
 const inputs = manifest.input.formats.map((id) => FILE_FORMATS[id].label).join(', ');
 const outputs = manifest.output.formats.map((id) => FILE_FORMATS[id].label).join(', ');
@@ -28,7 +43,8 @@ const mb = (bytes: number) => `${Math.round(bytes / 1_000_000)} MB`;
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: category.name, path: categoryPath(manifest.category) },
-  { name: manifest.name, path },
+  { name: manifest.name, path: toolPath(manifest) },
+  ...(variant ? [{ name: variant.label, path }] : []),
 ];
 
 const jsonLd = [
@@ -45,9 +61,9 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: manifest.name,
+    name: variant ? variant.h1 : manifest.name,
     url: absoluteUrl(path),
-    description: manifest.seoDescription,
+    description: page.seoDescription,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Any (web browser)',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -57,22 +73,54 @@ const jsonLd = [
 ---
 
 <Base
-  title={manifest.seoTitle}
-  description={manifest.seoDescription}
+  title={page.seoTitle}
+  description={page.seoDescription}
   path={path}
   noindex={manifest.status !== 'live'}
   jsonLd={jsonLd}
 >
   <Breadcrumbs items={crumbs} />
-  <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{manifest.h1}</h1>
-  <p class="mt-2 max-w-[72ch] text-stone-700 dark:text-stone-300">{manifest.tagline}</p>
+  <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{page.h1}</h1>
+  <p class="mt-2 max-w-[72ch] text-stone-700 dark:text-stone-300">
+    {variant ? variant.intro : manifest.tagline}
+  </p>
   <p class="mt-3 inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-sm text-brand-900 dark:bg-brand-950 dark:text-brand-100">
     <span aria-hidden="true">●</span> Runs on your device — your file is not uploaded
   </p>
 
   <div class="mt-6">
-    <ToolFrame toolId={manifest.id} title={`${manifest.name} tool`} />
+    <ToolFrame toolId={manifest.id} title={`${manifest.name} tool`} preset={variant?.preset} />
   </div>
+
+  {intents.length > 0 ? (
+    <nav aria-labelledby="intents-heading" class="mt-4">
+      <h2 id="intents-heading" class="text-sm font-medium text-stone-600 dark:text-stone-400">
+        {variant ? `Other ${manifest.name} pages` : 'Popular settings'}
+      </h2>
+      <ul class="mt-2 flex flex-wrap gap-2">
+        {variant ? (
+          <li>
+            <a
+              href={toolPath(manifest)}
+              class="inline-block rounded-full border border-stone-300 px-3 py-1 text-sm hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:hover:border-brand-400 dark:hover:text-brand-300"
+            >
+              {manifest.name}
+            </a>
+          </li>
+        ) : null}
+        {intents.map((other) => (
+          <li>
+            <a
+              href={variantPath(manifest, other)}
+              class="inline-block rounded-full border border-stone-300 px-3 py-1 text-sm hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:hover:border-brand-400 dark:hover:text-brand-300"
+            >
+              {other.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  ) : null}
 
   <dl class="mt-6 grid gap-3 rounded-[var(--radius-panel)] border border-stone-200 bg-white p-4 text-sm sm:grid-cols-3 dark:border-stone-800 dark:bg-stone-900">
     <div>
@@ -135,7 +183,7 @@ const jsonLd = [
     </ul>
 
     <h2>Questions</h2>
-    {content.faqs.map((faq) => (
+    {faqs.map((faq) => (
       <>
         <h3>{faq.question}</h3>
         <p>{faq.answer}</p>

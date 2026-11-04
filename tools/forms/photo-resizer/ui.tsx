@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { centredCropForAspect, type Rect, type Size } from '@niftyfix/constraints';
 import { SIZE_TEMPLATES } from '@niftyfix/portal-specs';
 import { downloadBlob, ObjectUrlRegistry } from '@niftyfix/runtime';
-import { toSerializedError, type SerializedToolError } from '@niftyfix/tool-sdk';
+import { parseKbPreset, toSerializedError, type SerializedToolError } from '@niftyfix/tool-sdk';
 import {
   Button,
   CropBox,
@@ -23,10 +23,14 @@ import { DEFAULT_SETTINGS, toOptions, validateSettings, type PhotoSettings } fro
 const ACCEPT =
   '.jpg,.jpeg,.png,.webp,.avif,.bmp,.gif,image/jpeg,image/png,image/webp,image/avif,image/bmp,image/gif';
 
-export default function PhotoResizer({ manifest, device, run, report }: ToolUiProps) {
+export default function PhotoResizer({ manifest, device, run, report, preset }: ToolUiProps) {
   const urls = useRef(new ObjectUrlRegistry());
   const [source, setSource] = useState<ImageSource | null>(null);
-  const [settings, setSettings] = useState<PhotoSettings>(DEFAULT_SETTINGS);
+  // Intent pages such as "resize photo to 50 KB" open with that size limit filled in.
+  const [settings, setSettings] = useState<PhotoSettings>(() => ({
+    ...DEFAULT_SETTINGS,
+    ...parseKbPreset(preset),
+  }));
   const [crop, setCrop] = useState<Rect | null>(null);
   const [inputError, setInputError] = useState<SerializedToolError | null>(null);
   const job = useToolJob<Size>({ run, report }, urls.current);

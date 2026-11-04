@@ -76,4 +76,46 @@ export default defineContent({
         'If every row of the validation report passes, the file meets the technical requirements you entered. Acceptance also depends on rules the portal may not publish, so we cannot promise it.',
     },
   ],
+  variants: [
+    {
+      slug: 'resize-photo-to-20kb',
+      preset: 'max-20kb',
+      label: 'Under 20 KB',
+      h1: 'Resize a photo to 20 KB',
+      seoTitle: 'Resize photo to 20KB online, free | NiftyFix',
+      seoDescription:
+        'Reduce a photo to under 20 KB for online application forms, at the exact pixel size you need. Free and private — your photo stays on your device.',
+      intro:
+        'A 20 KB limit is tight for a photo, so the tool finds the highest quality that still fits and shows the exact final size. The maximum is already set to 20 KB; enter the pixel size your form asks for, position your face, and download.',
+      faqs: [
+        {
+          question: 'Will my photo look blurry at 20 KB?',
+          answer:
+            'At the small pixel sizes forms ask for (a few hundred pixels wide), 20 KB is usually enough for a clear face. If the form asks for a large size and a small file, the tool lowers quality only as far as the "Lowest quality allowed" setting lets it, and tells you if it cannot fit.',
+        },
+      ],
+    },
+    {
+      slug: 'resize-photo-to-50kb',
+      preset: 'max-50kb',
+      label: 'Under 50 KB',
+      h1: 'Resize a photo to 50 KB',
+      seoTitle: 'Resize photo to 50KB online, free | NiftyFix',
+      seoDescription:
+        'Make a photo smaller than 50 KB at the pixel size your form needs. Crop, resize and compress in one step. Free, nothing is uploaded.',
+      intro:
+        'Many forms cap the photo at 50 KB. The maximum is already set: choose your photo, enter the width and height in pixels from the form, centre your face, and the tool produces a JPEG under 50 KB at the best quality that fits.',
+    },
+    {
+      slug: 'resize-photo-to-100kb',
+      preset: 'max-100kb',
+      label: 'Under 100 KB',
+      h1: 'Resize a photo to 100 KB',
+      seoTitle: 'Resize photo to 100KB online, free | NiftyFix',
+      seoDescription:
+        'Compress a photo to under 100 KB without making it look blurry. Set exact pixel dimensions and crop in one step. Free and private.',
+      intro:
+        'With a 100 KB limit there is room for a sharp photo at most form sizes. The maximum is already set to 100 KB; choose your photo and set the dimensions, and the tool keeps as much quality as fits — then confirms the final size before you upload.',
+    },
+  ],
 });

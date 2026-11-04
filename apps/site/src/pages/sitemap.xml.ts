@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
-import { categoryPath, toolPath } from '@niftyfix/registry';
+import { categoryPath, toolPath, variantPath } from '@niftyfix/registry';
 import { absoluteUrl, registry } from '../data/registry';
 
-/** Only indexable pages: live tools, categories with a live tool, and evergreen pages. */
+/** Only indexable pages: live tools and their intent pages, categories with a live tool, and evergreen pages. */
 export const GET: APIRoute = () => {
   const live = registry.indexable();
   const categories = [...new Set(live.map((tool) => tool.manifest.category))];
@@ -14,6 +14,7 @@ export const GET: APIRoute = () => {
     '/licenses/',
     ...categories.map(categoryPath),
     ...live.map((tool) => toolPath(tool.manifest)),
+    ...registry.variantPages().map(({ entry, variant }) => variantPath(entry.manifest, variant)),
   ];
   const body = [
     '<?xml version="1.0" encoding="UTF-8"?>',

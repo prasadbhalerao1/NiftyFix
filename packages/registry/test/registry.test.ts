@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import type { ToolContent, ToolManifest } from '@niftyfix/tool-sdk';
+import type { ToolContent, ToolManifest, ToolVariant } from '@niftyfix/tool-sdk';
 import { CATEGORY_IDS, isCategoryId } from '@niftyfix/tool-sdk';
-import { createRegistry, PLANNED_TOOLS, toolPath, validateEntries, type ToolEntry } from '../src';
+import {
+  createRegistry,
+  PLANNED_TOOLS,
+  toolPath,
+  validateEntries,
+  variantPath,
+  type ToolEntry,
+} from '../src';
 
 const content: ToolContent = {
   intro:
@@ -53,6 +60,24 @@ function entry(
   };
 }
 
+const variant = (slug: string, overrides: Partial<ToolVariant> = {}): ToolVariant => ({
+  slug,
+  preset: 'target-200kb',
+  label: '200 KB',
+  h1: `${slug} heading`,
+  seoTitle: `${slug} | NiftyFix`,
+  seoDescription:
+    'A description that is long enough to satisfy the minimum length rule for meta tags.',
+  intro:
+    'An introduction written for this intent: what the target means, who asks for it, and how the tool reaches it without losing readability.',
+  ...overrides,
+});
+
+const withVariants = (base: ToolEntry, variants: ToolVariant[]): ToolEntry => ({
+  ...base,
+  content: { ...base.content, variants },
+});
+
 describe('validateEntries', () => {
   it('accepts consistent entries', () => {
     expect(
@@ -91,6 +116,51 @@ describe('validateEntries', () => {
     expect(problems).toMatch(/seoDescription/);
     expect(problems).toMatch(/faqs/);
     expect(problems).toMatch(/intro/);
+  });
+});
+
+describe('variant validation', () => {
+  it('accepts distinct intent pages', () => {
+    const tool = withVariants(entry('pdf', 'compress-pdf'), [variant('compress-pdf-to-200kb')]);
+    expect(validateEntries([tool])).toEqual([]);
+  });
+
+  it('rejects routes taken by a tool or another variant, in either order', () => {
+    const tool = withVariants(entry('pdf', 'compress-pdf'), [
+      variant('merge-pdf'),
+      variant('compress-pdf-to-200kb'),
+      variant('compress-pdf-to-200kb', { seoTitle: 'Other title | NiftyFix' }),
+    ]);
+    const before = validateEntries([entry('pdf', 'merge-pdf'), tool]).join('\n');
+    const after = validateEntries([tool, entry('pdf', 'merge-pdf')]).join('\n');
+    expect(before).toMatch(/variant "merge-pdf" duplicate route/);
+    expect(before).toMatch(/variant "compress-pdf-to-200kb" duplicate route/);
+    expect(after).toMatch(/duplicate route "\/pdf\/merge-pdf\/"/);
+  });
+
+  it('enforces SEO, unique titles, presets and a substantive intro', () => {
+    const tool = withVariants(entry('pdf', 'compress-pdf'), [
+      variant('a-page', {
+        seoTitle: 'compress-pdf | NiftyFix',
+        intro: 'Thin.',
+        preset: 'Bad Preset',
+      }),
+    ]);
+    const problems = validateEntries([tool]).join('\n');
+    expect(problems).toMatch(/repeats another page's title/);
+    expect(problems).toMatch(/intro is too short/);
+    expect(problems).toMatch(/preset must be/);
+  });
+
+  it('publishes variants of live tools only', () => {
+    const registry = createRegistry([
+      withVariants(entry('pdf', 'compress-pdf'), [variant('compress-pdf-to-200kb')]),
+      withVariants(entry('pdf', 'crop-pdf', { status: 'beta' }), [variant('resize-pdf-to-a4')]),
+    ]);
+    const pages = registry.variantPages();
+    expect(pages.map((p) => variantPath(p.entry.manifest, p.variant))).toEqual([
+      '/pdf/compress-pdf-to-200kb/',
+    ]);
   });
 });
 

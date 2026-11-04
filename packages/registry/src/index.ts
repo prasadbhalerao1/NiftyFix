@@ -5,6 +5,7 @@ import {
   type CategoryId,
   type ToolContent,
   type ToolManifest,
+  type ToolVariant,
 } from '@niftyfix/tool-sdk';
 import { PLANNED_TOOLS, type PlannedTool } from './planned';
 
@@ -42,6 +43,14 @@ export interface Registry {
    * position, planned ones as "coming soon", built tools not on the roadmap last.
    */
   catalogue(category: CategoryId): readonly CatalogueItem[];
+  /** Intent pages of live tools (variants of drafts and betas are not published). */
+  variantPages(): readonly VariantPage[];
+}
+
+/** A search-intent page: a tool opened with a preset under its own URL. */
+export interface VariantPage {
+  entry: ToolEntry;
+  variant: ToolVariant;
 }
 
 export type CatalogueItem =
@@ -49,6 +58,11 @@ export type CatalogueItem =
 
 export const toolPath = (manifest: Pick<ToolManifest, 'category' | 'slug'>): string =>
   `/${manifest.category}/${manifest.slug}/`;
+
+export const variantPath = (
+  manifest: Pick<ToolManifest, 'category'>,
+  variant: Pick<ToolVariant, 'slug'>,
+): string => `/${manifest.category}/${variant.slug}/`;
 
 export const categoryPath = (category: CategoryId): string => `/${category}/`;
 
@@ -96,10 +110,25 @@ export function createRegistry(
       for (const entry of built) if (!listed.has(entry)) items.push({ kind: 'built', entry });
       return items;
     },
+    variantPages: () =>
+      tools
+        .filter((entry) => entry.manifest.status === 'live')
+        .flatMap((entry) => (entry.content.variants ?? []).map((variant) => ({ entry, variant }))),
   };
 }
 
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+function checkSeo(
+  where: string,
+  { seoTitle, seoDescription }: { seoTitle: string; seoDescription: string },
+): string[] {
+  const problems: string[] = [];
+  if (seoTitle.length > 65) problems.push(`${where} seoTitle is ${seoTitle.length} chars (max 65)`);
+  if (seoDescription.length < 70 || seoDescription.length > 160)
+    problems.push(`${where} seoDescription is ${seoDescription.length} chars (70–160)`);
+  return problems;
+}
 
 /**
  * Build-time checks. Returns every problem found (empty array = valid) so CI
@@ -127,11 +156,7 @@ export function validateEntries(entries: readonly ToolEntry[]): string[] {
     paths.add(path);
     if (!(Number.isInteger(m.version) && m.version >= 1))
       problems.push(`${where} version must be a positive integer`);
-    if (m.seoTitle.length > 65)
-      problems.push(`${where} seoTitle is ${m.seoTitle.length} chars (max 65)`);
-    if (m.seoDescription.length < 70 || m.seoDescription.length > 160) {
-      problems.push(`${where} seoDescription is ${m.seoDescription.length} chars (70–160)`);
-    }
+    problems.push(...checkSeo(where, m));
     if (m.h1.trim() === '' || m.name.trim() === '' || m.tagline.trim() === '')
       problems.push(`${where} name, h1 and tagline are required`);
     if (m.input.formats.length === 0) problems.push(`${where} input.formats must not be empty`);
@@ -147,6 +172,23 @@ export function validateEntries(entries: readonly ToolEntry[]): string[] {
     if (c.limits.length < 1) problems.push(`${where} content.limits must state at least one limit`);
     if (c.faqs.length < 2)
       problems.push(`${where} content.faqs needs at least 2 tool-specific questions`);
+    const titles = new Set([m.seoTitle]);
+    for (const v of c.variants ?? []) {
+      const at = `${where} variant "${v.slug}"`;
+      if (!SLUG.test(v.slug)) problems.push(`${at} slug must be lowercase words joined by hyphens`);
+      if (v.preset !== undefined && !SLUG.test(v.preset))
+        problems.push(`${at} preset must be lowercase words joined by hyphens`);
+      const variantRoute = variantPath(m, v);
+      if (paths.has(variantRoute)) problems.push(`${at} duplicate route "${variantRoute}"`);
+      paths.add(variantRoute);
+      problems.push(...checkSeo(at, v));
+      if (titles.has(v.seoTitle)) problems.push(`${at} seoTitle repeats another page's title`);
+      titles.add(v.seoTitle);
+      if (v.h1.trim() === '' || v.label.trim() === '')
+        problems.push(`${at} h1 and label are required`);
+      if (v.intro.length < 120)
+        problems.push(`${at} intro is too short — say what is specific to this intent`);
+    }
   }
   return problems;
 }

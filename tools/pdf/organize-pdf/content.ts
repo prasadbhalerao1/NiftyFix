@@ -42,4 +42,23 @@ export default defineContent({
         'No. Thumbnails are drawn in your browser, and the new PDF is made there too. Nothing is sent anywhere.',
     },
   ],
+  variants: [
+    {
+      slug: 'delete-pdf-pages',
+      label: 'Delete pages',
+      h1: 'Delete pages from a PDF',
+      seoTitle: 'Delete pages from PDF online, free | NiftyFix',
+      seoDescription:
+        'Remove blank, duplicate or unwanted pages from a PDF by clicking them in a thumbnail view. Free, private, and nothing is uploaded.',
+      intro:
+        'Choose your PDF and every page appears as a thumbnail. Select ✕ on each page you want gone — a blank scan, a duplicate, an instructions sheet — and save. Removed pages can be restored until you save, and the saved file is checked to contain exactly the pages you kept.',
+      faqs: [
+        {
+          question: 'Can I delete pages by number instead of clicking?',
+          answer:
+            'For long documents, Extract pages is quicker: enter the pages to keep, such as 1-4, 7, and it saves only those.',
+        },
+      ],
+    },
+  ],
 });

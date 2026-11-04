@@ -4,6 +4,7 @@ import {
   byteRangeIsOrdered,
   CropRectSchema,
   outputSpecEntries,
+  parseKbPreset,
   resolveOutputSpec,
   validateOutputSpec,
   type OutputSpecDraft,
@@ -67,5 +68,17 @@ describe('output spec', () => {
     expect(byteRangeIsOrdered({ maxBytes: 4 })).toBe(true);
     expect(v.safeParse(CropRectSchema, { x: -1, y: 0, width: 10, height: 10 }).success).toBe(false);
     expect(v.safeParse(CropRectSchema, { x: 0, y: 0, width: 10, height: 10 }).success).toBe(true);
+  });
+});
+
+describe('parseKbPreset', () => {
+  it('reads maximum and range presets', () => {
+    expect(parseKbPreset('max-50kb')).toEqual({ minKb: null, maxKb: 50 });
+    expect(parseKbPreset('10-to-20kb')).toEqual({ minKb: 10, maxKb: 20 });
+  });
+
+  it('ignores unknown, empty and impossible presets', () => {
+    for (const preset of [undefined, '', 'target-200kb', 'max-0kb', '20-to-10kb', '5-to-5kb'])
+      expect(parseKbPreset(preset)).toBeNull();
   });
 });

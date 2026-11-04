@@ -61,7 +61,10 @@ function PreviewForFile({ file, margins }: { file: File; margins: MarginsMm }) {
 }
 
 export default function CropPdf(props: ToolUiProps) {
-  const [mode, setMode] = useState<'crop' | 'resize'>('crop');
+  // "Resize PDF to A4" pages open on the resize setting (A4 is already the default paper).
+  const [mode, setMode] = useState<'crop' | 'resize'>(
+    props.preset === 'resize-a4' ? 'resize' : 'crop',
+  );
   const [margins, setMargins] = useState<MarginsMm>({ top: 10, right: 10, bottom: 10, left: 10 });
   const [paper, setPaper] = useState<Paper>('a4');
   const [pages, setPages] = useState<PageSelectionValue>(ALL_PAGES);

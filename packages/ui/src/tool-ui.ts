@@ -14,6 +14,11 @@ export interface ToolUiProps {
   /** Start loading this tool's processing engine now (e.g. once files are chosen). */
   preload(): void;
   report(event: ToolUiEvent, detail?: { code?: string }): void;
+  /**
+   * Starting settings chosen by the page the tool is embedded in (an intent page
+   * such as "compress PDF to 200 KB"). Tools ignore presets they do not know.
+   */
+  preset?: string;
 }
 
 export type ToolUi = ComponentType<ToolUiProps>;

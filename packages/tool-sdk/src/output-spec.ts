@@ -132,3 +132,20 @@ export const byteRangeIsOrdered = (o: {
   minBytes?: number | undefined;
   maxBytes?: number | undefined;
 }): boolean => o.minBytes === undefined || o.maxBytes === undefined || o.minBytes <= o.maxBytes;
+
+const KB_PRESET = /^(?:max-(\d{1,5})kb|(\d{1,5})-to-(\d{1,5})kb)$/;
+
+/**
+ * File-size presets from intent pages: "max-50kb" (at most 50 KB) or
+ * "10-to-20kb" (between 10 and 20 KB). Anything else, or an impossible range, is null.
+ */
+export function parseKbPreset(
+  preset: string | undefined,
+): Pick<OutputSpecDraft, 'minKb' | 'maxKb'> | null {
+  const match = preset === undefined ? null : KB_PRESET.exec(preset);
+  if (!match) return null;
+  const [, max, from, to] = match;
+  if (max !== undefined) return Number(max) > 0 ? { minKb: null, maxKb: Number(max) } : null;
+  const [minKb, maxKb] = [Number(from), Number(to)];
+  return minKb > 0 && minKb < maxKb ? { minKb, maxKb } : null;
+}

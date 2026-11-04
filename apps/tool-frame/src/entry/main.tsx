@@ -13,6 +13,7 @@ import { followParentTheme, forwardReveals, reportEvent, syncHeight } from '../r
 import '../styles.css';
 
 const TOOL_ID = /^[a-z]+\.[a-z0-9]+(-[a-z0-9]+)*$/;
+const PRESET = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const TIMEOUT_MS = 120_000;
 
 interface Loaded {
@@ -31,7 +32,7 @@ async function loadTool(toolId: string | null): Promise<Loaded> {
   return { manifest, Ui };
 }
 
-function App({ toolId }: { toolId: string | null }) {
+function App({ toolId, preset }: { toolId: string | null; preset: string | undefined }) {
   const [state, setState] = useState<
     { kind: 'loading' } | { kind: 'ready'; tool: Loaded } | { kind: 'missing' }
   >({ kind: 'loading' });
@@ -100,6 +101,7 @@ function App({ toolId }: { toolId: string | null }) {
         }
         preload={() => runner.preload(manifest.id)}
         report={(event, detail) => reportEvent(manifest.id, event, detail?.code)}
+        {...(preset === undefined ? {} : { preset })}
       />
     </main>
   );
@@ -111,5 +113,13 @@ followParentTheme();
 const root = document.getElementById('app');
 if (root) {
   root.textContent = '';
-  render(<App toolId={new URLSearchParams(location.search).get('tool')} />, root);
+  const params = new URLSearchParams(location.search);
+  const preset = params.get('preset');
+  render(
+    <App
+      toolId={params.get('tool')}
+      preset={preset !== null && PRESET.test(preset) ? preset : undefined}
+    />,
+    root,
+  );
 }

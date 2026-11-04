@@ -4,9 +4,13 @@ import { FRAME_ORIGIN } from '../data/registry';
 export interface Props {
   toolId: string;
   title: string;
+  /** Starting settings for an intent page, e.g. "target-200kb". */
+  preset?: string | undefined;
 }
-const { toolId, title } = Astro.props;
-const src = `${FRAME_ORIGIN}/?tool=${encodeURIComponent(toolId)}`;
+const { toolId, title, preset } = Astro.props;
+const src =
+  `${FRAME_ORIGIN}/?tool=${encodeURIComponent(toolId)}` +
+  (preset ? `&preset=${encodeURIComponent(preset)}` : '');
 ---
 
 <!--

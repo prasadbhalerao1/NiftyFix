@@ -1,13 +1,16 @@
 import { useState } from 'preact/hooks';
 import { NumberInput, SegmentedControl, SingleFileTool, type ToolUiProps } from '@niftyfix/ui';
+import { parseTargetPreset } from './preset';
 
 type Choice = 'light' | 'balanced' | 'strong' | 'target';
 type Unit = 'KB' | 'MB';
 
 export default function CompressPdf(props: ToolUiProps) {
-  const [choice, setChoice] = useState<Choice>('balanced');
-  const [amount, setAmount] = useState<number | null>(1);
-  const [unit, setUnit] = useState<Unit>('MB');
+  // An intent page such as "compress PDF to 200 KB" opens with that target filled in.
+  const [preset] = useState(() => parseTargetPreset(props.preset));
+  const [choice, setChoice] = useState<Choice>(preset ? 'target' : 'balanced');
+  const [amount, setAmount] = useState<number | null>(preset?.amount ?? 1);
+  const [unit, setUnit] = useState<Unit>(preset?.unit ?? 'MB');
   // Upload limits are stated in decimal units (1 MB = 1,000,000 bytes); staying below that also meets 1 MiB.
   const maxBytes = amount === null ? null : Math.floor(amount * (unit === 'MB' ? 1_000_000 : 1000));
   const targetError =

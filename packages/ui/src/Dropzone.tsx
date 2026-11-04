@@ -44,7 +44,7 @@ export function Dropzone({ accept, multiple = false, title, detail, onFiles }: D
           'flex min-h-56 w-full flex-col items-center justify-center gap-3 rounded-[var(--radius-panel)] border-2 border-dashed px-6 py-10 text-center transition-colors',
           dragging
             ? 'border-teal-600 bg-teal-50 dark:border-teal-400 dark:bg-teal-950'
-            : 'border-stone-300 bg-white hover:border-teal-600 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:hover:border-teal-400',
+            : 'border-stone-300 bg-white hover:border-teal-600 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:hover:border-teal-400 dark:hover:bg-stone-800',
         )}
       >
         <svg
@@ -61,7 +61,7 @@ export function Dropzone({ accept, multiple = false, title, detail, onFiles }: D
             stroke-linejoin="round"
           />
         </svg>
-        <span class="text-lg font-semibold">{title}</span>
+        <span class="text-lg font-semibold text-stone-900 dark:text-stone-100">{title}</span>
         <span class="text-sm text-stone-600 dark:text-stone-400">
           or drag and drop · paste with Ctrl+V
         </span>

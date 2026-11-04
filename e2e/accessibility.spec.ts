@@ -63,6 +63,18 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await scanFrame(page, 'error');
   });
 
+  test('dark mode: hovered drop zone keeps readable text', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    for (const path of [TOOL_PATH, '/forms/signature-resizer/']) {
+      await page.goto(path);
+      const frame = page.frameLocator('iframe[data-tool-frame]');
+      const dropzone = frame.getByRole('button', { name: /Choose a/ });
+      await expect(dropzone).toBeVisible();
+      await dropzone.hover();
+      await scanFrame(page, `${path} dark, drop zone hovered`);
+    }
+  });
+
   test('signature resizer states have no serious violations', async ({ page }) => {
     await page.goto('/forms/signature-resizer/');
     const frame = page.frameLocator('iframe[data-tool-frame]');

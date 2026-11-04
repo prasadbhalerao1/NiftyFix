@@ -191,7 +191,11 @@ describe('createRegistry', () => {
       'image.compress-image',
     ]);
     const record = registry.searchIndex().find((r) => r.id === 'forms.photo-resizer');
-    expect(record).toMatchObject({ path: '/forms/photo-resizer/', category: 'Form-ready' });
+    expect(record).toMatchObject({
+      kind: 'tool',
+      path: '/forms/photo-resizer/',
+      category: 'Form-ready',
+    });
     expect(record?.terms).toContain('alias phrase');
   });
 

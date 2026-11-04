@@ -8,6 +8,7 @@ import {
   type ToolVariant,
 } from '@niftyfix/tool-sdk';
 import { PLANNED_TOOLS, type PlannedTool } from './planned';
+import type { SearchRecord } from './search';
 
 export { PLANNED_TOOLS, type ExecutionMode, type PlannedTool } from './planned';
 
@@ -19,13 +20,7 @@ export interface ToolEntry {
   content: ToolContent;
 }
 
-export interface SearchRecord {
-  id: string;
-  name: string;
-  path: string;
-  category: string;
-  terms: string;
-}
+export { queryTokens, searchRecords, type SearchRecord } from './search';
 
 export interface Registry {
   readonly tools: readonly ToolEntry[];
@@ -35,6 +30,7 @@ export interface Registry {
   /** Categories that have at least one published tool, in canonical order. */
   activeCategories(): readonly CategoryId[];
   related(id: string): readonly ToolEntry[];
+  /** Built tools, intent pages of live tools, and planned tools (unlinked), for site search. */
   searchIndex(): readonly SearchRecord[];
   /** Tools that may be indexed by search engines (status 'live'). */
   indexable(): readonly ToolEntry[];
@@ -88,14 +84,46 @@ export function createRegistry(
       (ids.get(id)?.manifest.related ?? [])
         .map((relatedId) => ids.get(relatedId))
         .filter((entry): entry is ToolEntry => entry !== undefined),
-    searchIndex: () =>
-      tools.map(({ manifest }) => ({
-        id: manifest.id,
-        name: manifest.name,
-        path: toolPath(manifest),
-        category: CATEGORIES[manifest.category].name,
-        terms: [manifest.name, manifest.tagline, ...manifest.searchAliases].join(' ').toLowerCase(),
-      })),
+    searchIndex: () => {
+      const built = new Set(tools.map((entry) => toolPath(entry.manifest)));
+      const terms = (...parts: readonly string[]): string => parts.join(' ').toLowerCase();
+      return [
+        ...tools.map(({ manifest }): SearchRecord => ({
+          kind: 'tool',
+          id: manifest.id,
+          name: manifest.name,
+          path: toolPath(manifest),
+          category: CATEGORIES[manifest.category].name,
+          terms: terms(manifest.name, manifest.tagline, ...manifest.searchAliases),
+        })),
+        ...tools
+          .filter((entry) => entry.manifest.status === 'live')
+          .flatMap(({ manifest, content }) =>
+            (content.variants ?? []).map((variant): SearchRecord => ({
+              kind: 'intent',
+              id: `${manifest.id}/${variant.slug}`,
+              name: variant.h1,
+              path: variantPath(manifest, variant),
+              category: manifest.name,
+              terms: terms(
+                variant.h1,
+                variant.label,
+                variant.slug.replaceAll('-', ' '),
+                manifest.name,
+              ),
+            })),
+          ),
+        ...planned
+          .filter((tool) => !built.has(`/${tool.category}/${tool.slug}/`))
+          .map((tool): SearchRecord => ({
+            kind: 'planned',
+            id: `${tool.category}.${tool.slug}`,
+            name: tool.name,
+            category: CATEGORIES[tool.category].name,
+            terms: terms(tool.name, tool.slug.replaceAll('-', ' '), CATEGORIES[tool.category].name),
+          })),
+      ];
+    },
     indexable: () => tools.filter((entry) => entry.manifest.status === 'live'),
     catalogue: (category) => {
       const built = tools.filter((entry) => entry.manifest.category === category);

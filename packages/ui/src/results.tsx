@@ -1,3 +1,4 @@
+import type { ComponentChildren } from 'preact';
 import type { JobHandle } from '@niftyfix/runtime';
 import { allChecksPassed, type ProcessedFile } from '@niftyfix/tool-sdk';
 import { BeforeAfter } from './BeforeAfter';
@@ -27,28 +28,25 @@ export function ProcessingPanel({
   );
 }
 
-export interface ImageResultPanelProps {
+export interface FileResultPanelProps {
   result: ProcessedFile;
-  url: string;
-  size: { width: number; height: number };
-  original: { url: string; width: number; height: number; bytes: number };
-  /** "photo", "signature" — used in the status sentence. */
-  subject: string;
+  /** Sentence shown when every check passed, e.g. "Your PDF is ready." */
+  successMessage: string;
   /** Tool-specific reminder of what the checks cannot cover. */
   disclaimer: string;
+  /** Optional visual comparison, shown under the status line. */
+  preview?: ComponentChildren;
   onDownload(): void;
 }
 
-/** Status, before/after, measured validation report, warnings, facts and download. */
-export function ImageResultPanel({
+/** Status, optional preview, measured validation report, warnings, facts and download. */
+export function FileResultPanel({
   result,
-  url,
-  size,
-  original,
-  subject,
+  successMessage,
   disclaimer,
+  preview,
   onDownload,
-}: ImageResultPanelProps) {
+}: FileResultPanelProps) {
   const passed = allChecksPassed(result.verification);
   // On phones the result renders above the settings panel; bring it into view.
   const statusRef = useFocusOnMount<HTMLParagraphElement>();
@@ -67,13 +65,10 @@ export function ImageResultPanel({
           )}
         >
           {passed
-            ? `Your ${subject} meets every requirement you entered.`
+            ? successMessage
             : 'The produced file failed a check below. Please report this; do not upload it.'}
         </p>
-        <BeforeAfter
-          before={{ ...original, label: 'Original' }}
-          after={{ url, label: 'Prepared', ...size, bytes: result.bytes }}
-        />
+        {preview}
         <ValidationReport checks={result.verification} />
         {result.warnings.map((warning) => (
           <p
@@ -97,5 +92,40 @@ export function ImageResultPanel({
         <p class="text-xs text-stone-600 dark:text-stone-400">{disclaimer}</p>
       </div>
     </Panel>
+  );
+}
+
+export interface ImageResultPanelProps {
+  result: ProcessedFile;
+  url: string;
+  size: { width: number; height: number };
+  original: { url: string; width: number; height: number; bytes: number };
+  /** "photo", "signature" — used in the status sentence. */
+  subject: string;
+  disclaimer: string;
+  onDownload(): void;
+}
+
+/** The file result panel with a before/after comparison of the image. */
+export function ImageResultPanel({
+  result,
+  url,
+  size,
+  original,
+  subject,
+  ...rest
+}: ImageResultPanelProps) {
+  return (
+    <FileResultPanel
+      result={result}
+      successMessage={`Your ${subject} meets every requirement you entered.`}
+      preview={
+        <BeforeAfter
+          before={{ ...original, label: 'Original' }}
+          after={{ url, label: 'Prepared', ...size, bytes: result.bytes }}
+        />
+      }
+      {...rest}
+    />
   );
 }

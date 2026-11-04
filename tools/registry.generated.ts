@@ -5,8 +5,11 @@ import content0 from './forms/photo-resizer/content';
 import manifest0 from './forms/photo-resizer/manifest';
 import content1 from './forms/signature-resizer/content';
 import manifest1 from './forms/signature-resizer/manifest';
+import content2 from './pdf/merge-pdf/content';
+import manifest2 from './pdf/merge-pdf/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'forms/photo-resizer', manifest: manifest0, content: content0 },
   { dir: 'forms/signature-resizer', manifest: manifest1, content: content1 },
+  { dir: 'pdf/merge-pdf', manifest: manifest2, content: content2 },
 ];

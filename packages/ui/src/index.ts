@@ -11,3 +11,4 @@ export * from './OutputSpecForm';
 export * from './results';
 export * from './tool-ui';
 export * from './use-tool-job';
+export * from './FileQueue';

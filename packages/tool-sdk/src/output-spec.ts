@@ -31,6 +31,16 @@ const isInt = (n: number | null, min: number, max: number): n is number =>
 
 const FILE_NAME = /^[\w\- ]*$/u;
 
+/** An optional plain output file name (no extension). Empty means: derive it from the input. */
+export const FileNameSchema = v.pipe(v.string(), v.maxLength(60), v.regex(FILE_NAME));
+
+/** The message shown under a file-name field, or null when the name is acceptable. */
+export function fileNameError(name: string): string | null {
+  return FILE_NAME.test(name) && name.length <= 60
+    ? null
+    : 'Use letters, numbers, spaces, - or _ (up to 60 characters).';
+}
+
 export function validateOutputSpec(s: OutputSpecDraft): OutputSpecErrors {
   const errors: OutputSpecErrors = {};
   if (!isInt(s.width, 16, 8000)) errors.width = 'Enter a whole number from 16 to 8000.';

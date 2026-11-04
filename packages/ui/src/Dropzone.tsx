@@ -9,10 +9,19 @@ export interface DropzoneProps {
   /** e.g. "JPEG, PNG or WebP · up to 30 MB on this device" */
   detail: string;
   onFiles(files: File[]): void;
+  /** A smaller version, e.g. "Add more files" under a file list. */
+  compact?: boolean;
 }
 
 /** File input with drag-and-drop and paste. The whole area is one large keyboard-focusable button. */
-export function Dropzone({ accept, multiple = false, title, detail, onFiles }: DropzoneProps) {
+export function Dropzone({
+  accept,
+  multiple = false,
+  title,
+  detail,
+  onFiles,
+  compact = false,
+}: DropzoneProps) {
   const input = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -41,7 +50,8 @@ export function Dropzone({ accept, multiple = false, title, detail, onFiles }: D
         }}
         onPaste={(event) => take(event.clipboardData?.files)}
         class={cx(
-          'flex min-h-56 w-full flex-col items-center justify-center gap-3 rounded-[var(--radius-panel)] border-2 border-dashed px-6 py-10 text-center transition-colors',
+          'flex w-full flex-col items-center justify-center rounded-[var(--radius-panel)] border-2 border-dashed text-center transition-colors',
+          compact ? 'min-h-20 gap-1 px-4 py-4' : 'min-h-56 gap-3 px-6 py-10',
           dragging
             ? 'border-teal-600 bg-teal-50 dark:border-teal-400 dark:bg-teal-950'
             : 'border-stone-300 bg-white hover:border-teal-600 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:hover:border-teal-400 dark:hover:bg-stone-800',
@@ -50,7 +60,7 @@ export function Dropzone({ accept, multiple = false, title, detail, onFiles }: D
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
-          class="size-10 text-teal-700 dark:text-teal-400"
+          class={cx('text-teal-700 dark:text-teal-400', compact ? 'size-6' : 'size-10')}
           fill="none"
           stroke="currentColor"
           stroke-width="1.5"
@@ -61,10 +71,19 @@ export function Dropzone({ accept, multiple = false, title, detail, onFiles }: D
             stroke-linejoin="round"
           />
         </svg>
-        <span class="text-lg font-semibold text-stone-900 dark:text-stone-100">{title}</span>
-        <span class="text-sm text-stone-600 dark:text-stone-400">
-          or drag and drop · paste with Ctrl+V
+        <span
+          class={cx(
+            'font-semibold text-stone-900 dark:text-stone-100',
+            compact ? 'text-base' : 'text-lg',
+          )}
+        >
+          {title}
         </span>
+        {compact ? null : (
+          <span class="text-sm text-stone-600 dark:text-stone-400">
+            or drag and drop · paste with Ctrl+V
+          </span>
+        )}
         <span class="text-xs text-stone-500 dark:text-stone-400">{detail}</span>
       </button>
       <input

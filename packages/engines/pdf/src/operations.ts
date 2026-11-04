@@ -6,6 +6,7 @@ import {
   StandardFonts,
   type PDFDocument,
   type PDFFont,
+  type PDFImage,
   type PDFPage,
 } from '@cantoo/pdf-lib';
 import { ToolError } from '@niftyfix/tool-sdk';
@@ -206,6 +207,46 @@ export async function addImagePages(
       .addPage([pw, ph])
       .drawImage(embedded, { x: (pw - w) / 2, y: (ph - h) / 2, width: w, height: h });
   }
+}
+
+/** A rectangle on the page as the reader sees it, as fractions of the visible page (0–1, from top-left). */
+export interface DisplayRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Draw an embedded image at a rectangle given in displayed-page fractions,
+ * upright as the reader sees it — also on pages stored rotated.
+ */
+export function placeImage(page: PDFPage, image: PDFImage, rect: DisplayRect): void {
+  const box = page.getCropBox();
+  const rotation = ((page.getRotation().angle % 360) + 360) % 360;
+  const sideways = rotation === 90 || rotation === 270;
+  const viewW = sideways ? box.height : box.width;
+  const viewH = sideways ? box.width : box.height;
+  const w = rect.width * viewW;
+  const h = rect.height * viewH;
+  // Bottom-left corner of the rectangle in displayed coordinates (origin bottom-left).
+  const vx = rect.x * viewW;
+  const vy = viewH - (rect.y + rect.height) * viewH;
+  const [x, y] =
+    rotation === 90
+      ? [box.width - vy, vx]
+      : rotation === 180
+        ? [box.width - vx, box.height - vy]
+        : rotation === 270
+          ? [vy, box.height - vx]
+          : [vx, vy];
+  page.drawImage(image, {
+    x: box.x + x,
+    y: box.y + y,
+    width: w,
+    height: h,
+    rotate: degrees(rotation),
+  });
 }
 
 /** Points per millimetre. */

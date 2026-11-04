@@ -59,68 +59,136 @@ const clamp255 = (value: number): number => (value < 0 ? 0 : value > 255 ? 255 :
 const luma = (r: number, g: number, b: number): number => 0.299 * r + 0.587 * g + 0.114 * b;
 
 /**
- * Estimate the paper brightness at every pixel. Blocks take their maximum
- * luminance (ink is darker than paper), then a 3×3 dilation (max of
- * neighbours) stops thick strokes from being mistaken for paper, and two box
- * blurs smooth the result. Returned at full resolution via bilinear sampling.
+ * Sliding-window maximum or minimum along rows (`step` 1) or columns
+ * (`step` = width), window 2·radius + 1, clipped at the edges. O(n) with a
+ * monotonic deque, independent of the radius.
+ */
+function slidingExtreme(
+  source: Float32Array,
+  width: number,
+  height: number,
+  radius: number,
+  vertical: boolean,
+  max: boolean,
+): Float32Array {
+  const out = new Float32Array(source.length);
+  const lines = vertical ? width : height;
+  const length = vertical ? height : width;
+  const step = vertical ? width : 1;
+  const deque = new Int32Array(length);
+  for (let line = 0; line < lines; line += 1) {
+    const base = vertical ? line : line * width;
+    const at = (k: number): number => source[base + k * step] ?? 0;
+    let head = 0;
+    let tail = 0;
+    for (let j = 0; j < length + radius; j += 1) {
+      if (j < length) {
+        const v = at(j);
+        while (tail > head && (max ? at(deque[tail - 1] ?? 0) <= v : at(deque[tail - 1] ?? 0) >= v))
+          tail -= 1;
+        deque[tail++] = j;
+      }
+      const i = j - radius;
+      if (i < 0) continue;
+      while ((deque[head] ?? 0) < i - radius) head += 1;
+      out[base + i * step] = at(deque[head] ?? 0);
+    }
+  }
+  return out;
+}
+
+/**
+ * Estimate the paper brightness at every pixel with a morphological closing
+ * of the luminance: a square maximum filter removes ink (darker than paper)
+ * narrower than the window, then a minimum filter of the same size restores
+ * the paper's own shape. Unlike a blur, a closing reproduces gradients and
+ * hard shadow edges exactly, so no grey band is left along an edge. The
+ * window spans about a quarter of the short side, wider than marker strokes.
+ * The image is padded by the radius (edges replicated) so the closing near
+ * the border sees the paper continue instead of a clipped window.
  */
 export function estimateBackground(pixels: Pixels): Float32Array {
   const { data, width, height } = pixels;
-  const block = Math.max(8, Math.round(Math.min(width, height) / 12));
-  const gw = Math.ceil(width / block);
-  const gh = Math.ceil(height / block);
-  const grid = new Float32Array(gw * gh);
-  for (let y = 0; y < height; y += 1) {
-    const gy = Math.floor(y / block) * gw;
-    for (let x = 0; x < width; x += 1) {
-      const i = (y * width + x) * 4;
-      const l = luma(data[i] ?? 0, data[i + 1] ?? 0, data[i + 2] ?? 0);
-      const g = gy + Math.floor(x / block);
-      if (l > (grid[g] ?? 0)) grid[g] = l;
+  const radius = Math.max(12, Math.round(Math.min(width, height) / 8));
+  const pw = width + 2 * radius;
+  const ph = height + 2 * radius;
+  const padded = new Float32Array(pw * ph);
+  for (let y = 0; y < ph; y += 1) {
+    const sy = Math.min(height - 1, Math.max(0, y - radius));
+    for (let x = 0; x < pw; x += 1) {
+      const i = (sy * width + Math.min(width - 1, Math.max(0, x - radius))) * 4;
+      padded[y * pw + x] = luma(data[i] ?? 0, data[i + 1] ?? 0, data[i + 2] ?? 0);
     }
   }
-  const neighbourhood = (source: Float32Array, reduce: 'max' | 'mean'): Float32Array => {
-    const out = new Float32Array(source.length);
-    for (let y = 0; y < gh; y += 1) {
-      for (let x = 0; x < gw; x += 1) {
-        let acc = 0;
-        let n = 0;
-        for (let dy = -1; dy <= 1; dy += 1) {
-          for (let dx = -1; dx <= 1; dx += 1) {
-            const nx = x + dx;
-            const ny = y + dy;
-            if (nx < 0 || ny < 0 || nx >= gw || ny >= gh) continue;
-            const v = source[ny * gw + nx] ?? 0;
-            acc = reduce === 'max' ? Math.max(acc, v) : acc + v;
-            n += 1;
-          }
-        }
-        out[y * gw + x] = reduce === 'max' ? acc : acc / n;
-      }
-    }
-    return out;
-  };
-  const smoothed = neighbourhood(neighbourhood(neighbourhood(grid, 'max'), 'mean'), 'mean');
-
+  const pass = (source: Float32Array, vertical: boolean, max: boolean): Float32Array =>
+    slidingExtreme(source, pw, ph, radius, vertical, max);
+  const closed = pass(pass(pass(pass(padded, false, true), true, true), false, false), true, false);
   const background = new Float32Array(width * height);
   for (let y = 0; y < height; y += 1) {
-    const fy = Math.min(gh - 1, Math.max(0, (y + 0.5) / block - 0.5));
-    const y0 = Math.floor(fy);
-    const y1 = Math.min(gh - 1, y0 + 1);
-    const ty = fy - y0;
-    for (let x = 0; x < width; x += 1) {
-      const fx = Math.min(gw - 1, Math.max(0, (x + 0.5) / block - 0.5));
-      const x0 = Math.floor(fx);
-      const x1 = Math.min(gw - 1, x0 + 1);
-      const tx = fx - x0;
-      const a = smoothed[y0 * gw + x0] ?? 255;
-      const b = smoothed[y0 * gw + x1] ?? 255;
-      const c = smoothed[y1 * gw + x0] ?? 255;
-      const d = smoothed[y1 * gw + x1] ?? 255;
-      background[y * width + x] = (a * (1 - tx) + b * tx) * (1 - ty) + (c * (1 - tx) + d * tx) * ty;
-    }
+    const row = (y + radius) * pw + radius;
+    background.set(closed.subarray(row, row + width), y * width);
   }
   return background;
+}
+
+/**
+ * Mark pixels that are paper by an edge-aware test: locally smooth (low
+ * standard deviation in a small window) and not much darker than the paper
+ * estimate. Ink strokes are excluded however wide they are: thin strokes have
+ * high local contrast, and the interior of thick strokes is dark. This removes
+ * the soft band a smoothed background estimate leaves along hard shadow edges.
+ * Strength follows the "background cleanup" setting.
+ */
+function smoothPaperMask(
+  pixels: Pixels,
+  factorAt: (p: number) => number,
+  whiten: number,
+): Uint8Array {
+  const { data, width, height } = pixels;
+  const w1 = width + 1;
+  const sum = new Float64Array(w1 * (height + 1));
+  const sq = new Float64Array(w1 * (height + 1));
+  const level = new Float32Array(width * height);
+  for (let y = 0; y < height; y += 1) {
+    let rowSum = 0;
+    let rowSq = 0;
+    for (let x = 0; x < width; x += 1) {
+      const p = y * width + x;
+      const i = p * 4;
+      const l = luma(data[i] ?? 0, data[i + 1] ?? 0, data[i + 2] ?? 0);
+      level[p] = Math.min(255, l * factorAt(p));
+      rowSum += l;
+      rowSq += l * l;
+      const k = (y + 1) * w1 + x + 1;
+      sum[k] = (sum[k - w1] ?? 0) + rowSum;
+      sq[k] = (sq[k - w1] ?? 0) + rowSq;
+    }
+  }
+  const radius = Math.max(2, Math.round(Math.min(width, height) / 150));
+  const maxStd = 6;
+  // Lighter than this (fraction of paper brightness) counts as paper when smooth.
+  const minLevel = 255 * (1 - 0.6 * whiten);
+  const mask = new Uint8Array(width * height);
+  for (let y = 0; y < height; y += 1) {
+    const y0 = Math.max(0, y - radius);
+    const y1 = Math.min(height, y + radius + 1);
+    for (let x = 0; x < width; x += 1) {
+      const p = y * width + x;
+      if ((level[p] ?? 0) < minLevel) continue;
+      const x0 = Math.max(0, x - radius);
+      const x1 = Math.min(width, x + radius + 1);
+      const n = (y1 - y0) * (x1 - x0);
+      const box = (table: Float64Array): number =>
+        (table[y1 * w1 + x1] ?? 0) -
+        (table[y0 * w1 + x1] ?? 0) -
+        (table[y1 * w1 + x0] ?? 0) +
+        (table[y0 * w1 + x0] ?? 0);
+      const mean = box(sum) / n;
+      const variance = box(sq) / n - mean * mean;
+      if (variance <= maxStd * maxStd) mask[p] = 1;
+    }
+  }
+  return mask;
 }
 
 /** Apply `settings` and return a new pixel buffer. The input is never modified. */
@@ -130,8 +198,12 @@ export function enhancePixels(pixels: Pixels, settings: EnhanceSettings): Pixels
   const background = settings.flatten ? estimateBackground(pixels) : null;
   const contrast = 1 + Math.max(-1, Math.min(1, settings.contrast));
   const brightness = Math.max(-1, Math.min(1, settings.brightness)) * 128;
-  const whitePoint = 255 - Math.max(0, Math.min(1, settings.whiten)) * 127;
+  const whiten = Math.max(0, Math.min(1, settings.whiten));
+  const whitePoint = 255 - whiten * 127;
   const cutoff = Math.max(0, Math.min(1, settings.threshold)) * 255;
+  const factorAt = (p: number): number =>
+    background === null ? 1 : 255 / Math.max(32, background[p] ?? 255);
+  const paper = whiten > 0 ? smoothPaperMask(pixels, factorAt, whiten) : null;
 
   for (let p = 0, i = 0; p < width * height; p += 1, i += 4) {
     let r = data[i] ?? 0;
@@ -139,8 +211,13 @@ export function enhancePixels(pixels: Pixels, settings: EnhanceSettings): Pixels
     let b = data[i + 2] ?? 0;
     const alpha = data[i + 3] ?? 255;
 
-    if (background !== null) {
-      const factor = 255 / Math.max(32, background[p] ?? 255);
+    if (paper !== null && paper[p] === 1) {
+      // Smooth, light region (e.g. the soft band left at a hard shadow edge): paper.
+      r = 255;
+      g = 255;
+      b = 255;
+    } else if (background !== null) {
+      const factor = factorAt(p);
       r *= factor;
       g *= factor;
       b *= factor;

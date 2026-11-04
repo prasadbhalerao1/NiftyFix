@@ -138,6 +138,24 @@ describe('enhancePixels', () => {
     expect(255 - lum(at(out, 235, 70))).toBeGreaterThan(120); // ink inside shadow
   });
 
+  it('leaves no grey line along a hard diagonal shadow edge', () => {
+    // Shadow to the right of a diagonal through (100, 130) and (200, 0).
+    const edgeX = (y: number): number => 200 - (100 * y) / 130;
+    const shadow = (x: number, y: number): Rgb =>
+      x > edgeX(y) ? [140, 140, 145] : [248, 248, 246];
+    const input = render(320, 130, shadow, signature(BLACK, 3));
+    const out = enhancePixels(input, DEFAULT_ENHANCE);
+    // Paper on both sides of the edge, right up to it, away from ink.
+    for (const y of [5, 115, 125]) {
+      const edge = Math.round(edgeX(y));
+      for (let x = edge - 6; x <= edge + 6; x += 1) {
+        expect(lum(at(out, x, y)), `x=${x} y=${y}`).toBeGreaterThan(235);
+      }
+    }
+    expect(255 - lum(at(out, 235, 70))).toBeGreaterThan(120); // ink inside the shadow
+    expect(assessLegibility(input, out)).toEqual([]); // no false "strokes lost" warning
+  });
+
   it('turns grey paper white', () => {
     const grey = (): Rgb => [188, 186, 182];
     const out = enhancePixels(render(320, 130, grey, signature(BLACK, 3)), DEFAULT_ENHANCE);

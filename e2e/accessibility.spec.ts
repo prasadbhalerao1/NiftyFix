@@ -101,6 +101,16 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await scanFrame(page, 'rotate with a page-range error');
   });
 
+  test('Organize PDF page grid has no serious violations', async ({ page }) => {
+    const { makePdf } = await import('./pdf-helpers');
+    await page.goto('/pdf/organize-pdf/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await frame.getByTestId('file-input').setInputFiles(await makePdf('a.pdf', 3));
+    await expect(frame.getByTestId('page-card')).toHaveCount(3);
+    await frame.getByRole('button', { name: 'Remove Page 2' }).click();
+    await scanFrame(page, 'organize grid with a removed page');
+  });
+
   test('signature resizer states have no serious violations', async ({ page }) => {
     await page.goto('/forms/signature-resizer/');
     const frame = page.frameLocator('iframe[data-tool-frame]');

@@ -31,6 +31,10 @@ const ENGINE_PROCESSOR_BUDGETS: Record<string, number> = {
  * cached across tools, preloaded when a file is chosen.
  */
 const PDF_RENDER_PROCESSOR_BUDGET = 520 * KB;
+/** Chunks that bring pdf.js: the library itself, or the engine modules it is bundled into. */
+const USES_PDFJS = /pdfjs-dist|engines\/pdf\/src\/(render|preview)\.ts/;
+/** UIs that show page thumbnails load the pdf.js display layer (its parser runs in its own worker file). */
+const PDF_PREVIEW_UI_BUDGET = 180 * KB;
 /** Strings that only appear in processing code; none may reach a site page. */
 const ENGINE_MARKERS = ['convertToBlob', 'createImageBitmap', 'OffscreenCanvas'];
 
@@ -130,14 +134,21 @@ measure('frame shell (entry + CSS)', size(shell), BUDGETS.frameShell);
 for (const dir of discoverToolDirs()) {
   const ui = `../../tools/${dir}/ui.tsx`;
   const processor = `../../tools/${dir}/processor.ts`;
-  if (manifest[ui]) measure(`tool ${dir} UI (lazy)`, size(closure(ui), shell), BUDGETS.toolUi);
-  else problems.push(`tool ${dir}: ui.tsx not found in frame build manifest`);
+  if (manifest[ui]) {
+    // Engine chunks a UI loads lazily (pdf.js for page previews) are real cost too.
+    const keys = closure(ui, true);
+    measure(
+      `tool ${dir} UI (lazy)`,
+      size(keys, shell),
+      [...keys].some((key) => USES_PDFJS.test(key)) ? PDF_PREVIEW_UI_BUDGET : BUDGETS.toolUi,
+    );
+  } else problems.push(`tool ${dir}: ui.tsx not found in frame build manifest`);
   // The worker bundles the same processor separately; the lazily loaded copy is a faithful size proxy.
   if (manifest[processor])
     measure(
       `tool ${dir} processor (lazy)`,
       size(closure(processor, true), shell),
-      [...closure(processor, true)].some((key) => key.includes('pdfjs-dist'))
+      [...closure(processor, true)].some((key) => USES_PDFJS.test(key))
         ? PDF_RENDER_PROCESSOR_BUDGET
         : (ENGINE_PROCESSOR_BUDGETS[dir.split('/')[0] ?? ''] ?? BUDGETS.toolProcessor),
     );

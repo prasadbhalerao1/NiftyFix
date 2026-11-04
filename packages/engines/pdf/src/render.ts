@@ -16,8 +16,8 @@ import {
 } from 'pdfjs-dist';
 import { ToolError } from '@niftyfix/tool-sdk';
 
-/** Where the frame serves pdf.js assets (see apps/tool-frame/vite.config.ts). */
-export const PDFJS_ASSET_PATH = '/pdfjs/';
+export { PDFJS_ASSET_PATH } from './assets';
+import { PDFJS_ASSET_PATH } from './assets';
 
 type Canvas = OffscreenCanvas | HTMLCanvasElement;
 type Context = OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D;

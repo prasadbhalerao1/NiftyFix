@@ -14,3 +14,4 @@ export * from './use-tool-job';
 export * from './FileQueue';
 export * from './PageSelection';
 export * from './SingleFileTool';
+export * from './PdfPageGrid';

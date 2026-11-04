@@ -11,9 +11,31 @@
   --radius-panel: 0.75rem;
 }
 
+/*
+ * `dark:` follows the user's choice (data-theme on <html>, set by the site's
+ * theme toggle and forwarded to the tool frame), else the system setting.
+ */
+@custom-variant dark {
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *) {
+      @slot;
+    }
+  }
+}
+
 @layer base {
   :root {
     color-scheme: light dark;
+  }
+  /* Must match the page theme: a frame whose color-scheme differs from its parent gets an opaque backdrop. */
+  :root[data-theme='light'] {
+    color-scheme: light;
+  }
+  :root[data-theme='dark'] {
+    color-scheme: dark;
   }
   html {
     -webkit-text-size-adjust: 100%;

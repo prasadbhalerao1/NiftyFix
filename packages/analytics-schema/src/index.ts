@@ -45,6 +45,33 @@ export type FrameMessage =
       code?: EventCode;
     };
 
+/**
+ * Messages the parent page may send to the tool frame. Only the colour theme,
+ * so the frame matches the site's theme toggle.
+ */
+export const SITE_SOURCE = 'niftyfix-site';
+export const THEMES = ['light', 'dark', 'system'] as const;
+export type Theme = (typeof THEMES)[number];
+
+export interface SiteMessage {
+  source: typeof SITE_SOURCE;
+  version: typeof PROTOCOL_VERSION;
+  type: 'theme';
+  theme: Theme;
+}
+
+/** Strictly parse an untrusted message from the parent page; null unless exactly a known shape. */
+export function parseSiteMessage(data: unknown): SiteMessage | null {
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) return null;
+  const record = data as Record<string, unknown>;
+  if (record.source !== SITE_SOURCE || record.version !== PROTOCOL_VERSION) return null;
+  if (Object.keys(record).sort().join(',') !== 'source,theme,type,version') return null;
+  const { type, theme } = record;
+  if (type !== 'theme' || typeof theme !== 'string') return null;
+  if (!(THEMES as readonly string[]).includes(theme)) return null;
+  return { source: SITE_SOURCE, version: PROTOCOL_VERSION, type: 'theme', theme: theme as Theme };
+}
+
 const TOOL_ID = /^[a-z]+\.[a-z0-9]+(-[a-z0-9]+)*$/;
 const MAX_PX = 20_000;
 const isPixels = (value: unknown): value is number =>

@@ -1,5 +1,6 @@
 import {
   FRAME_SOURCE,
+  parseSiteMessage,
   PROTOCOL_VERSION,
   type FrameMessage,
   type ToolEventName,
@@ -41,6 +42,23 @@ export function forwardReveals(): () => void {
   };
   document.addEventListener(REVEAL_EVENT, onReveal);
   return () => document.removeEventListener(REVEAL_EVENT, onReveal);
+}
+
+/**
+ * Follow the site's theme toggle. The only message accepted from the parent:
+ * it must come from the configured site origin and the parent window, and
+ * parse as exactly a theme message.
+ */
+export function followParentTheme(): () => void {
+  const onMessage = (event: MessageEvent): void => {
+    if (event.origin !== siteOrigin || event.source !== window.parent) return;
+    const message = parseSiteMessage(event.data);
+    if (message === null) return;
+    if (message.theme === 'system') delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = message.theme;
+  };
+  window.addEventListener('message', onMessage);
+  return () => window.removeEventListener('message', onMessage);
 }
 
 /** Keep the iframe exactly as tall as its content, so the parent never shows a nested scrollbar. */

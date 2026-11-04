@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseFrameMessage } from '../src';
+import { parseFrameMessage, parseSiteMessage } from '../src';
 
 const base = { source: 'niftyfix-frame', version: 1 };
 
@@ -83,5 +83,31 @@ describe('parseFrameMessage', () => {
     expect(parseFrameMessage('string')).toBeNull();
     expect(parseFrameMessage(null)).toBeNull();
     expect(parseFrameMessage([base])).toBeNull();
+  });
+});
+
+describe('parseSiteMessage', () => {
+  const site = { source: 'niftyfix-site', version: 1, type: 'theme' };
+
+  it('accepts each theme', () => {
+    for (const theme of ['light', 'dark', 'system']) {
+      expect(parseSiteMessage({ ...site, theme })).toEqual({ ...site, theme });
+    }
+  });
+
+  it('rejects anything else', () => {
+    for (const bad of [
+      null,
+      'theme',
+      [],
+      { ...site, theme: 'sepia' },
+      { ...site, theme: 'dark', extra: 1 },
+      { ...site, theme: 'dark', source: 'niftyfix-frame' },
+      { ...site, theme: 'dark', version: 2 },
+      { ...site, type: 'resize', theme: 'dark' },
+      { ...site },
+    ]) {
+      expect(parseSiteMessage(bad)).toBeNull();
+    }
   });
 });

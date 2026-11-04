@@ -9,7 +9,7 @@ import {
   uiLoaders,
 } from '@niftyfix/tools/loaders';
 import { ErrorView, type ToolUi } from '@niftyfix/ui';
-import { forwardReveals, reportEvent, syncHeight } from '../runtime/parent';
+import { followParentTheme, forwardReveals, reportEvent, syncHeight } from '../runtime/parent';
 import '../styles.css';
 
 const TOOL_ID = /^[a-z]+\.[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -99,6 +99,9 @@ function App({ toolId }: { toolId: string | null }) {
     </main>
   );
 }
+
+// Listen before rendering so the theme sent in reply to the first message is not missed.
+followParentTheme();
 
 const root = document.getElementById('app');
 if (root) {

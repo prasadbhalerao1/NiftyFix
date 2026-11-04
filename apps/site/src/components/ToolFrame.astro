@@ -25,14 +25,39 @@ const src = `${FRAME_ORIGIN}/?tool=${encodeURIComponent(toolId)}`;
 ></iframe>
 
 <script>
-  import { parseFrameMessage } from '@niftyfix/analytics-schema';
+  import {
+    parseFrameMessage,
+    PROTOCOL_VERSION,
+    SITE_SOURCE,
+    type SiteMessage,
+  } from '@niftyfix/analytics-schema';
+  import { chosenTheme, THEME_EVENT } from '../theme';
 
   for (const frame of document.querySelectorAll<HTMLIFrameElement>('iframe[data-tool-frame]')) {
     const origin = frame.dataset.frameOrigin;
+    if (!origin) continue;
+    // The frame cannot read this page's theme; tell it, addressed to its origin only.
+    const sendTheme = (): void => {
+      const message: SiteMessage = {
+        source: SITE_SOURCE,
+        version: PROTOCOL_VERSION,
+        type: 'theme',
+        theme: chosenTheme(),
+      };
+      frame.contentWindow?.postMessage(message, origin);
+    };
+    document.addEventListener(THEME_EVENT, sendTheme);
+    let greeted = false;
+
     window.addEventListener('message', (event) => {
       if (event.origin !== origin || event.source !== frame.contentWindow) return;
       const message = parseFrameMessage(event.data);
       if (message === null) return;
+      // The frame's first message proves its listener is ready.
+      if (!greeted) {
+        greeted = true;
+        sendTheme();
+      }
       if (message.type === 'resize') {
         frame.style.height = `${message.height}px`;
         return;

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { absoluteUrl, registry, SITE_NAME } from '../data/registry';
 import { categoryPath } from '@niftyfix/registry';
 import { CATEGORIES } from '@niftyfix/tool-sdk';
@@ -23,6 +24,7 @@ const categories = registry.activeCategories();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline src="/theme.js"></script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -52,20 +54,23 @@ const categories = registry.activeCategories();
         <a href="/" class="text-lg font-bold tracking-tight">
           Nifty<span class="text-teal-700 dark:text-teal-400">Fix</span>
         </a>
-        <nav aria-label="Categories">
-          <ul class="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-            {categories.map((id) => (
-              <li>
-                <a
-                  href={categoryPath(id)}
-                  class="text-stone-700 hover:text-teal-800 dark:text-stone-300 dark:hover:text-teal-300"
-                >
-                  {CATEGORIES[id].name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div class="flex items-center gap-4">
+          <nav aria-label="Categories">
+            <ul class="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+              {categories.map((id) => (
+                <li>
+                  <a
+                    href={categoryPath(id)}
+                    class="text-stone-700 hover:text-teal-800 dark:text-stone-300 dark:hover:text-teal-300"
+                  >
+                    {CATEGORIES[id].name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
     <main id="main" class="mx-auto w-full max-w-6xl flex-1 px-4 py-8">

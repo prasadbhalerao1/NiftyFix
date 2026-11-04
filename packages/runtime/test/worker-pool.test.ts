@@ -7,7 +7,8 @@ class FakeWorker implements WorkerLike {
   static all: FakeWorker[] = [];
   onmessage: ((event: MessageEvent<WorkerMessage>) => void) | null = null;
   onerror: ((event: ErrorEvent) => void) | null = null;
-  received: (RunRequest | PreloadRequest)[] = [];
+  received: RunRequest[] = [];
+  preloads: PreloadRequest[] = [];
   terminated = false;
 
   constructor() {
@@ -15,7 +16,8 @@ class FakeWorker implements WorkerLike {
   }
 
   postMessage(message: RunRequest | PreloadRequest): void {
-    this.received.push(message);
+    if (message.type === 'preload') this.preloads.push(message);
+    else this.received.push(message);
   }
 
   terminate(): void {
@@ -161,14 +163,14 @@ describe('WorkerPool.preload', () => {
     const p = pool(2);
     p.preload('pdf.merge-pdf');
     expect(FakeWorker.all).toHaveLength(1);
-    expect(FakeWorker.all[0]?.received).toEqual([{ type: 'preload', toolId: 'pdf.merge-pdf' }]);
+    expect(FakeWorker.all[0]?.preloads).toEqual([{ type: 'preload', toolId: 'pdf.merge-pdf' }]);
   });
 
   it('never waits behind a running job and does nothing after dispose', () => {
     const p = pool(1);
     p.run('t', file, {});
     p.preload('t');
-    expect(FakeWorker.all[0]?.received.map((m) => m.type)).toEqual(['run']);
+    expect(FakeWorker.all[0]?.preloads).toEqual([]);
     p.dispose();
     p.preload('t');
     expect(FakeWorker.all).toHaveLength(1);

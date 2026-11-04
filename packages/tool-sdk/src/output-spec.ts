@@ -34,6 +34,12 @@ const FILE_NAME = /^[\w\- ]*$/u;
 /** An optional plain output file name (no extension). Empty means: derive it from the input. */
 export const FileNameSchema = v.pipe(v.string(), v.maxLength(60), v.regex(FILE_NAME));
 
+/** Which pages an operation applies to: all, or a typed selection such as "1-3, 5, 8-". */
+export const PageSelectionSchema = v.object({
+  mode: v.picklist(['all', 'custom']),
+  ranges: v.pipe(v.string(), v.maxLength(500)),
+});
+
 /** The message shown under a file-name field, or null when the name is acceptable. */
 export function fileNameError(name: string): string | null {
   return FILE_NAME.test(name) && name.length <= 60

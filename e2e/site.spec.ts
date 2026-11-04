@@ -15,10 +15,13 @@ test.describe('site', () => {
     await expect(card).toBeVisible();
     await expect(categories.first()).toBeHidden();
     // Planned tools are found too, marked as coming soon and not linked.
-    await page.getByLabel('What do you need to do?').fill('merge pdf');
-    const planned = page.locator('[data-planned]', { hasText: 'Merge PDF' });
+    await page.getByLabel('What do you need to do?').fill('compress pdf');
+    const planned = page.locator('[data-planned]', { hasText: 'Compress PDF' });
     await expect(planned).toContainText('Coming soon');
-    await expect(page.getByRole('link', { name: /Merge PDF/ })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: /Compress PDF/ })).toHaveCount(0);
+    // Built tools are found as links.
+    await page.getByLabel('What do you need to do?').fill('merge pdf');
+    await expect(page.getByRole('link', { name: /Merge PDF/ })).toBeVisible();
     await page.getByLabel('What do you need to do?').fill('zzz no such tool');
     await expect(card).toBeHidden();
     await expect(page.getByText('No tool matches that yet')).toBeVisible();

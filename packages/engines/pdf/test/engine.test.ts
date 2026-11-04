@@ -11,6 +11,7 @@ import {
   describePages,
   flattenForm,
   loadPdf,
+  pageRangeSyntaxError,
   parsePageRange,
   readMetadata,
   rotatePages,
@@ -67,6 +68,15 @@ describe('parsePageRange', () => {
       expect(result.ok, text).toBe(false);
       if (!result.ok) expect(result.error).toMatch(message);
     }
+  });
+
+  it('checks syntax without knowing the page count', () => {
+    expect(pageRangeSyntaxError('1-3, 5, 8-')).toBeNull();
+    expect(pageRangeSyntaxError('-4')).toBeNull();
+    expect(pageRangeSyntaxError('')).toMatch(/at least one/);
+    expect(pageRangeSyntaxError('x')).toMatch(/not a page/);
+    expect(pageRangeSyntaxError('0')).toMatch(/start at 1/);
+    expect(pageRangeSyntaxError('9-2')).toMatch(/backwards/);
   });
 
   it('chunks and describes', () => {

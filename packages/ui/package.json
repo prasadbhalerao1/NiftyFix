@@ -15,6 +15,7 @@
     "@niftyfix/runtime": "workspace:*",
     "@niftyfix/tool-sdk": "workspace:*",
     "preact": "10.29.8",
-    "@niftyfix/engine-image": "workspace:*"
+    "@niftyfix/engine-image": "workspace:*",
+    "@niftyfix/engine-pdf": "workspace:*"
   }
 }

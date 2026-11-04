@@ -12,6 +12,7 @@ export const FILE_FORMATS = {
   avif: { label: 'AVIF', mime: 'image/avif', extensions: ['avif'] },
   heic: { label: 'HEIC', mime: 'image/heic', extensions: ['heic', 'heif'] },
   pdf: { label: 'PDF', mime: 'application/pdf', extensions: ['pdf'] },
+  zip: { label: 'ZIP', mime: 'application/zip', extensions: ['zip'] },
 } as const satisfies Record<string, { label: string; mime: string; extensions: readonly string[] }>;
 
 export type FileFormatId = keyof typeof FILE_FORMATS;
@@ -46,6 +47,9 @@ export function sniffFormat(bytes: Uint8Array): FileFormatId | null {
   }
   if (bytes.length >= 5 && ascii(bytes, 0, 5) === '%PDF-') {
     return 'pdf';
+  }
+  if (bytes.length >= 4 && ascii(bytes, 0, 4) === 'PK\x03\x04') {
+    return 'zip';
   }
   if (bytes.length >= 12 && ascii(bytes, 4, 4) === 'ftyp') {
     const brand = ascii(bytes, 8, 4);

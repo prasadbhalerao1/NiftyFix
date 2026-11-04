@@ -5,11 +5,32 @@ import content0 from './forms/photo-resizer/content';
 import manifest0 from './forms/photo-resizer/manifest';
 import content1 from './forms/signature-resizer/content';
 import manifest1 from './forms/signature-resizer/manifest';
-import content2 from './pdf/merge-pdf/content';
-import manifest2 from './pdf/merge-pdf/manifest';
+import content2 from './pdf/add-page-numbers/content';
+import manifest2 from './pdf/add-page-numbers/manifest';
+import content3 from './pdf/extract-pdf-pages/content';
+import manifest3 from './pdf/extract-pdf-pages/manifest';
+import content4 from './pdf/flatten-pdf/content';
+import manifest4 from './pdf/flatten-pdf/manifest';
+import content5 from './pdf/image-to-pdf/content';
+import manifest5 from './pdf/image-to-pdf/manifest';
+import content6 from './pdf/merge-pdf/content';
+import manifest6 from './pdf/merge-pdf/manifest';
+import content7 from './pdf/rotate-pdf/content';
+import manifest7 from './pdf/rotate-pdf/manifest';
+import content8 from './pdf/split-pdf/content';
+import manifest8 from './pdf/split-pdf/manifest';
+import content9 from './pdf/watermark-pdf/content';
+import manifest9 from './pdf/watermark-pdf/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'forms/photo-resizer', manifest: manifest0, content: content0 },
   { dir: 'forms/signature-resizer', manifest: manifest1, content: content1 },
-  { dir: 'pdf/merge-pdf', manifest: manifest2, content: content2 },
+  { dir: 'pdf/add-page-numbers', manifest: manifest2, content: content2 },
+  { dir: 'pdf/extract-pdf-pages', manifest: manifest3, content: content3 },
+  { dir: 'pdf/flatten-pdf', manifest: manifest4, content: content4 },
+  { dir: 'pdf/image-to-pdf', manifest: manifest5, content: content5 },
+  { dir: 'pdf/merge-pdf', manifest: manifest6, content: content6 },
+  { dir: 'pdf/rotate-pdf', manifest: manifest7, content: content7 },
+  { dir: 'pdf/split-pdf', manifest: manifest8, content: content8 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest9, content: content9 },
 ];

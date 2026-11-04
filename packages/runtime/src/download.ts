@@ -1,4 +1,4 @@
-import { zipSync } from 'fflate';
+import { unzipSync, zipSync } from 'fflate';
 import { uniqueFileNames } from './filenames';
 
 /** Trigger a download and release the object URL afterwards. */
@@ -25,6 +25,12 @@ export async function zipFiles(files: readonly { name: string; blob: Blob }[]): 
   }
   const zipped = zipSync(entries);
   return new Blob([zipped.buffer as ArrayBuffer], { type: 'application/zip' });
+}
+
+/** Read a ZIP back (for verifying what a tool produced): entry names and bytes, in order. */
+export async function readZip(blob: Blob): Promise<{ name: string; bytes: Uint8Array }[]> {
+  const entries = unzipSync(new Uint8Array(await blob.arrayBuffer()));
+  return Object.entries(entries).map(([name, bytes]) => ({ name, bytes }));
 }
 
 /** Tracks object URLs created for previews so they are always revoked. */

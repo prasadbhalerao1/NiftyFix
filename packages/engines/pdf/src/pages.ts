@@ -53,6 +53,30 @@ export function parsePageRange(
   return { ok: true, pages };
 }
 
+/**
+ * Check only the form of a selection, before the page count is known (in the
+ * UI). Bounds are checked against the real document by `parsePageRange`.
+ */
+export function pageRangeSyntaxError(text: string): string | null {
+  const parts = text
+    .split(',')
+    .map((part) => part.trim())
+    .filter((part) => part !== '');
+  if (parts.length === 0) return 'Enter at least one page, e.g. 1-3, 5.';
+  for (const part of parts) {
+    const match = PART.exec(part);
+    if (!match || (match[1] === '' && match[2] === undefined)) {
+      return `"${part}" is not a page or range. Use e.g. 2 or 4-7.`;
+    }
+    const from = match[1] === '' ? 1 : Number(match[1]);
+    const to = match[2] === undefined || match[2] === '' ? Infinity : Number(match[2]);
+    if (from < 1 || to < 1) return 'Pages start at 1.';
+    if (part.includes('-') && from > to)
+      return `"${part}" runs backwards. Write it as ${to}-${from}.`;
+  }
+  return null;
+}
+
 /** Pages 1, 2, … n as indices. */
 export const allPages = (pageCount: number): number[] =>
   Array.from({ length: pageCount }, (_, index) => index);

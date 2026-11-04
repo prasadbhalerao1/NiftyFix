@@ -5,7 +5,9 @@ import {
   type ProcessedFile,
   type ToolInputFile,
 } from '@niftyfix/tool-sdk';
+import { ToolError } from '@niftyfix/tool-sdk';
 import { loadPdf, savePdf } from './document';
+import { allPages, parsePageRange } from './pages';
 import { verifyPdfOutput } from './verify';
 
 /**
@@ -55,4 +57,20 @@ export async function finishPdf(doc: PDFDocument, options: FinishOptions): Promi
     verification: checks,
     warnings: [...(options.warnings ?? [])],
   };
+}
+
+/**
+ * Resolve a page selection against the real document. Out-of-range or
+ * malformed selections become an INVALID_OPTIONS error with the exact reason
+ * ("This PDF has 10 pages"), shown to the user next to a retry button.
+ */
+export function selectPages(
+  selection: { mode: 'all' | 'custom'; ranges: string },
+  pageCount: number,
+  { allowRepeat = false }: { allowRepeat?: boolean } = {},
+): number[] {
+  if (selection.mode === 'all') return allPages(pageCount);
+  const result = parsePageRange(selection.ranges, pageCount, { allowRepeat });
+  if (!result.ok) throw new ToolError('INVALID_OPTIONS', result.error);
+  return result.pages;
 }

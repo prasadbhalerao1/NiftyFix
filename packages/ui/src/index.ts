@@ -12,3 +12,5 @@ export * from './results';
 export * from './tool-ui';
 export * from './use-tool-job';
 export * from './FileQueue';
+export * from './PageSelection';
+export * from './SingleFileTool';

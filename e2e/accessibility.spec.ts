@@ -75,6 +75,32 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     }
   });
 
+  test('PDF tools: file queue, page selection and result have no serious violations', async ({
+    page,
+  }) => {
+    const { makePdf } = await import('./pdf-helpers');
+    await page.goto('/pdf/merge-pdf/');
+    const merge = page.frameLocator('iframe[data-tool-frame]');
+    await expect(merge.getByRole('button', { name: /Choose PDF files/ })).toBeVisible();
+    await scanFrame(page, 'merge empty');
+    await merge
+      .getByTestId('file-input')
+      .setInputFiles([await makePdf('a.pdf', 1), await makePdf('b.pdf', 1)]);
+    await expect(merge.getByTestId('queued-file')).toHaveCount(2);
+    await scanFrame(page, 'merge queue');
+    await merge.getByTestId('prepare').click();
+    await expect(merge.getByTestId('result')).toBeVisible({ timeout: 30_000 });
+    await scanFrame(page, 'merge result');
+
+    await page.goto('/pdf/rotate-pdf/');
+    const rotate = page.frameLocator('iframe[data-tool-frame]');
+    await rotate.getByTestId('file-input').setInputFiles(await makePdf('c.pdf', 2));
+    await rotate.getByText('Choose pages', { exact: true }).click();
+    await rotate.getByTestId('page-ranges').fill('9-1');
+    await expect(rotate.getByText('runs backwards')).toBeVisible();
+    await scanFrame(page, 'rotate with a page-range error');
+  });
+
   test('signature resizer states have no serious violations', async ({ page }) => {
     await page.goto('/forms/signature-resizer/');
     const frame = page.frameLocator('iframe[data-tool-frame]');

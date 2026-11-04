@@ -1,0 +1,235 @@
+import { degrees, rgb, StandardFonts, type PDFDocument, type PDFFont } from '@cantoo/pdf-lib';
+import { ToolError } from '@niftyfix/tool-sdk';
+import { createPdf } from './document';
+
+/**
+ * Page-level operations. Each takes parsed documents and returns a new or
+ * modified document; none reads files or touches the DOM, so all run in a
+ * worker and in Node tests.
+ */
+
+/** Copy the selected pages of each source, in order, into one new document. */
+export async function combinePages(
+  sources: readonly { doc: PDFDocument; pages: readonly number[] }[],
+  signal?: AbortSignal,
+): Promise<PDFDocument> {
+  const out = await createPdf();
+  for (const { doc, pages } of sources) {
+    signal?.throwIfAborted();
+    const copied = await out.copyPages(doc, [...pages]);
+    for (const page of copied) out.addPage(page);
+  }
+  return out;
+}
+
+export type Rotation = 90 | 180 | 270;
+
+/** Rotate pages clockwise, adding to any rotation they already have. */
+export function rotatePages(doc: PDFDocument, pages: readonly number[], by: Rotation): void {
+  for (const index of pages) {
+    const page = doc.getPage(index);
+    page.setRotation(degrees((((page.getRotation().angle + by) % 360) + 360) % 360));
+  }
+}
+
+/**
+ * Standard fonts only cover Latin text (WinAnsi). The library does not reject
+ * other characters — it would print garbage — so check the font's own
+ * character set and refuse with a clear message.
+ */
+function checkEncodable(font: PDFFont, text: string, what: string): void {
+  const supported = new Set(font.getCharacterSet());
+  const unsupported = [...text].some((char) => !supported.has(char.codePointAt(0) ?? -1));
+  if (unsupported) {
+    throw new ToolError(
+      'INVALID_OPTIONS',
+      `${what} can only use Latin letters, digits and common punctuation for now.`,
+      { hint: 'Remove characters such as Hindi or emoji and try again.' },
+    );
+  }
+}
+
+export type NumberPosition =
+  'bottom-center' | 'bottom-right' | 'bottom-left' | 'top-center' | 'top-right' | 'top-left';
+
+export interface PageNumberOptions {
+  position: NumberPosition;
+  /** "{n}" and "{total}" are replaced, e.g. "Page {n} of {total}". */
+  template: string;
+  /** Number shown on the first numbered page. */
+  start: number;
+  /** Pages to number (indices); others are left untouched. */
+  pages: readonly number[];
+  fontSize: number;
+  /** Distance from the page edge, in points. */
+  margin: number;
+}
+
+/** Stamp page numbers, positioned on each page's visible box and upright on rotated pages. */
+export async function addPageNumbers(doc: PDFDocument, options: PageNumberOptions): Promise<void> {
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const total = options.pages.length + options.start - 1;
+  options.pages.forEach((index, order) => {
+    const text = options.template
+      .replaceAll('{n}', String(options.start + order))
+      .replaceAll('{total}', String(total));
+    checkEncodable(font, text, 'The page number text');
+    const page = doc.getPage(index);
+    const box = page.getCropBox();
+    const width = font.widthOfTextAtSize(text, options.fontSize);
+    const [vertical, horizontal] = options.position.split('-') as [string, string];
+    const rotation = page.getRotation().angle % 360;
+    // Work in the page as the reader sees it, then map back for rotated pages.
+    const viewW = rotation === 90 || rotation === 270 ? box.height : box.width;
+    const viewH = rotation === 90 || rotation === 270 ? box.width : box.height;
+    const vx =
+      horizontal === 'left'
+        ? options.margin
+        : horizontal === 'right'
+          ? viewW - options.margin - width
+          : (viewW - width) / 2;
+    const vy = vertical === 'top' ? viewH - options.margin - options.fontSize : options.margin;
+    const [x, y] =
+      rotation === 90
+        ? [box.width - vy, vx]
+        : rotation === 180
+          ? [box.width - vx, box.height - vy]
+          : rotation === 270
+            ? [vy, box.height - vx]
+            : [vx, vy];
+    page.drawText(text, {
+      x: box.x + x,
+      y: box.y + y,
+      size: options.fontSize,
+      font,
+      color: rgb(0.1, 0.1, 0.1),
+      rotate: degrees(rotation),
+    });
+  });
+}
+
+export interface TextWatermarkOptions {
+  text: string;
+  /** 0–1 */
+  opacity: number;
+  /** Font size in points. */
+  fontSize: number;
+  /** Diagonal (45°) across the page, or horizontal in the centre. */
+  layout: 'diagonal' | 'horizontal';
+  /** RGB 0–1. */
+  color: readonly [number, number, number];
+  pages: readonly number[];
+}
+
+/** Draw a centred text watermark on each selected page. */
+export async function addTextWatermark(
+  doc: PDFDocument,
+  options: TextWatermarkOptions,
+): Promise<void> {
+  const font = await doc.embedFont(StandardFonts.HelveticaBold);
+  checkEncodable(font, options.text, 'The watermark');
+  const angle = options.layout === 'diagonal' ? 45 : 0;
+  const radians = (angle * Math.PI) / 180;
+  for (const index of options.pages) {
+    const page = doc.getPage(index);
+    const box = page.getCropBox();
+    // Shrink to fit the page diagonal/width so the text is never cut off.
+    const room =
+      options.layout === 'diagonal' ? Math.hypot(box.width, box.height) * 0.8 : box.width * 0.85;
+    const size = Math.min(
+      options.fontSize,
+      (options.fontSize * room) / font.widthOfTextAtSize(options.text, options.fontSize),
+    );
+    const width = font.widthOfTextAtSize(options.text, size);
+    const height = font.heightAtSize(size);
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+    page.drawText(options.text, {
+      x: cx - (Math.cos(radians) * width) / 2 + (Math.sin(radians) * height) / 2,
+      y: cy - (Math.sin(radians) * width) / 2 - (Math.cos(radians) * height) / 2,
+      size,
+      font,
+      color: rgb(...options.color),
+      opacity: options.opacity,
+      rotate: degrees(angle),
+    });
+  }
+}
+
+export type PageSize = 'a4' | 'letter' | 'fit';
+
+const PAGE_SIZES: Record<Exclude<PageSize, 'fit'>, [number, number]> = {
+  a4: [595.28, 841.89],
+  letter: [612, 792],
+};
+
+export interface ImagePageOptions {
+  pageSize: PageSize;
+  orientation: 'auto' | 'portrait' | 'landscape';
+  /** Margin in points (ignored for 'fit'). */
+  margin: number;
+}
+
+/** Add one page per image (JPEG or PNG bytes), scaled to fit without distortion or cropping. */
+export async function addImagePages(
+  doc: PDFDocument,
+  images: readonly { bytes: Uint8Array; format: 'jpeg' | 'png' }[],
+  options: ImagePageOptions,
+  signal?: AbortSignal,
+): Promise<void> {
+  for (const image of images) {
+    signal?.throwIfAborted();
+    const embedded =
+      image.format === 'jpeg' ? await doc.embedJpg(image.bytes) : await doc.embedPng(image.bytes);
+    const { width: iw, height: ih } = embedded;
+    if (options.pageSize === 'fit') {
+      doc.addPage([iw, ih]).drawImage(embedded, { x: 0, y: 0, width: iw, height: ih });
+      continue;
+    }
+    let [pw, ph] = PAGE_SIZES[options.pageSize];
+    const landscape =
+      options.orientation === 'landscape' || (options.orientation === 'auto' && iw > ih);
+    if (landscape) [pw, ph] = [ph, pw];
+    const scale = Math.min((pw - 2 * options.margin) / iw, (ph - 2 * options.margin) / ih, 1e6);
+    const w = iw * scale;
+    const h = ih * scale;
+    doc
+      .addPage([pw, ph])
+      .drawImage(embedded, { x: (pw - w) / 2, y: (ph - h) / 2, width: w, height: h });
+  }
+}
+
+export interface PdfMetadata {
+  title: string;
+  author: string;
+  subject: string;
+  keywords: string;
+  creator: string;
+}
+
+export function readMetadata(doc: PDFDocument): PdfMetadata {
+  return {
+    title: doc.getTitle() ?? '',
+    author: doc.getAuthor() ?? '',
+    subject: doc.getSubject() ?? '',
+    keywords: doc.getKeywords() ?? '',
+    creator: doc.getCreator() ?? '',
+  };
+}
+
+/** Replace document information. Empty strings clear a field. */
+export function writeMetadata(doc: PDFDocument, metadata: PdfMetadata): void {
+  doc.setTitle(metadata.title);
+  doc.setAuthor(metadata.author);
+  doc.setSubject(metadata.subject);
+  doc.setKeywords(metadata.keywords === '' ? [] : metadata.keywords.split(/\s*,\s*/));
+  doc.setCreator(metadata.creator);
+}
+
+/** Make form fields permanent page content. Returns how many fields were flattened. */
+export function flattenForm(doc: PDFDocument): number {
+  const form = doc.getForm();
+  const count = form.getFields().length;
+  if (count > 0) form.flatten();
+  return count;
+}

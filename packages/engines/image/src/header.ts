@@ -53,6 +53,33 @@ function webpSize(b: Uint8Array): { width: number; height: number } | null {
 }
 
 /**
+ * AVIF (ISOBMFF/HEIF): dimensions live in 'ispe' (image spatial extent)
+ * properties inside the 'meta' box near the start of the file. A file can
+ * have several (grid tiles, thumbnails); the largest is the full image, and
+ * taking it keeps the pixel-limit check conservative.
+ */
+function avifSize(bytes: Uint8Array): { width: number; height: number } | null {
+  let best: { width: number; height: number } | null = null;
+  for (let i = 4; i + 16 <= bytes.length; i += 1) {
+    // 'ispe' box: size(4) 'ispe'(4) version+flags(4) width(4) height(4).
+    if (
+      bytes[i] !== 0x69 ||
+      bytes[i + 1] !== 0x73 ||
+      bytes[i + 2] !== 0x70 ||
+      bytes[i + 3] !== 0x65
+    ) {
+      continue;
+    }
+    const width = u32be(bytes, i + 8);
+    const height = u32be(bytes, i + 12);
+    if (width > 0 && height > 0 && (!best || width * height > best.width * best.height)) {
+      best = { width, height };
+    }
+  }
+  return best;
+}
+
+/**
  * Read the format and pixel dimensions from the file header without decoding
  * pixels. Used to reject decompression bombs before allocating memory.
  * Returns null when the header is missing, truncated or unrecognised.
@@ -79,6 +106,9 @@ export function readImageHeader(bytes: Uint8Array): ImageHeader | null {
       if (bytes.length >= 26) {
         size = { width: Math.abs(i32le(bytes, 18)), height: Math.abs(i32le(bytes, 22)) };
       }
+      break;
+    case 'avif':
+      size = avifSize(bytes);
       break;
     default:
       return null;

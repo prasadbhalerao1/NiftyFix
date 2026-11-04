@@ -96,6 +96,29 @@ describe('readImageHeader', () => {
     expect(readImageHeader(gif)).toEqual({ format: 'gif', width: 320, height: 240 });
   });
 
+  it('reads AVIF dimensions from the largest ispe box (not a tile)', () => {
+    const box = (type: string, payload: number[]): number[] => {
+      const size = 8 + payload.length;
+      return [
+        size >>> 24,
+        (size >>> 16) & 255,
+        (size >>> 8) & 255,
+        size & 255,
+        ...ascii(type),
+        ...payload,
+      ];
+    };
+    const u32 = (n: number): number[] => [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255];
+    const avif = Uint8Array.from([
+      ...box('ftyp', [...ascii('avif'), 0, 0, 0, 0, ...ascii('mif1')]),
+      ...box('ispe', [0, 0, 0, 0, ...u32(512), ...u32(512)]),
+      ...box('ispe', [0, 0, 0, 0, ...u32(4000), ...u32(3000)]),
+    ]);
+    expect(readImageHeader(avif)).toEqual({ format: 'avif', width: 4000, height: 3000 });
+    // An AVIF without any size information is unreadable, not 0 × 0.
+    expect(readImageHeader(avif.subarray(0, 24))).toBeNull();
+  });
+
   it('returns null for truncated or unknown data', () => {
     expect(readImageHeader(Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]))).toBeNull();
     expect(readImageHeader(Uint8Array.from(ascii('hello world, not an image')))).toBeNull();

@@ -1,9 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import CatalogueGrid from '../../components/CatalogueGrid.astro';
+import CategoryVisual from '../../components/CategoryVisual.astro';
+import PlannedToolCard from '../../components/PlannedToolCard.astro';
+import ScopedFilter from '../../components/ScopedFilter.astro';
+import ToolRow from '../../components/ToolRow.astro';
 import { registry, SITE_NAME } from '../../data/registry';
-import { categoryPath } from '@niftyfix/registry';
+import { MODE_GROUPS } from '../../data/modes';
+import { categoryPath, variantPath } from '@niftyfix/registry';
 import { CATEGORIES, CATEGORY_IDS, type CategoryId } from '@niftyfix/tool-sdk';
 
 /** Every category has a hub, listing its built tools and its planned ones. */
@@ -19,11 +23,19 @@ const { category } = Astro.props;
 const info = CATEGORIES[category];
 const items = registry.catalogue(category);
 const path = categoryPath(category);
-const ready = items.filter((item) => item.kind === 'built').length;
+const builtTools = items.flatMap((item) => (item.kind === 'built' ? [item.entry.manifest] : []));
+const planned = items.flatMap((item) => (item.kind === 'planned' ? [item.tool] : []));
+const plannedGroups = MODE_GROUPS.map((group) => ({
+  ...group,
+  tools: planned.filter((tool) => tool.mode === group.mode),
+})).filter((group) => group.tools.length > 0);
+const presets = registry
+  .variantPages()
+  .filter(({ entry }) => entry.manifest.category === category)
+  .map(({ entry, variant }) => ({ href: variantPath(entry.manifest, variant), label: variant.h1 }));
+const otherLive = registry.activeCategories().filter((id) => id !== category);
 // Indexed only once it links to at least one finished (live) tool.
-const indexable = items.some(
-  (item) => item.kind === 'built' && item.entry.manifest.status === 'live',
-);
+const indexable = builtTools.some((manifest) => manifest.status === 'live');
 ---
 
 <Base
@@ -32,32 +44,126 @@ const indexable = items.some(
   path={path}
   noindex={!indexable}
 >
-  <Breadcrumbs
-    items={[
-      { name: 'Home', path: '/' },
-      { name: info.name, path },
-    ]}
-  />
-  <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{info.h1}</h1>
-  <p class="mt-2 max-w-[72ch] text-stone-700 dark:text-stone-300">{info.description}</p>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">
-    {ready > 0 ? `${ready} ready to use · ` : ''}
-    {items.length - ready} coming soon
-  </p>
-  {ready > 0 ? (
-    <section class="mt-6" aria-labelledby="ready-heading">
-      <h2 id="ready-heading" class="sr-only">
-        Ready to use
-      </h2>
-      <CatalogueGrid items={items.filter((item) => item.kind === 'built')} />
-    </section>
-  ) : null}
-  {items.length > ready ? (
-    <section class="mt-10" aria-labelledby="planned-heading">
-      <h2 id="planned-heading" class="mb-3 text-lg font-semibold">
-        Coming soon
-      </h2>
-      <CatalogueGrid items={items.filter((item) => item.kind === 'planned')} />
-    </section>
-  ) : null}
+  <div data-filter-scope>
+    <Breadcrumbs
+      items={[
+        { name: 'Home', path: '/' },
+        { name: info.name, path },
+      ]}
+    />
+    <header
+      class:list={[
+        'mt-6 grid items-center gap-10',
+        builtTools.length > 0 &&
+          (category === 'forms' || category === 'pdf') &&
+          'lg:grid-cols-[1.1fr_1fr]',
+      ]}
+    >
+      <div>
+        <p class="eyebrow">
+          {builtTools.length > 0 ? `${builtTools.length} ready · ` : ''}
+          {planned.length} coming soon
+        </p>
+        <h1 class="display mt-3 text-4xl leading-[1.05] sm:text-5xl">{info.h1}</h1>
+        <p class="mt-4 max-w-[60ch] text-lg text-stone-700 dark:text-stone-300">
+          {info.description}
+        </p>
+        <div class="mt-8">
+          <ScopedFilter
+            id="category-filter"
+            label={`Filter ${info.name} tools`}
+            placeholder={`Filter ${info.name} tools`}
+          />
+        </div>
+      </div>
+      <div aria-hidden="true" class="hidden sm:block">
+        <CategoryVisual category={category} />
+      </div>
+    </header>
+
+    {presets.length > 0 ? (
+      <nav aria-label="Popular settings" class="mt-10 flex flex-wrap items-center gap-2">
+        <span class="eyebrow mr-1">Ready-made</span>
+        {presets.map(({ href, label }) => (
+          <a
+            href={href}
+            class="rounded-md bg-stone-100 px-2.5 py-1 font-mono text-xs text-stone-800 transition-colors hover:bg-brand-100 hover:text-brand-900 dark:bg-stone-800/80 dark:text-stone-300 dark:hover:bg-brand-500/15 dark:hover:text-brand-300"
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    ) : null}
+
+    {builtTools.length > 0 ? (
+      <section class="mt-12" aria-labelledby="ready-heading" data-filter-group>
+        <h2 id="ready-heading" class="eyebrow">
+          Ready to use
+        </h2>
+        <ul class="mt-4 grid gap-1 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {builtTools.map((manifest) => (
+            <li>
+              <ToolRow manifest={manifest} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null}
+
+    {plannedGroups.length > 0 ? (
+      <section class="mt-16" aria-labelledby="planned-heading">
+        <h2 id="planned-heading" class="text-2xl font-semibold tracking-tight">
+          Coming soon
+        </h2>
+        <p class="mt-2 max-w-[60ch] text-stone-700 dark:text-stone-400">
+          Planned tools get a page once they work. Until then they are listed here, grouped by how
+          they will run.
+        </p>
+        <div class="mt-8 flex flex-col gap-10">
+          {plannedGroups.map(({ mode, title, tools }) => (
+            <section aria-labelledby={`mode-${mode}`} data-filter-group>
+              <h3 id={`mode-${mode}`} class="eyebrow flex justify-between">
+                <span>{title}</span>
+                <span>{tools.length}</span>
+              </h3>
+              <ul class="mt-2 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-4" role="list">
+                {tools.map((tool) => (
+                  <li>
+                    <PlannedToolCard tool={tool} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </section>
+    ) : null}
+
+    <nav
+      aria-label="Other categories"
+      class="mt-20 border-t border-stone-200 pt-8 dark:border-stone-800"
+    >
+      <p class="eyebrow">Keep exploring</p>
+      <ul class="mt-4 flex flex-wrap gap-2" role="list">
+        {otherLive.map((id) => (
+          <li>
+            <a
+              href={categoryPath(id)}
+              class="inline-flex rounded-full border border-stone-300 px-3.5 py-1.5 text-sm transition-colors hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:hover:border-brand-400 dark:hover:text-brand-300"
+            >
+              {CATEGORIES[id].h1}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="/tools/"
+            class="inline-flex rounded-full border border-stone-300 px-3.5 py-1.5 text-sm transition-colors hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:hover:border-brand-400 dark:hover:text-brand-300"
+          >
+            All tools
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </Base>

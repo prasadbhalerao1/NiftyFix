@@ -2,40 +2,78 @@ import { expect, test } from '@playwright/test';
 import { recordProblems, TOOL_PATH } from './helpers';
 
 test.describe('site', () => {
-  test('homepage shows every category, and search finds tools across them', async ({ page }) => {
+  test('homepage shows the categories, and search finds tools, presets and planned tools', async ({
+    page,
+  }) => {
     const problems = recordProblems(page);
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Get your files ready');
-    const categories = page.locator('[data-category-card]');
-    await expect(categories).toHaveCount(18);
-    await expect(page.getByRole('link', { name: /PDF tools/ })).toHaveAttribute('href', '/pdf/');
+    const main = page.getByRole('main');
+    await expect(main.getByRole('link', { name: 'The whole PDF desk' })).toHaveAttribute(
+      'href',
+      '/pdf/',
+    );
+    // Every category without live tools is still listed, under "Coming next".
+    await expect(main.getByRole('link', { name: /^Video/ })).toHaveAttribute('href', '/video/');
 
-    const card = page.getByRole('link', { name: /Form Photo Resizer/ });
-    await page.getByLabel('What do you need to do?').fill('exam form photo');
-    await expect(card).toBeVisible();
-    await expect(categories.first()).toBeHidden();
-    // Planned tools are found too, marked as coming soon and not linked.
-    await page.getByLabel('What do you need to do?').fill('repair pdf');
-    const planned = page.locator('[data-planned]', { hasText: 'Repair PDF' });
-    await expect(planned).toContainText('Coming soon');
-    await expect(page.getByRole('link', { name: /Repair PDF/ })).toHaveCount(0);
-    // Built tools are found as links.
-    await page.getByLabel('What do you need to do?').fill('merge pdf');
-    await expect(page.getByRole('link', { name: /Merge PDF/ })).toBeVisible();
-    await page.getByLabel('What do you need to do?').fill('zzz no such tool');
-    await expect(card).toBeHidden();
+    const search = page.getByRole('combobox', { name: 'What do you need to do?' });
+    const results = page.getByRole('listbox', { name: 'Matching tools' }).first();
+    await search.fill('exam form photo');
+    await expect(results.getByRole('option', { name: /Form Photo Resizer/ })).toBeVisible();
+    // A size in plain words finds the preset page.
+    await search.fill('make this photo under 50 kb');
+    await expect(results.getByRole('option').first()).toContainText('Resize a photo to 50 KB');
+    // Planned tools are found too, marked as soon and not linked.
+    await search.fill('repair pdf');
+    const planned = results.getByRole('option', { name: /Repair PDF/ });
+    await expect(planned).toContainText('Soon');
+    await expect(planned).toHaveAttribute('aria-disabled', 'true');
+    await expect(results.getByRole('link', { name: /Repair PDF/ })).toHaveCount(0);
+    await search.fill('zzz no such tool');
     await expect(page.getByText('No tool matches that yet')).toBeVisible();
 
-    await page.getByLabel('What do you need to do?').fill('photo');
-    await page.getByLabel('What do you need to do?').press('Enter');
-    await expect(page).toHaveURL(TOOL_PATH);
+    // Keyboard: arrow to the second match and open it.
+    await search.fill('merge pdf');
+    await expect(results.getByRole('option').first()).toHaveAttribute('aria-selected', 'true');
+    await search.press('Enter');
+    await expect(page).toHaveURL('/pdf/merge-pdf/');
     expect(problems).toEqual([]);
+  });
+
+  test('the command palette opens from anywhere with Ctrl+K', async ({ page }) => {
+    await page.goto(TOOL_PATH);
+    await page.keyboard.press('ControlOrMeta+k');
+    const dialog = page.getByRole('dialog', { name: 'Search tools' });
+    await expect(dialog).toBeVisible();
+    // Before typing, it suggests tools.
+    await expect(dialog.getByRole('option').first()).toBeVisible();
+    await dialog.getByRole('combobox').fill('signature');
+    await dialog.getByRole('combobox').press('Enter');
+    await expect(page).toHaveURL('/forms/signature-resizer/');
+  });
+
+  test('without JavaScript, ?q= on the home page still finds tools', async ({ page }) => {
+    await page.goto('/?q=compress+pdf');
+    await expect(
+      page.getByRole('listbox', { name: 'Matching tools' }).first().getByRole('option').first(),
+    ).toContainText('Compress');
+  });
+
+  test('the all-tools directory lists every category and filters', async ({ page }) => {
+    await page.goto('/tools/');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('All tools');
+    const main = page.getByRole('main');
+    await expect(main.getByRole('heading', { level: 2 })).toHaveCount(18);
+    await page.getByLabel('Filter all tools').fill('merge pdf');
+    await expect(main.getByRole('link', { name: /Merge PDF/ })).toBeVisible();
+    await expect(main.getByRole('link', { name: /Form Photo Resizer/ })).toBeHidden();
   });
 
   test('a category page lists all of its tools, ready and planned', async ({ page }) => {
     await page.goto('/forms/');
-    await expect(page.getByRole('link', { name: /Form Photo Resizer/ })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Signature Resizer/ })).toBeVisible();
+    const main = page.getByRole('main');
+    await expect(main.getByRole('link', { name: /Form Photo Resizer/ })).toBeVisible();
+    await expect(main.getByRole('link', { name: /Signature Resizer/ })).toBeVisible();
     await expect(
       page.locator('[data-planned]', { hasText: 'Passport and Visa Photo Maker' }),
     ).toBeVisible();
@@ -100,6 +138,7 @@ test.describe('site', () => {
       '/licenses/',
       '/privacy-verification/',
       '/forms/',
+      '/tools/',
     ]) {
       const response = await page.goto(path);
       expect(response?.status(), path).toBe(200);

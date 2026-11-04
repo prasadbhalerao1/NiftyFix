@@ -1,0 +1,33 @@
+---
+/** The Organize PDF page grid: numbered page thumbnails, one rotated, one selected. */
+const pages = [
+  { n: 3, state: 'selected' },
+  { n: 1, state: '' },
+  { n: 2, state: 'removed' },
+  { n: 4, state: 'rotated' },
+] as const;
+---
+
+<div class="grid grid-cols-4 gap-3 p-4">
+  {pages.map(({ n, state }) => (
+    <div class="flex flex-col items-center gap-1.5">
+      <div
+        class:list={[
+          'page-thumb',
+          state === 'selected' && 'ring-2 ring-brand-600 dark:ring-brand-400',
+          state === 'removed' && 'opacity-35',
+          state === 'rotated' && 'rotate-90 scale-[0.78]',
+        ]}
+      >
+        <span class="h-1 w-3/5 rounded bg-stone-300 dark:bg-stone-500"></span>
+        <span class="h-1 w-4/5 rounded bg-stone-200 dark:bg-stone-600"></span>
+        <span class="h-1 w-2/3 rounded bg-stone-200 dark:bg-stone-600"></span>
+        <span class="mt-1 h-4 w-4/5 rounded-sm bg-stone-200 dark:bg-stone-600"></span>
+        <span class="h-1 w-3/4 rounded bg-stone-200 dark:bg-stone-600"></span>
+      </div>
+      <span class="font-mono text-[10px] text-stone-600 dark:text-stone-400">
+        {state === 'removed' ? 'removed' : `Page ${n}`}
+      </span>
+    </div>
+  ))}
+</div>

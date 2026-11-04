@@ -8,6 +8,7 @@ export const GET: APIRoute = () => {
   const categories = [...new Set(live.map((tool) => tool.manifest.category))];
   const paths = [
     '/',
+    '/tools/',
     '/about/',
     '/security/',
     '/privacy-verification/',

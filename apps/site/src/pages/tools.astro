@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ScopedFilter from '../components/ScopedFilter.astro';
+import ToolRow from '../components/ToolRow.astro';
+import { registry, SITE_NAME } from '../data/registry';
+import { categoryPath } from '@niftyfix/registry';
+import { CATEGORIES, CATEGORY_IDS } from '@niftyfix/tool-sdk';
+
+/** The full catalogue: every category, live tools linked, planned ones listed. */
+const live = new Set(registry.activeCategories());
+const categories = [...CATEGORY_IDS]
+  .sort((a, b) => Number(live.has(b)) - Number(live.has(a)))
+  .map((id) => {
+    const items = registry.catalogue(id);
+    return {
+      id,
+      built: items.flatMap((item) => (item.kind === 'built' ? [item.entry.manifest] : [])),
+      planned: items.flatMap((item) => (item.kind === 'planned' ? [item.tool] : [])),
+    };
+  });
+const total = categories.reduce(
+  (sum, { built, planned }) => sum + built.length + planned.length,
+  0,
+);
+const liveTotal = categories.reduce((sum, { built }) => sum + built.length, 0);
+---
+
+<Base
+  title={`All tools | ${SITE_NAME}`}
+  description={`Every NiftyFix tool in one place: ${liveTotal} ready to use, with the rest of the catalogue across ${CATEGORY_IDS.length} categories listed as coming soon.`}
+  path="/tools/"
+>
+  <div data-filter-scope>
+    <Breadcrumbs
+      items={[
+        { name: 'Home', path: '/' },
+        { name: 'All tools', path: '/tools/' },
+      ]}
+    />
+    <h1 class="display mt-6 text-4xl leading-[1.05] sm:text-5xl">All tools</h1>
+    <p class="mt-4 max-w-[60ch] text-lg text-stone-700 dark:text-stone-300">
+      {liveTotal} tools ready today, {total - liveTotal} more planned across {CATEGORY_IDS.length}{' '}
+      categories. Ready tools open straight away; planned ones get a page once they work.
+    </p>
+    <div class="mt-8">
+      <ScopedFilter
+        id="all-filter"
+        label="Filter all tools"
+        placeholder="Filter by name, e.g. “merge” or “jpg”"
+      />
+    </div>
+    <nav aria-label="Jump to category" class="mt-8 flex flex-wrap gap-1.5">
+      {categories.map(({ id, built }) => (
+        <a
+          href={`#${id}`}
+          class:list={[
+            'rounded-md px-2.5 py-1 text-sm transition-colors hover:bg-stone-200/70 dark:hover:bg-stone-800',
+            built.length > 0 ? 'font-medium' : 'text-stone-700 dark:text-stone-400',
+          ]}
+        >
+          {CATEGORIES[id].name}
+        </a>
+      ))}
+    </nav>
+
+    {categories.map(({ id, built, planned }) => (
+      <section
+        id={id}
+        aria-labelledby={`${id}-heading`}
+        class="mt-14 scroll-mt-24"
+        data-filter-group
+      >
+        <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-stone-200 pb-3 dark:border-stone-800">
+          <h2 id={`${id}-heading`} class="text-xl font-semibold tracking-tight">
+            <a href={categoryPath(id)} class="hover:text-brand-800 dark:hover:text-brand-300">
+              {CATEGORIES[id].h1}
+            </a>
+          </h2>
+          <span class="font-mono text-xs text-stone-600 dark:text-stone-400">
+            {built.length > 0 ? `${built.length} ready · ` : ''}
+            {planned.length} soon
+          </span>
+        </div>
+        {built.length > 0 ? (
+          <ul class="mt-3 grid gap-1 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            {built.map((manifest) => (
+              <li>
+                <ToolRow manifest={manifest} dense />
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {planned.length > 0 ? (
+          <ul class="mt-3 grid gap-x-6 text-sm sm:grid-cols-2 lg:grid-cols-4" role="list">
+            {planned.map((tool) => (
+              <li
+                class="flex items-baseline justify-between gap-2 py-1.5 text-stone-700 dark:text-stone-400"
+                data-tool-card
+                data-planned
+                data-terms={`${tool.name} ${tool.slug.replaceAll('-', ' ')}`.toLowerCase()}
+              >
+                <span>{tool.name}</span>
+                <span class="font-mono text-[10px] text-stone-600 dark:text-stone-400">soon</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+    ))}
+  </div>
+</Base>

@@ -31,58 +31,125 @@
   }
 }
 
-/* Landing page: soft brand glow over a faint grid, fading out at the edges. */
+/* Site design system (docs/design/DESIGN-DIRECTION.md). */
 @layer components {
+  .eyebrow {
+    @apply font-mono text-xs font-medium tracking-[0.08em] text-stone-600 uppercase dark:text-stone-400;
+  }
+  .display {
+    @apply font-semibold tracking-[-0.04em] text-balance;
+  }
+  /* The one serif moment: an italic accent phrase inside display headings. */
+  .accent {
+    @apply font-serif font-normal tracking-[-0.01em] text-brand-700 italic dark:text-brand-400;
+  }
+  /* Two-tone section titles: the second clause is quieter. */
+  .section-title {
+    @apply max-w-3xl text-3xl font-semibold tracking-[-0.03em] text-balance sm:text-[2.5rem] sm:leading-[1.1];
+  }
+  .section-title .quiet {
+    @apply text-stone-500 dark:text-stone-400;
+  }
+  .keycap {
+    @apply inline-flex h-5 min-w-5 items-center justify-center rounded border border-stone-300 bg-paper px-1 font-mono text-[11px] leading-none text-stone-600 shadow-[0_1px_0_var(--color-stone-300)] dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300 dark:shadow-[0_1px_0_var(--color-stone-700)];
+  }
+  .panel {
+    @apply rounded-[var(--radius-panel)] border border-stone-200 bg-paper dark:border-stone-800 dark:bg-stone-900/60;
+  }
+
+  /* Search box and results */
+  .search-input {
+    @apply w-full rounded-xl border border-stone-300 bg-paper pr-4 pl-12 text-base text-stone-900 transition outline-none placeholder:text-stone-500 focus:border-brand-600 focus:ring-4 focus:ring-brand-600/15 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-400 dark:focus:border-brand-400 dark:focus:ring-brand-400/15;
+  }
+  .search-hero .search-input {
+    @apply min-h-14 pr-28 shadow-[0_1px_2px_rgb(0_0_0/0.05),0_12px_32px_-12px_rgb(0_0_0/0.18)] sm:text-lg dark:shadow-[0_12px_40px_-12px_rgb(0_0_0/0.8)];
+  }
+  .search-palette .search-input {
+    @apply min-h-14 rounded-none border-0 bg-transparent text-lg focus:ring-0 dark:bg-transparent;
+  }
+  .search-results {
+    @apply max-h-[min(24rem,60vh)] overflow-y-auto p-1.5;
+  }
+  .search-hero .search-results {
+    @apply absolute inset-x-0 top-full z-20 mt-2 rounded-xl border border-stone-200 bg-paper shadow-2xl shadow-stone-900/10 dark:border-stone-800 dark:bg-stone-900 dark:shadow-black/50;
+  }
+  .search-palette .search-results {
+    @apply border-t border-stone-200 dark:border-stone-800;
+  }
+  .search-option {
+    @apply flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-stone-900 dark:text-stone-100;
+  }
+  .search-option[aria-selected='true'] {
+    @apply bg-stone-100 dark:bg-stone-800;
+  }
+  .search-option[aria-disabled='true'] {
+    @apply cursor-default text-stone-600 dark:text-stone-400;
+  }
+  .search-kind {
+    @apply shrink-0 rounded-md px-1.5 py-0.5 font-mono text-[10px] tracking-wide uppercase;
+  }
+  .search-kind-tool {
+    @apply bg-brand-100 text-brand-900 dark:bg-brand-500/15 dark:text-brand-300;
+  }
+  .search-kind-intent {
+    @apply bg-emerald-100 text-emerald-900 dark:bg-emerald-500/10 dark:text-emerald-300;
+  }
+  .search-kind-planned {
+    @apply bg-stone-200 text-stone-700 dark:bg-stone-800 dark:text-stone-300;
+  }
+
+  /* Command palette */
+  .palette {
+    @apply m-0 mx-auto mt-[12vh] w-[min(40rem,calc(100vw-2rem))] max-w-none overflow-visible bg-transparent p-0 text-inherit backdrop:bg-stone-950/50 backdrop:backdrop-blur-sm;
+  }
+  .palette-panel {
+    @apply overflow-hidden rounded-2xl border border-stone-200 bg-paper shadow-2xl dark:border-stone-700 dark:bg-stone-900;
+  }
+
+  /* Header menus */
+  .nav-menu[open] > summary svg {
+    @apply rotate-180;
+  }
+  .nav-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+  .nav-panel {
+    @apply z-40 rounded-xl border border-stone-200 bg-paper shadow-2xl shadow-stone-900/10 dark:border-stone-800 dark:bg-stone-900 dark:shadow-black/50;
+  }
+
+  /* Product previews */
+  .preview-window {
+    @apply overflow-hidden rounded-2xl border border-stone-200 bg-paper shadow-[0_1px_2px_rgb(0_0_0/0.04),0_24px_48px_-24px_rgb(0_0_0/0.25)] dark:border-stone-800 dark:bg-stone-900 dark:shadow-[0_24px_64px_-24px_rgb(0_0_0/0.9)];
+  }
+  .page-thumb {
+    @apply flex aspect-[1/1.414] w-full flex-col gap-1 rounded-sm bg-white p-1.5 shadow-sm ring-1 ring-stone-200 transition-transform dark:bg-stone-800 dark:ring-stone-700;
+  }
+
+  /* Hero atmosphere: one soft orange glow over a faint grid, fading at the edges. */
   .hero-backdrop {
     @apply pointer-events-none absolute top-0 left-1/2 -z-10 h-full w-screen -translate-x-1/2;
+    --grid-line: color-mix(in oklab, var(--color-stone-900) 6%, transparent);
     background:
       radial-gradient(
-        60% 55% at 50% 0%,
-        color-mix(in oklab, var(--color-brand-500) 22%, transparent),
+        50% 60% at 70% 30%,
+        color-mix(in oklab, var(--color-brand-500) 16%, transparent),
         transparent 70%
       ),
-      linear-gradient(to right, var(--grid-line) 1px, transparent 1px) 0 0 / 56px 56px,
-      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px) 0 0 / 56px 56px;
-    mask-image: radial-gradient(70% 70% at 50% 20%, black 30%, transparent 100%);
-    --grid-line: color-mix(in oklab, var(--color-stone-900) 7%, transparent);
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px) 0 0 / 64px 64px,
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px) 0 0 / 64px 64px;
+    mask-image: radial-gradient(80% 80% at 50% 30%, black 35%, transparent 100%);
   }
   :root:not([data-theme='light']) .hero-backdrop {
-    --grid-line: color-mix(in oklab, white 6%, transparent);
+    --grid-line: color-mix(in oklab, white 5%, transparent);
   }
-  .hero-gradient {
-    @apply bg-linear-to-r from-brand-700 via-brand-600 to-amber-600 bg-clip-text text-transparent dark:from-brand-400 dark:via-orange-300 dark:to-amber-200;
-  }
-  .search-shell::before {
-    content: '';
-    @apply pointer-events-none absolute -inset-px -z-10 rounded-2xl opacity-0 blur-xl transition-opacity duration-500;
-    background: linear-gradient(90deg, var(--color-brand-500), var(--color-amber-400));
-  }
-  .search-shell:focus-within::before {
-    @apply opacity-30;
-  }
-  .privacy-panel::before {
-    content: '';
-    @apply pointer-events-none absolute -top-40 -right-40 -z-10 size-96 rounded-full blur-3xl;
-    background: color-mix(in oklab, var(--color-emerald-500) 14%, transparent);
-  }
-  .hero-rise {
-    animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  }
-  .hero-rise:nth-child(3) {
-    animation-delay: 60ms;
-  }
-  .hero-rise:nth-child(4) {
-    animation-delay: 120ms;
-  }
-  .hero-rise:nth-child(5),
-  .hero-rise:nth-child(6) {
-    animation-delay: 180ms;
+  .rise {
+    animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 }
 
-@keyframes hero-rise {
+@keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
 }

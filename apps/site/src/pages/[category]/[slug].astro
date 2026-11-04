@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import ToolCard from '../../components/ToolCard.astro';
+import ToolRow from '../../components/ToolRow.astro';
 import ToolFrame from '../../components/ToolFrame.astro';
 import { absoluteUrl, registry, SITE_NAME } from '../../data/registry';
 import { categoryPath, toolPath, variantPath, type ToolEntry } from '@niftyfix/registry';
@@ -80,12 +80,13 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <Breadcrumbs items={crumbs} />
-  <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{page.h1}</h1>
-  <p class="mt-2 max-w-[72ch] text-stone-700 dark:text-stone-300">
+  <h1 class="display mt-4 text-3xl leading-tight sm:text-[2.6rem]">{page.h1}</h1>
+  <p class="mt-3 max-w-[68ch] text-lg text-stone-700 dark:text-stone-300">
     {variant ? variant.intro : manifest.tagline}
   </p>
-  <p class="mt-3 inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-sm text-brand-900 dark:bg-brand-950 dark:text-brand-100">
-    <span aria-hidden="true">●</span> Runs on your device — your file is not uploaded
+  <p class="eyebrow mt-4 flex items-center gap-2">
+    <span aria-hidden="true" class="size-2 rounded-full bg-emerald-500"></span>
+    Runs on your device — your file is not uploaded
   </p>
 
   <div class="mt-6">
@@ -94,7 +95,7 @@ const jsonLd = [
 
   {intents.length > 0 ? (
     <nav aria-labelledby="intents-heading" class="mt-4">
-      <h2 id="intents-heading" class="text-sm font-medium text-stone-600 dark:text-stone-400">
+      <h2 id="intents-heading" class="eyebrow">
         {variant ? `Other ${manifest.name} pages` : 'Popular settings'}
       </h2>
       <ul class="mt-2 flex flex-wrap gap-2">
@@ -122,18 +123,18 @@ const jsonLd = [
     </nav>
   ) : null}
 
-  <dl class="mt-6 grid gap-3 rounded-[var(--radius-panel)] border border-stone-200 bg-paper p-4 text-sm sm:grid-cols-3 dark:border-stone-800 dark:bg-stone-900">
+  <dl class="panel mt-6 grid gap-4 p-5 text-sm sm:grid-cols-3">
     <div>
-      <dt class="text-stone-600 dark:text-stone-400">Accepts</dt>
-      <dd class="font-medium">{inputs}</dd>
+      <dt class="eyebrow">Accepts</dt>
+      <dd class="mt-1 font-medium">{inputs}</dd>
     </div>
     <div>
-      <dt class="text-stone-600 dark:text-stone-400">Produces</dt>
-      <dd class="font-medium">{outputs}</dd>
+      <dt class="eyebrow">Produces</dt>
+      <dd class="mt-1 font-medium">{outputs}</dd>
     </div>
     <div>
-      <dt class="text-stone-600 dark:text-stone-400">Maximum file size</dt>
-      <dd class="font-medium">
+      <dt class="eyebrow">Maximum file size</dt>
+      <dd class="mt-1 font-medium">
         {mb(manifest.input.maxBytes.desktop)} on computers · {mb(manifest.input.maxBytes.mobile)} on
         phones
       </dd>
@@ -192,13 +193,15 @@ const jsonLd = [
   </article>
 
   {related.length > 0 ? (
-    <section class="mt-10">
-      <h2 class="mb-3 text-xl font-semibold">Related tools</h2>
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <section class="mt-14">
+      <h2 class="eyebrow">Related tools</h2>
+      <ul class="mt-3 grid gap-1 sm:grid-cols-2 lg:grid-cols-3" role="list">
         {related.map((tool) => (
-          <ToolCard manifest={tool.manifest} />
+          <li>
+            <ToolRow manifest={tool.manifest} />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   ) : null}
 </Base>

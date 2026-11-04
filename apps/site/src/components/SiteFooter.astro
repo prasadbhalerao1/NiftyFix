@@ -1,0 +1,98 @@
+---
+import { registry, SITE_NAME } from '../data/registry';
+import { categoryPath, toolPath } from '@niftyfix/registry';
+import { CATEGORIES } from '@niftyfix/tool-sdk';
+
+const pick = (ids: string[]) =>
+  ids.flatMap((id) => {
+    const entry = registry.byId(id);
+    return entry ? [{ name: entry.manifest.name, path: toolPath(entry.manifest) }] : [];
+  });
+const columns = [
+  {
+    title: 'Popular tools',
+    links: pick([
+      'forms.photo-resizer',
+      'forms.signature-resizer',
+      'pdf.compress-pdf',
+      'pdf.merge-pdf',
+      'pdf.sign-pdf',
+    ]),
+  },
+  {
+    title: 'Browse',
+    links: [
+      { name: 'All tools', path: '/tools/' },
+      ...registry
+        .activeCategories()
+        .map((id) => ({ name: `${CATEGORIES[id].name} tools`, path: categoryPath(id) })),
+    ],
+  },
+  {
+    title: 'Trust',
+    links: [
+      { name: 'Verify our privacy', path: '/privacy-verification/' },
+      { name: 'Security', path: '/security/' },
+      { name: 'Privacy policy', path: '/privacy/' },
+      { name: 'Terms', path: '/terms/' },
+      { name: 'Licences', path: '/licenses/' },
+    ],
+  },
+  {
+    title: 'NiftyFix',
+    links: [
+      { name: 'About', path: '/about/' },
+      { name: 'Contact and support', path: '/contact/' },
+    ],
+  },
+];
+---
+
+<footer class="mt-24 border-t border-stone-200 dark:border-stone-800">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.4fr_repeat(4,1fr)]">
+    <div>
+      <a href="/" class="flex items-center gap-2.5 font-semibold tracking-tight">
+        <img
+          src="/logo-96.png"
+          width="32"
+          height="32"
+          alt=""
+          class="size-8"
+          decoding="async"
+          loading="lazy"
+        />
+        <span class="text-lg">
+          Nifty<span class="text-brand-700 dark:text-brand-400">Fix</span>
+        </span>
+      </a>
+      <p class="mt-4 max-w-xs text-sm text-stone-700 dark:text-stone-400">
+        File tools that run on your device and check their own output.
+      </p>
+    </div>
+    {columns.map(({ title, links }) => (
+      <nav aria-label={title}>
+        <h2 class="eyebrow">{title}</h2>
+        <ul class="mt-4 flex flex-col gap-2.5 text-sm" role="list">
+          {links.map(({ name, path }) => (
+            <li>
+              <a
+                href={path}
+                class="text-stone-700 transition-colors hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-100"
+              >
+                {name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ))}
+  </div>
+  <div class="border-t border-stone-200 dark:border-stone-800">
+    <p class="mx-auto flex max-w-6xl flex-wrap justify-between gap-2 px-4 py-6 font-mono text-xs text-stone-600 dark:text-stone-400">
+      <span>
+        © {new Date().getFullYear()} {SITE_NAME}
+      </span>
+      <span>Files are processed on your device.</span>
+    </p>
+  </div>
+</footer>

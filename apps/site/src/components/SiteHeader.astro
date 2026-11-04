@@ -1,0 +1,195 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import { registry } from '../data/registry';
+import { categoryPath } from '@niftyfix/registry';
+import { CATEGORIES, CATEGORY_IDS } from '@niftyfix/tool-sdk';
+
+const live = new Set(registry.activeCategories());
+// Live categories first, then the rest in catalogue order.
+const categories = [...CATEGORY_IDS].sort((a, b) => Number(live.has(b)) - Number(live.has(a)));
+const link =
+  'rounded-md px-3 py-2 text-sm text-stone-700 transition-colors hover:bg-stone-200/60 hover:text-stone-950 dark:text-stone-300 dark:hover:bg-stone-800/70 dark:hover:text-stone-50';
+---
+
+<header class="sticky top-0 z-30 border-b border-stone-200/80 bg-cream/80 backdrop-blur-xl dark:border-stone-800/80 dark:bg-stone-950/75">
+  <div class="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4">
+    <a href="/" class="mr-2 flex shrink-0 items-center gap-2.5 font-semibold tracking-tight">
+      <img src="/logo-96.png" width="32" height="32" alt="" class="size-8" decoding="async" />
+      <span class="text-lg">
+        Nifty<span class="text-brand-700 dark:text-brand-400">Fix</span>
+      </span>
+    </a>
+
+    <nav aria-label="Main" class="hidden items-center md:flex">
+      <details class="nav-menu relative" data-menu>
+        <summary class:list={[link, 'flex cursor-pointer list-none items-center gap-1']}>
+          Categories
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 16 16"
+            class="size-3.5 transition-transform"
+            fill="currentColor"
+          >
+            <path d="M4 6l4 4 4-4z"></path>
+          </svg>
+        </summary>
+        <div class="nav-panel absolute top-full left-0 mt-2 w-[560px] p-2">
+          <ul class="grid grid-cols-2 gap-0.5" role="list">
+            {categories.map((id) => (
+              <li>
+                <a
+                  href={categoryPath(id)}
+                  class="flex items-center justify-between gap-3 rounded-md px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-800/70"
+                >
+                  <span
+                    class:list={[
+                      live.has(id) ? 'font-medium' : 'text-stone-700 dark:text-stone-400',
+                    ]}
+                  >
+                    {CATEGORIES[id].name}
+                  </span>
+                  {live.has(id) ? (
+                    <span class="font-mono text-[11px] text-emerald-800 dark:text-emerald-400">
+                      live
+                    </span>
+                  ) : (
+                    <span class="font-mono text-[11px] text-stone-600 dark:text-stone-400">
+                      soon
+                    </span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+      <a href="/tools/" class={link}>
+        All tools
+      </a>
+      <a href="/privacy-verification/" class={link}>
+        Privacy
+      </a>
+      <a href="/about/" class={link}>
+        About
+      </a>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-1.5">
+      <button
+        type="button"
+        class="hidden h-9 items-center gap-2 rounded-lg border border-stone-300 bg-paper/70 pr-1.5 pl-3 text-sm text-stone-600 transition-colors hover:border-stone-400 hover:text-stone-900 sm:flex dark:border-stone-700 dark:bg-stone-900/70 dark:text-stone-400 dark:hover:border-stone-600 dark:hover:text-stone-100"
+        data-open-search
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="size-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <span>Search tools</span>
+        <kbd class="keycap ml-4">Ctrl K</kbd>
+      </button>
+      <button
+        type="button"
+        aria-label="Search tools"
+        class="inline-flex size-9 items-center justify-center rounded-lg text-stone-700 hover:bg-stone-200/60 sm:hidden dark:text-stone-300 dark:hover:bg-stone-800"
+        data-open-search
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="size-5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+      </button>
+      <ThemeToggle />
+      <details class="nav-menu relative md:hidden" data-menu>
+        <summary
+          aria-label="Menu"
+          class="flex size-9 cursor-pointer list-none items-center justify-center rounded-lg text-stone-700 hover:bg-stone-200/60 dark:text-stone-300 dark:hover:bg-stone-800"
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            class="size-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </summary>
+        <nav
+          aria-label="Mobile"
+          class="nav-panel absolute top-full right-0 mt-2 w-[min(20rem,calc(100vw-2rem))] p-2"
+        >
+          <ul class="flex flex-col" role="list">
+            <li>
+              <a
+                href="/tools/"
+                class="block rounded-md px-3 py-2.5 font-medium hover:bg-stone-100 dark:hover:bg-stone-800"
+              >
+                All tools
+              </a>
+            </li>
+            {[...live].map((id) => (
+              <li>
+                <a
+                  href={categoryPath(id)}
+                  class="block rounded-md px-3 py-2.5 hover:bg-stone-100 dark:hover:bg-stone-800"
+                >
+                  {CATEGORIES[id].name} tools
+                </a>
+              </li>
+            ))}
+            <li>
+              <a
+                href="/privacy-verification/"
+                class="block rounded-md px-3 py-2.5 hover:bg-stone-100 dark:hover:bg-stone-800"
+              >
+                Verify our privacy
+              </a>
+            </li>
+            <li>
+              <a
+                href="/about/"
+                class="block rounded-md px-3 py-2.5 hover:bg-stone-100 dark:hover:bg-stone-800"
+              >
+                About
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Menus close on Escape, on a click outside, and when another menu opens.
+  const menus = [...document.querySelectorAll<HTMLDetailsElement>('[data-menu]')];
+  document.addEventListener('click', (event) => {
+    for (const menu of menus) if (!menu.contains(event.target as Node)) menu.open = false;
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    for (const menu of menus) {
+      if (!menu.open) continue;
+      menu.open = false;
+      menu.querySelector('summary')?.focus();
+    }
+  });
+</script>

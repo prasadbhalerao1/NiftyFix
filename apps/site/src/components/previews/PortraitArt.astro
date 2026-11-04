@@ -1,0 +1,13 @@
+---
+/** A neutral placeholder portrait (no real person), drawn in the theme's own colours. */
+export interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg viewBox="0 0 200 230" class:list={['block', className]} aria-hidden="true">
+  <rect width="200" height="230" class="fill-stone-200 dark:fill-stone-700"></rect>
+  <circle cx="100" cy="92" r="42" class="fill-stone-400 dark:fill-stone-500"></circle>
+  <path d="M28 230c4-52 36-78 72-78s68 26 72 78z" class="fill-stone-400 dark:fill-stone-500"></path>
+</svg>

@@ -1,0 +1,32 @@
+---
+/** Compress PDF hitting a target: before → after, with the target marked on a meter. */
+export interface Props {
+  before: string;
+  after: string;
+  target: string;
+  /** Meter width as a literal Tailwind class (e.g. "w-[98%]"), so the class is generated at build. */
+  meter: string;
+}
+const { before, after, target, meter } = Astro.props;
+---
+
+<div class="p-4">
+  <div class="flex items-baseline justify-between gap-3 font-mono">
+    <span class="text-sm text-stone-600 line-through decoration-stone-400 dark:text-stone-400">
+      {before}
+    </span>
+    <span class="text-2xl font-semibold tracking-tight text-stone-950 dark:text-stone-50">
+      {after}
+    </span>
+  </div>
+  <div class="relative mt-3 h-2 rounded-full bg-stone-200 dark:bg-stone-800">
+    <span
+      class:list={['absolute inset-y-0 left-0 rounded-full bg-brand-600 dark:bg-brand-500', meter]}
+    ></span>
+    <span class="absolute -top-1 right-0 h-4 w-px bg-stone-500"></span>
+  </div>
+  <div class="mt-2 flex justify-between font-mono text-[10px] text-stone-600 dark:text-stone-400">
+    <span>0</span>
+    <span>target {target}</span>
+  </div>
+</div>

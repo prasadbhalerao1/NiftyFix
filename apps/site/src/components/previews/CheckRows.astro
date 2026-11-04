@@ -1,0 +1,59 @@
+---
+/**
+ * The validation report as the Photo Resizer shows it (same rows, same wording):
+ * requirement, required value, the produced file's value, and the result.
+ */
+export interface Row {
+  label: string;
+  required: string;
+  actual: string;
+  status: 'pass' | 'not-checked';
+}
+export interface Props {
+  rows: readonly Row[];
+  compact?: boolean;
+}
+const { rows, compact = false } = Astro.props;
+---
+
+<table class:list={['w-full text-left', compact ? 'text-xs' : 'text-sm']}>
+  <thead class="font-mono text-[10px] tracking-wider text-stone-600 uppercase dark:text-stone-400">
+    <tr>
+      <th class="py-2 pr-2 font-medium">Requirement</th>
+      {compact ? null : <th class="py-2 pr-2 font-medium">Required</th>}
+      <th class="py-2 pr-2 font-medium">Your file</th>
+      <th class="py-2 text-right font-medium">Result</th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-stone-200 dark:divide-stone-800">
+    {rows.map(({ label, required, actual, status }) => (
+      <tr>
+        <td class="py-2 pr-2 font-medium">{label}</td>
+        {compact ? null : (
+          <td class="py-2 pr-2 font-mono text-stone-700 dark:text-stone-400">{required}</td>
+        )}
+        <td class="py-2 pr-2 font-mono">{actual}</td>
+        <td class="py-2 text-right">
+          {status === 'pass' ? (
+            <span class="inline-flex items-center gap-1 font-medium text-emerald-800 dark:text-emerald-400">
+              <svg
+                viewBox="0 0 16 16"
+                class="size-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 8.5 6.5 12 13 4.5" />
+              </svg>
+              Pass
+            </span>
+          ) : (
+            <span class="text-stone-600 dark:text-stone-400">Not checked</span>
+          )}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>

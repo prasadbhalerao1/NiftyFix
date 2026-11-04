@@ -1,66 +1,75 @@
 ---
 import Base from '../layouts/Base.astro';
-import CatalogueGrid from '../components/CatalogueGrid.astro';
+import SearchBox from '../components/SearchBox.astro';
+import ToolRow from '../components/ToolRow.astro';
+import CheckRows from '../components/previews/CheckRows.astro';
+import PagesPreview from '../components/previews/PagesPreview.astro';
+import PortraitArt from '../components/previews/PortraitArt.astro';
+import SizePreview from '../components/previews/SizePreview.astro';
+import Window from '../components/previews/Window.astro';
 import { absoluteUrl, registry, SITE_NAME } from '../data/registry';
-import { categoryPath, toolPath, variantPath } from '@niftyfix/registry';
-import { CATEGORIES, CATEGORY_IDS } from '@niftyfix/tool-sdk';
+import { categoryPath, toolPath, variantPath, type CatalogueItem } from '@niftyfix/registry';
+import { CATEGORIES, CATEGORY_IDS, type ToolManifest } from '@niftyfix/tool-sdk';
 
-const categories = CATEGORY_IDS.map((id) => {
-  const items = registry.catalogue(id);
-  const ready = items.filter((item) => item.kind === 'built').length;
-  return { id, ready, planned: items.length - ready };
-});
-const allTools = CATEGORY_IDS.flatMap((id) => registry.catalogue(id));
 const liveCount = registry.indexable().length;
-
-/** One-click intents people search for most (see docs/seo/keyword-research-2026-11.md). */
-const popular = registry
-  .variantPages()
-  .filter(({ variant }) =>
-    [
-      'compress-pdf-to-200kb',
-      'resize-photo-to-20kb',
-      'signature-resize-10-to-20kb',
-      'resize-pdf-to-a4',
-      'compress-pdf-to-1mb',
-    ].includes(variant.slug),
-  )
-  .map(({ entry, variant }) => ({
-    href: variantPath(entry.manifest, variant),
-    label: variant.h1,
-  }));
-
-/** Tools featured in the grid, each with an icon (24×24 stroke paths). */
-const FEATURED: { id: string; icon: string }[] = [
-  { id: 'forms.photo-resizer', icon: 'M4 5h16v14H4zM4 15l4-4 4 4 3-3 5 5M15 9.5h.01' },
-  { id: 'pdf.compress-pdf', icon: 'M12 3v6m0 0 3-3m-3 3-3-3M12 21v-6m0 0 3 3m-3-3-3 3M4 12h16' },
-  {
-    id: 'forms.signature-resizer',
-    icon: 'M3 17c3 0 4-8 7-8s1 8 4 8 3-4 4-4 2 2 3 2M3 21h18',
-  },
-  { id: 'pdf.merge-pdf', icon: 'M8 4h8l4 4v12H8zM16 4v4h4M4 8v12h12' },
-  { id: 'pdf.sign-pdf', icon: 'M6 3h9l4 4v14H6zM9 16c1.5 0 2-3 3-3s1 2 2 2 1-1 2-1M9 10h6' },
-  { id: 'pdf.organize-pdf', icon: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z' },
-];
-const featured = FEATURED.flatMap(({ id, icon }) => {
+const tool = (id: string): ToolManifest[] => {
   const entry = registry.byId(id);
-  return entry ? [{ manifest: entry.manifest, icon }] : [];
-});
+  return entry ? [entry.manifest] : [];
+};
+const built = (items: readonly CatalogueItem[]) =>
+  items.flatMap((item) => (item.kind === 'built' ? [item.entry.manifest] : []));
 
-const steps = [
-  {
-    title: 'Drop your file',
-    text: 'A photo, signature, scan or PDF. It opens in your browser and is never uploaded.',
+const intents = registry.variantPages().map(({ entry, variant }) => ({
+  href: variantPath(entry.manifest, variant),
+  label: variant.label,
+  h1: variant.h1,
+  tool: entry.manifest,
+}));
+const heroIntents = [
+  'resize-photo-to-20kb',
+  'signature-resize-10-to-20kb',
+  'compress-pdf-to-200kb',
+  'resize-pdf-to-a4',
+].flatMap((slug) => intents.filter(({ href }) => href.endsWith(`/${slug}/`)));
+
+const formsTools = built(registry.catalogue('forms'));
+const pdfTools = built(registry.catalogue('pdf'));
+const formIntents = intents.filter(({ tool }) => tool.category === 'forms');
+const comingCategories = CATEGORY_IDS.filter((id) => !registry.activeCategories().includes(id)).map(
+  (id) => {
+    const items = registry.catalogue(id);
+    return {
+      id,
+      count: items.length,
+      examples: items
+        .flatMap((item) => (item.kind === 'planned' ? [item.tool.name] : []))
+        .slice(0, 3),
+    };
   },
-  {
-    title: 'Set the requirement',
-    text: 'Pick a ready preset or type the size, dimensions and format the form asks for.',
-  },
-  {
-    title: 'Download with proof',
-    text: 'Every result is checked against your requirement, so you know it will be accepted.',
-  },
-];
+);
+
+const essentials = [
+  'forms.photo-resizer',
+  'pdf.compress-pdf',
+  'pdf.merge-pdf',
+  'forms.signature-resizer',
+  'pdf.sign-pdf',
+  'pdf.organize-pdf',
+  'pdf.pdf-to-image',
+  'pdf.image-to-pdf',
+].flatMap(tool);
+
+const photoChecks = [
+  { label: 'Dimensions', required: '200 × 230 px', actual: '200 × 230 px', status: 'pass' },
+  { label: 'File size', required: '20–50 KB', actual: '38.4 KB', status: 'pass' },
+  { label: 'Format', required: 'JPEG', actual: 'JPEG', status: 'pass' },
+  { label: 'File extension', required: '.jpg', actual: '.jpg', status: 'pass' },
+  { label: 'Resolution (DPI)', required: 'Not set', actual: '—', status: 'not-checked' },
+] as const;
+
+const pdfFlow = ['pdf.merge-pdf', 'pdf.organize-pdf', 'pdf.compress-pdf', 'pdf.sign-pdf'].flatMap(
+  tool,
+);
 
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: absoluteUrl('/') },
@@ -80,312 +89,372 @@ const jsonLd = [
   path="/"
   jsonLd={jsonLd}
 >
-  <section class="relative isolate pb-16 pt-6 text-center sm:pb-24 sm:pt-16">
+  <!-- Hero: search on the left, real tool screens on the right. -->
+  <section class="relative isolate grid items-center gap-12 pt-6 pb-20 lg:grid-cols-[1.05fr_1fr] lg:pt-14 lg:pb-40">
     <div class="hero-backdrop" aria-hidden="true"></div>
-    <p class="hero-rise inline-flex items-center gap-2 rounded-full border border-stone-300 bg-paper/70 px-3 py-1 text-sm font-medium text-stone-700 backdrop-blur dark:border-stone-700/80 dark:bg-stone-900/60 dark:text-stone-300">
-      <span class="relative flex size-2">
-        <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60"></span>
-        <span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
-      </span>
-      {liveCount} tools live · free · no sign-up
-    </p>
-    <h1 class="hero-rise mx-auto mt-6 max-w-4xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
-      Get your files ready for <span class="hero-gradient">any upload.</span>
-    </h1>
-    <p class="hero-rise mx-auto mt-6 max-w-2xl text-lg text-pretty text-stone-700 sm:text-xl dark:text-stone-300">
-      The exact photo, signature or PDF the form asks for: right size, right dimensions, right
-      format, with proof that it fits. Everything happens on your device.
-    </p>
-
-    <form
-      role="search"
-      class="hero-rise mx-auto mt-10 max-w-2xl text-left"
-      action="/"
-      data-tool-search
-    >
-      <label for="tool-search" class="sr-only">
-        What do you need to do?
-      </label>
-      <div class="search-shell group relative">
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          class="pointer-events-none absolute left-5 top-1/2 size-5 -translate-y-1/2 text-stone-500 dark:text-stone-400"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-        >
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="m20 20-3.5-3.5"></path>
-        </svg>
-        <input
-          id="tool-search"
-          type="search"
-          name="q"
-          autocomplete="off"
-          placeholder="What do you need to do? e.g. resize photo for exam form"
-          class="min-h-16 w-full rounded-2xl border border-stone-300 bg-paper pl-14 pr-5 text-base shadow-lg shadow-stone-900/5 outline-none transition placeholder:text-stone-500 focus:border-brand-600 focus:ring-4 focus:ring-brand-500/20 sm:text-lg dark:border-stone-700 dark:bg-stone-900/80 dark:shadow-black/40 dark:placeholder:text-stone-400 dark:focus:border-brand-400"
-        />
-      </div>
-    </form>
-
-    <nav aria-label="Popular" class="hero-rise mx-auto mt-6 max-w-3xl">
-      <ul class="flex flex-wrap justify-center gap-2 text-sm">
-        {popular.map(({ href, label }) => (
-          <li>
-            <a
-              href={href}
-              class="inline-flex min-h-9 items-center rounded-full border border-stone-300 bg-paper/60 px-3.5 text-stone-700 transition hover:border-brand-600 hover:text-brand-800 dark:border-stone-800 dark:bg-stone-900/60 dark:text-stone-300 dark:hover:border-brand-400 dark:hover:text-brand-300"
-            >
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </section>
-
-  <section class="mt-2 hidden" aria-label="Search results" data-results>
-    <CatalogueGrid items={allTools} />
-    <p class="mt-6 hidden text-center text-stone-700 dark:text-stone-400" data-no-results>
-      No tool matches that yet. Try different words, such as “photo size” or “merge PDF”.
-    </p>
-  </section>
-
-  <div data-browse>
-    <ul
-      class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-stone-200 bg-stone-200 text-center lg:grid-cols-4 dark:border-stone-800 dark:bg-stone-800"
-      role="list"
-      aria-label="Why NiftyFix"
-    >
-      {[
-        ['0 uploads', 'Files are processed in your browser'],
-        ['Checked', 'Every result is verified against your limits'],
-        ['Free', 'No sign-up, no watermark, no daily cap'],
-        ['Any form', 'Exam, job and government portals'],
-      ].map(([value, label]) => (
-        <li class="bg-paper px-4 py-6 dark:bg-stone-950">
-          <p class="text-2xl font-semibold tracking-tight">{value}</p>
-          <p class="mt-1 text-sm text-stone-700 dark:text-stone-400">{label}</p>
-        </li>
-      ))}
-    </ul>
-
-    <section aria-labelledby="featured-heading" class="mt-24">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-widest text-brand-700 dark:text-brand-400">
-            Most used
-          </p>
-          <h2 id="featured-heading" class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-            The tools forms keep asking for
-          </h2>
-        </div>
-        <a
-          href={categoryPath('pdf')}
-          class="text-sm font-medium text-brand-800 hover:underline dark:text-brand-300"
-        >
-          See every PDF tool →
-        </a>
-      </div>
-      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
-        {featured.map(({ manifest, icon }) => (
-          <li>
-            <a
-              href={toolPath(manifest)}
-              class="feature-card group relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border border-stone-200 bg-paper p-6 transition duration-300 hover:-translate-y-0.5 hover:border-brand-600/60 hover:shadow-xl hover:shadow-brand-900/5 dark:border-stone-800 dark:bg-stone-900/50 dark:hover:border-brand-400/50 dark:hover:shadow-black/40"
-            >
-              <span class="inline-flex size-11 items-center justify-center rounded-xl bg-brand-100 text-brand-800 ring-1 ring-brand-200 dark:bg-brand-500/10 dark:text-brand-300 dark:ring-brand-400/20">
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  class="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d={icon}></path>
-                </svg>
-              </span>
-              <span class="text-lg font-semibold">{manifest.name}</span>
-              <span class="text-sm text-stone-700 dark:text-stone-400">{manifest.tagline}</span>
-              <span class="mt-auto pt-2 text-sm font-medium text-brand-800 dark:text-brand-300">
-                Open tool
-                <span aria-hidden="true" class="inline-block transition group-hover:translate-x-1">
-                  →
-                </span>
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-
-    <section aria-labelledby="how-heading" class="mt-24">
-      <p class="text-sm font-semibold uppercase tracking-widest text-brand-700 dark:text-brand-400">
-        How it works
+    <div class="rise relative z-10">
+      <p class="eyebrow flex items-center gap-2">
+        <span class="relative flex size-2">
+          <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60"></span>
+          <span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
+        </span>
+        {liveCount} tools live · runs on your device
       </p>
-      <h2 id="how-heading" class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-        Three steps. No account. No waiting.
-      </h2>
-      <ol class="mt-8 grid gap-4 md:grid-cols-3">
-        {steps.map(({ title, text }, index) => (
-          <li class="relative rounded-2xl border border-stone-200 bg-paper p-6 dark:border-stone-800 dark:bg-stone-900/50">
-            <span class="font-mono text-sm text-brand-700 dark:text-brand-400">0{index + 1}</span>
-            <h3 class="mt-3 text-lg font-semibold">{title}</h3>
-            <p class="mt-2 text-sm text-stone-700 dark:text-stone-400">{text}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-
-    <section
-      aria-labelledby="privacy-heading"
-      class="privacy-panel relative isolate mt-24 overflow-hidden rounded-3xl border border-stone-200 bg-paper px-6 py-12 sm:px-12 dark:border-stone-800 dark:bg-stone-900/60"
-    >
-      <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-widest text-brand-700 dark:text-brand-400">
-            Private by design
-          </p>
-          <h2 id="privacy-heading" class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Your Aadhaar scan never leaves your phone.
-          </h2>
-          <p class="mt-4 text-stone-700 dark:text-stone-300">
-            Most online tools upload your documents to their servers. NiftyFix does the work inside
-            your browser, in a locked-down sandbox that is not allowed to send anything anywhere.
-          </p>
+      <h1 class="display mt-5 text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-[4.25rem]">
+        Get your files ready for <span class="accent">any</span> upload.
+      </h1>
+      <p class="mt-6 max-w-xl text-lg text-pretty text-stone-700 dark:text-stone-300">
+        The exact photo, signature or PDF a form asks for — right size, right dimensions, right
+        format — checked before you download. Nothing is uploaded.
+      </p>
+      <div class="mt-8 max-w-xl">
+        <SearchBox id="tool-search" label="What do you need to do?" readQuery />
+      </div>
+      <nav aria-label="Popular" class="mt-5 flex max-w-xl flex-wrap items-center gap-2 text-sm">
+        <span class="eyebrow mr-1">Try</span>
+        {heroIntents.map(({ href, h1 }) => (
           <a
-            href="/privacy-verification/"
-            class="mt-6 inline-flex min-h-11 items-center rounded-full bg-brand-700 px-5 font-medium text-white transition hover:bg-brand-800"
+            href={href}
+            class="rounded-full border border-stone-300 px-3 py-1.5 text-stone-700 transition-colors hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:text-stone-300 dark:hover:border-brand-400 dark:hover:text-brand-300"
           >
-            See how to verify it yourself
+            {h1}
           </a>
+        ))}
+      </nav>
+    </div>
+
+    <!-- Layered composition of real screens: the photo check, a PDF target, the page grid. -->
+    <div class="rise relative mx-auto w-full max-w-[34rem] lg:mx-0" aria-hidden="true">
+      <Window title="Form Photo Resizer — photo.jpg" class="relative z-10">
+        <div class="grid gap-4 p-4 sm:grid-cols-[8rem_1fr]">
+          <div class="hidden sm:block">
+            <div class="overflow-hidden rounded-md ring-2 ring-brand-600 dark:ring-brand-400">
+              <PortraitArt class="w-full" />
+            </div>
+            <p class="mt-2 text-center font-mono text-[10px] text-stone-600 dark:text-stone-400">
+              3.1 MB → 38.4 KB
+            </p>
+          </div>
+          <CheckRows rows={photoChecks.slice(0, 4)} compact />
         </div>
-        <ul class="flex flex-col gap-3" role="list">
-          {[
-            'Processing runs on your device, not on a server',
-            'The tool sandbox is blocked from making network requests',
-            'No accounts, no file history, nothing to leak',
-            'Nothing to install: it runs in your browser',
-          ].map((point) => (
-            <li class="flex items-start gap-3 rounded-xl border border-stone-200 bg-cream/60 p-4 dark:border-stone-800 dark:bg-stone-950/60">
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                class="mt-0.5 size-5 shrink-0 text-emerald-700 dark:text-emerald-400"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M20 6 9 17l-5-5"></path>
-              </svg>
-              <span>{point}</span>
+        <div class="flex items-center justify-between gap-3 border-t border-stone-200 px-4 py-3 dark:border-stone-800">
+          <span class="flex items-center gap-2 text-sm font-medium text-emerald-800 dark:text-emerald-400">
+            <svg
+              viewBox="0 0 16 16"
+              class="size-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 8.5 6.5 12 13 4.5"></path>
+            </svg>
+            Meets every requirement
+          </span>
+          <span class="rounded-lg bg-brand-700 px-3 py-1.5 text-sm font-medium text-white">
+            Download
+          </span>
+        </div>
+      </Window>
+      <Window
+        title="Compress PDF"
+        class="relative z-20 -mt-4 ml-auto w-[70%] sm:w-[62%] lg:absolute lg:-right-8 lg:-bottom-32 lg:mt-0 lg:w-[52%]"
+      >
+        <SizePreview before="4.8 MB" after="196 KB" target="200 KB" meter="w-[98%]" />
+      </Window>
+      <Window
+        title="Organize PDF — 4 pages"
+        class="absolute -bottom-40 -left-10 hidden w-[52%] lg:block"
+      >
+        <PagesPreview />
+      </Window>
+    </div>
+  </section>
+
+  <!-- Categories: what is live is large; what is coming is a dense index. -->
+  <section aria-labelledby="workshops-heading">
+    <p class="eyebrow">Categories</p>
+    <h2 id="workshops-heading" class="section-title mt-3">
+      {registry.activeCategories().length} categories open today.{' '}
+      <span class="quiet">{comingCategories.length} more on the roadmap.</span>
+    </h2>
+
+    <div class="mt-10 grid gap-4 lg:grid-cols-12">
+      <article class="panel flex flex-col overflow-hidden lg:col-span-7">
+        <div class="flex flex-col gap-6 p-6 sm:flex-row sm:p-8">
+          <div class="flex-1">
+            <p class="eyebrow text-brand-800 dark:text-brand-400">Form-ready</p>
+            <h3 class="mt-2 text-2xl font-semibold tracking-tight">
+              <a href={categoryPath('forms')} class="hover:underline">
+                Photos and signatures that pass the upload
+              </a>
+            </h3>
+            <p class="mt-3 text-stone-700 dark:text-stone-400">{CATEGORIES.forms.description}</p>
+          </div>
+          <div class="flex shrink-0 gap-3 sm:w-44 sm:flex-col" aria-hidden="true">
+            <div class="flex items-center gap-2 rounded-lg border border-stone-200 px-3 py-2 font-mono text-xs dark:border-stone-800">
+              <span class="size-1.5 rounded-full bg-emerald-500"></span>200 × 230 px
+            </div>
+            <div class="flex items-center gap-2 rounded-lg border border-stone-200 px-3 py-2 font-mono text-xs dark:border-stone-800">
+              <span class="size-1.5 rounded-full bg-emerald-500"></span>20–50 KB
+            </div>
+            <div class="flex items-center gap-2 rounded-lg border border-stone-200 px-3 py-2 font-mono text-xs dark:border-stone-800">
+              <span class="size-1.5 rounded-full bg-emerald-500"></span>JPEG
+            </div>
+          </div>
+        </div>
+        <ul
+          class="grid border-t border-stone-200 p-2 sm:grid-cols-2 dark:border-stone-800"
+          role="list"
+        >
+          {formsTools.map((manifest) => (
+            <li>
+              <ToolRow manifest={manifest} />
             </li>
           ))}
         </ul>
-      </div>
-    </section>
-
-    <section aria-labelledby="categories-heading" class="mt-24">
-      <p class="text-sm font-semibold uppercase tracking-widest text-brand-700 dark:text-brand-400">
-        Everything else
-      </p>
-      <h2 id="categories-heading" class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-        Browse tools by category
-      </h2>
-      <ul class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
-        {categories.map(({ id, ready, planned }) => (
-          <li>
+        <div class="mt-auto flex flex-wrap gap-2 border-t border-stone-200 px-6 py-4 dark:border-stone-800">
+          {formIntents.map(({ href, h1 }) => (
             <a
-              href={categoryPath(id)}
-              class="group flex h-full flex-col gap-1 rounded-2xl border border-stone-200 bg-paper p-5 transition hover:border-brand-600/60 dark:border-stone-800 dark:bg-stone-900/40 dark:hover:border-brand-400/50"
-              data-category-card
+              href={href}
+              class="rounded-md bg-stone-100 px-2.5 py-1 font-mono text-xs text-stone-800 transition-colors hover:bg-brand-100 hover:text-brand-900 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-brand-500/15 dark:hover:text-brand-300"
             >
-              <span class="flex items-center justify-between gap-3">
-                <span class="font-semibold group-hover:text-brand-800 dark:group-hover:text-brand-300">
-                  {CATEGORIES[id].h1}
-                </span>
-                {ready > 0 ? (
-                  <span class="shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900 dark:bg-emerald-500/10 dark:text-emerald-300">
-                    {ready} live
-                  </span>
-                ) : (
-                  <span class="shrink-0 rounded-full bg-stone-200 px-2 py-0.5 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300">
-                    Soon
-                  </span>
-                )}
-              </span>
-              <span class="text-sm text-stone-700 dark:text-stone-400">
-                {CATEGORIES[id].description}
-              </span>
-              <span class="mt-2 text-xs text-stone-700 dark:text-stone-400">
-                {ready > 0 && planned > 0 ? `${planned} more coming soon` : ''}
-                {ready === 0 ? `${planned} tools planned` : ''}
-              </span>
+              {h1}
             </a>
+          ))}
+        </div>
+      </article>
+
+      <article class="panel flex flex-col overflow-hidden lg:col-span-5">
+        <div class="p-6 sm:p-8">
+          <p class="eyebrow text-brand-800 dark:text-brand-400">PDF · {pdfTools.length} tools</p>
+          <h3 class="mt-2 text-2xl font-semibold tracking-tight">
+            <a href={categoryPath('pdf')} class="hover:underline">
+              The whole PDF desk
+            </a>
+          </h3>
+          <p class="mt-3 text-stone-700 dark:text-stone-400">{CATEGORIES.pdf.description}</p>
+        </div>
+        <ul
+          class="grid grid-cols-2 gap-x-2 border-t border-stone-200 px-4 py-3 text-sm dark:border-stone-800"
+          role="list"
+        >
+          {pdfTools.map((manifest) => (
+            <li>
+              <a
+                href={toolPath(manifest)}
+                class="block truncate rounded-md px-2 py-1.5 text-stone-800 transition-colors hover:bg-stone-100 hover:text-brand-800 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-brand-300"
+              >
+                {manifest.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="panel p-6 sm:p-8 lg:col-span-12">
+        <div class="flex flex-wrap items-baseline justify-between gap-3">
+          <h3 class="text-lg font-semibold tracking-tight">Coming next</h3>
+          <a
+            href="/tools/"
+            class="text-sm font-medium text-brand-800 hover:underline dark:text-brand-300"
+          >
+            See the full catalogue →
+          </a>
+        </div>
+        <ul class="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
+          {comingCategories.map(({ id, count, examples }) => (
+            <li>
+              <a href={categoryPath(id)} class="group block">
+                <span class="flex items-baseline justify-between gap-2 border-b border-stone-200 pb-2 dark:border-stone-800">
+                  <span class="font-medium group-hover:text-brand-800 dark:group-hover:text-brand-300">
+                    {CATEGORIES[id].name}
+                  </span>
+                  <span class="font-mono text-xs text-stone-600 dark:text-stone-400">{count}</span>
+                </span>
+                <span class="mt-2 block text-sm text-stone-700 dark:text-stone-400">
+                  {examples.join(' · ')}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Essentials: a calm two-column list, like a launcher. -->
+  <section aria-labelledby="essentials-heading" class="mt-28">
+    <div class="grid gap-10 lg:grid-cols-[1.1fr_2fr]">
+      <div>
+        <p class="eyebrow">Start here</p>
+        <h2 id="essentials-heading" class="section-title mt-3">
+          The tools forms ask for.{' '}
+          <span class="quiet">
+            One click away, or <kbd class="keycap align-middle">Ctrl K</kbd> from anywhere.
+          </span>
+        </h2>
+      </div>
+      <ul class="grid gap-1 sm:grid-cols-2" role="list">
+        {essentials.map((manifest) => (
+          <li>
+            <ToolRow manifest={manifest} />
           </li>
         ))}
       </ul>
-    </section>
+    </div>
+  </section>
 
-    <section class="mt-24 mb-8 text-center" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" class="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-        Your form is waiting. Your file can be ready in seconds.
+  <!-- Upload-ready: the validation report is the product. -->
+  <section aria-labelledby="ready-heading" class="mt-28">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow">Upload-ready</p>
+        <h2 id="ready-heading" class="section-title mt-3">
+          Proof, not promises.{' '}
+          <span class="quiet">
+            Every file is checked against your requirement before you download it.
+          </span>
+        </h2>
+        <ul class="mt-8 flex flex-col gap-4 text-stone-700 dark:text-stone-300" role="list">
+          <li class="flex gap-3">
+            <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-600"></span>
+            Set the exact pixel size, the KB range and the format the portal publishes.
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-600"></span>
+            The result is measured from the file itself, not from the settings you chose.
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-600"></span>
+            Anything that was not checked says so plainly, so you know what to look at yourself.
+          </li>
+        </ul>
+        <a
+          href={categoryPath('forms')}
+          class="mt-8 inline-flex min-h-11 items-center rounded-lg bg-brand-700 px-5 font-medium text-white transition-colors hover:bg-brand-800"
+        >
+          Prepare a photo or signature
+        </a>
+      </div>
+      <div class="relative" aria-hidden="true">
+        <Window title="Result — validation report">
+          <div class="grid grid-cols-2 gap-px border-b border-stone-200 bg-stone-200 dark:border-stone-800 dark:bg-stone-800">
+            <div class="bg-paper p-4 dark:bg-stone-900">
+              <p class="eyebrow">Original</p>
+              <p class="mt-1 font-mono text-sm">3024 × 4032 · 3.1 MB</p>
+            </div>
+            <div class="bg-paper p-4 dark:bg-stone-900">
+              <p class="eyebrow">Output</p>
+              <p class="mt-1 font-mono text-sm text-brand-800 dark:text-brand-300">
+                200 × 230 · 38.4 KB
+              </p>
+            </div>
+          </div>
+          <div class="px-4 pb-2">
+            <CheckRows rows={photoChecks} />
+          </div>
+        </Window>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflows: a whole task, step by step. -->
+  <section aria-labelledby="flow-heading" class="mt-28">
+    <p class="eyebrow">Workflows</p>
+    <h2 id="flow-heading" class="section-title mt-3">
+      Finish the whole task.{' '}
+      <span class="quiet">Download from one tool and drop it into the next.</span>
+    </h2>
+    <ol class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {pdfFlow.map((manifest, index) => (
+        <li class="panel relative flex flex-col gap-3 p-5">
+          <span class="font-mono text-xs text-brand-800 dark:text-brand-400">Step {index + 1}</span>
+          <a
+            href={toolPath(manifest)}
+            class="text-lg font-semibold tracking-tight after:absolute after:inset-0 hover:text-brand-800 dark:hover:text-brand-300"
+          >
+            {manifest.name}
+          </a>
+          <span class="line-clamp-2 text-sm text-stone-700 dark:text-stone-400">
+            {manifest.tagline}
+          </span>
+          {index < pdfFlow.length - 1 ? (
+            <span
+              aria-hidden="true"
+              class="absolute top-1/2 -right-2.5 z-10 hidden size-5 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200 bg-cream text-xs text-stone-600 lg:flex dark:border-stone-700 dark:bg-stone-950 dark:text-stone-400"
+            >
+              →
+            </span>
+          ) : null}
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Privacy: an architecture claim, with a way to verify it. -->
+  <section
+    aria-labelledby="privacy-heading"
+    class="panel mt-28 grid gap-10 overflow-hidden p-6 sm:p-10 lg:grid-cols-[1.2fr_1fr]"
+  >
+    <div>
+      <p class="eyebrow">Private by design</p>
+      <h2 id="privacy-heading" class="section-title mt-3">
+        Your Aadhaar scan never leaves your phone.
       </h2>
+      <p class="mt-4 max-w-xl text-stone-700 dark:text-stone-300">
+        Most online tools upload your documents to their servers. NiftyFix does the work inside your
+        browser, in a sandbox that is not allowed to send anything anywhere.
+      </p>
       <a
-        href="#tool-search"
-        class="mt-8 inline-flex min-h-12 items-center rounded-full bg-brand-700 px-6 font-medium text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800"
+        href="/privacy-verification/"
+        class="mt-6 inline-flex items-center gap-1 font-medium text-brand-800 hover:underline dark:text-brand-300"
       >
-        Find your tool
+        Verify it yourself in two minutes →
       </a>
-    </section>
-  </div>
+    </div>
+    <pre
+      class="self-center overflow-x-auto rounded-xl border border-stone-200 bg-cream p-4 font-mono text-xs leading-relaxed text-stone-700 dark:border-stone-800 dark:bg-stone-950 dark:text-stone-300"
+      aria-label="The tool sandbox's network policy"
+    >Content-Security-Policy:
+  connect-src <span class="text-brand-800 dark:text-brand-300">'self'</span>
+  form-action <span class="text-brand-800 dark:text-brand-300">'none'</span>
+  frame-src   <span class="text-brand-800 dark:text-brand-300">'none'</span>
+
+<span class="text-emerald-800 dark:text-emerald-400"># files: read in the browser, never sent</span></pre>
+  </section>
+
+  <!-- Long tail: every intent page, as plain links. -->
+  <section aria-labelledby="searches-heading" class="mt-28">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Popular searches</p>
+        <h2 id="searches-heading" class="section-title mt-3">
+          Already set up for you. <span class="quiet">Open with the size filled in.</span>
+        </h2>
+      </div>
+      <a
+        href="/tools/"
+        class="text-sm font-medium text-brand-800 hover:underline dark:text-brand-300"
+      >
+        Browse all tools →
+      </a>
+    </div>
+    <ul class="mt-8 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      {intents.map(({ href, h1, tool }) => (
+        <li>
+          <a
+            href={href}
+            class="group flex items-baseline justify-between gap-3 border-b border-stone-200 py-3 dark:border-stone-800"
+          >
+            <span class="group-hover:text-brand-800 dark:group-hover:text-brand-300">{h1}</span>
+            <span class="shrink-0 font-mono text-xs text-stone-600 dark:text-stone-400">
+              {tool.name}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
 </Base>
-
-<script>
-  // Progressive enhancement: while the user types, the page below the search gives way
-  // to matching tools from every category (ready tools link; planned ones say so).
-  const form = document.querySelector<HTMLFormElement>('[data-tool-search]');
-  const input = form?.querySelector<HTMLInputElement>('input[type="search"]');
-  const browse = document.querySelector<HTMLElement>('[data-browse]');
-  const results = document.querySelector<HTMLElement>('[data-results]');
-  const cards = [...(results?.querySelectorAll<HTMLElement>('[data-tool-card]') ?? [])];
-  const empty = document.querySelector<HTMLElement>('[data-no-results]');
-
-  const filter = (): void => {
-    const words = (input?.value ?? '').toLowerCase().split(/\s+/).filter(Boolean);
-    const searching = words.length > 0;
-    let shown = 0;
-    for (const card of cards) {
-      const match = searching && words.every((word) => (card.dataset.terms ?? '').includes(word));
-      card.hidden = !match;
-      if (match) shown += 1;
-    }
-    browse?.toggleAttribute('hidden', searching);
-    results?.classList.toggle('hidden', !searching);
-    empty?.classList.toggle('hidden', shown > 0);
-  };
-
-  form?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const first = cards.find((card) => !card.hidden && card instanceof HTMLAnchorElement);
-    if (first instanceof HTMLAnchorElement) first.click();
-  });
-  input?.addEventListener('input', filter);
-  if (input && new URLSearchParams(location.search).has('q')) {
-    input.value = new URLSearchParams(location.search).get('q') ?? '';
-    filter();
-  }
-  // "Find your tool" focuses the search, ready to type.
-  document.querySelector('a[href="#tool-search"]')?.addEventListener('click', (event) => {
-    event.preventDefault();
-    input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    input?.focus({ preventScroll: true });
-  });
-</script>

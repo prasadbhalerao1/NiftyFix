@@ -1,0 +1,20 @@
+---
+/** A product window frame for interface previews: title bar with a mono file name. */
+export interface Props {
+  title: string;
+  class?: string;
+}
+const { title, class: className } = Astro.props;
+---
+
+<div class:list={['preview-window', className]} aria-hidden="true">
+  <div class="flex items-center gap-1.5 border-b border-stone-200 px-3 py-2 dark:border-stone-800">
+    <span class="size-2.5 rounded-full bg-stone-300 dark:bg-stone-700"></span>
+    <span class="size-2.5 rounded-full bg-stone-300 dark:bg-stone-700"></span>
+    <span class="size-2.5 rounded-full bg-stone-300 dark:bg-stone-700"></span>
+    <span class="ml-2 truncate font-mono text-[11px] text-stone-600 dark:text-stone-400">
+      {title}
+    </span>
+  </div>
+  <slot />
+</div>

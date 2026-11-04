@@ -1,32 +1,18 @@
 ---
-import type { ExecutionMode, PlannedTool } from '@niftyfix/registry';
+import type { PlannedTool } from '@niftyfix/registry';
 
 export interface Props {
   tool: PlannedTool;
 }
 const { tool } = Astro.props;
-
-/** What users can expect once it ships; "gated" items are pending a legal or licence review. */
-const NOTES: Record<ExecutionMode, string> = {
-  browser: 'Will run on your device',
-  server: 'Will need an upload to our servers',
-  ai: 'Will use an AI model',
-  gated: 'Under review',
-};
 ---
 
 <!-- Not a link: a planned tool has no page until it works. -->
 <div
-  class="flex h-full flex-col gap-1 rounded-[var(--radius-panel)] border border-dashed border-stone-300 p-4 dark:border-stone-700"
+  class="border-b border-dashed border-stone-300 py-2.5 dark:border-stone-800"
   data-tool-card
   data-planned
-  data-terms={tool.name.toLowerCase()}
+  data-terms={`${tool.name} ${tool.slug.replaceAll('-', ' ')}`.toLowerCase()}
 >
-  <span class="flex items-start justify-between gap-2">
-    <span class="font-semibold text-stone-700 dark:text-stone-300">{tool.name}</span>
-    <span class="shrink-0 rounded-full bg-stone-100 px-2 py-0.5 text-xs text-stone-700 dark:bg-stone-800 dark:text-stone-300">
-      Coming soon
-    </span>
-  </span>
-  <span class="text-sm text-stone-600 dark:text-stone-400">{NOTES[tool.mode]}</span>
+  <span class="text-stone-800 dark:text-stone-300">{tool.name}</span>
 </div>

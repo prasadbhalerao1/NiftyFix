@@ -1,0 +1,21 @@
+---
+import SearchBox from './SearchBox.astro';
+---
+
+<dialog class="palette" aria-label="Search tools" data-palette>
+  <div class="palette-panel">
+    <SearchBox id="palette-search" variant="palette" suggest />
+    <p class="flex items-center gap-4 border-t border-stone-200 px-4 py-2.5 text-xs text-stone-600 dark:border-stone-800 dark:text-stone-400">
+      <span class="flex items-center gap-1">
+        <kbd class="keycap">↑</kbd>
+        <kbd class="keycap">↓</kbd> move
+      </span>
+      <span class="flex items-center gap-1">
+        <kbd class="keycap">↵</kbd> open
+      </span>
+      <span class="flex items-center gap-1">
+        <kbd class="keycap">Esc</kbd> close
+      </span>
+    </p>
+  </div>
+</dialog>

@@ -1,0 +1,76 @@
+---
+/**
+ * A tool search combobox (behaviour in src/scripts/search.ts). Without
+ * JavaScript the form submits to the home page with ?q=, which runs the search.
+ */
+export interface Props {
+  id: string;
+  label?: string;
+  variant?: 'hero' | 'palette';
+  /** Show a few tools before anything is typed (the palette). */
+  suggest?: boolean;
+  /** Fill in and run ?q= from the URL (the home page). */
+  readQuery?: boolean;
+}
+const {
+  id,
+  label = 'Search tools',
+  variant = 'hero',
+  suggest = false,
+  readQuery = false,
+} = Astro.props;
+---
+
+<div
+  class:list={['search-box relative', variant === 'hero' ? 'search-hero' : 'search-palette']}
+  data-search
+  data-suggest={String(suggest)}
+  data-read-query={String(readQuery)}
+>
+  <form role="search" action="/" method="get">
+    <label for={id} class="sr-only">
+      {label}
+    </label>
+    <div class="relative">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        class="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-stone-500 dark:text-stone-400"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input
+        id={id}
+        type="search"
+        name="q"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="What do you need to do?"
+        class="search-input"
+        data-search-input
+      />
+      {variant === 'hero' ? (
+        <span class="pointer-events-none absolute top-1/2 right-4 hidden -translate-y-1/2 items-center gap-1 sm:flex">
+          <kbd class="keycap">Ctrl</kbd>
+          <kbd class="keycap">K</kbd>
+        </span>
+      ) : null}
+    </div>
+  </form>
+  <ul
+    class="search-results"
+    role="listbox"
+    aria-label="Matching tools"
+    hidden
+    data-search-results
+  ></ul>
+</div>
+
+<script>
+  import '../scripts/search';
+</script>

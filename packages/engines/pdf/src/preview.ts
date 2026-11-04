@@ -9,7 +9,88 @@ import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { ToolError } from '@niftyfix/tool-sdk';
 import { PDFJS_ASSET_PATH } from './assets';
 
+/** A fillable field as a person sees it (radio buttons with the same name are one question). */
+export interface FormFieldInfo {
+  name: string;
+  kind: 'text' | 'checkbox' | 'radio' | 'choice';
+  value: string | boolean;
+  /** Radio and choice options (their export values). */
+  options: string[];
+  multiline: boolean;
+  maxLength: number | null;
+  readOnly: boolean;
+  /** 0-based page of the field's first widget. */
+  page: number;
+}
+
+interface RawField {
+  type?: string;
+  name?: string;
+  value?: unknown;
+  exportValues?: unknown;
+  items?: { exportValue?: unknown }[];
+  multiline?: boolean;
+  charLimit?: number;
+  editable?: boolean;
+  page?: number;
+}
+
+function normaliseFields(
+  raw: Map<string, RawField[]> | Record<string, RawField[]> | null,
+): FormFieldInfo[] {
+  if (!raw) return [];
+  const entries = raw instanceof Map ? [...raw.entries()] : Object.entries(raw);
+  const fields: FormFieldInfo[] = [];
+  for (const [name, widgets] of entries) {
+    const first = widgets.find((widget) => widget.type && widget.type !== '');
+    if (!first) continue;
+    const base = {
+      name,
+      readOnly: first.editable === false,
+      page: first.page ?? 0,
+      multiline: first.multiline === true,
+      maxLength:
+        typeof first.charLimit === 'number' && first.charLimit > 0 ? first.charLimit : null,
+    };
+    if (first.type === 'text') {
+      fields.push({
+        ...base,
+        kind: 'text',
+        value: typeof first.value === 'string' ? first.value : '',
+        options: [],
+      });
+    } else if (first.type === 'checkbox') {
+      fields.push({
+        ...base,
+        kind: 'checkbox',
+        value: first.value !== 'Off' && first.value !== '',
+        options: [],
+      });
+    } else if (first.type === 'radiobutton') {
+      const options = [
+        ...new Set(widgets.map((widget) => String(widget.exportValues ?? '')).filter(Boolean)),
+      ];
+      const value = String(first.value ?? 'Off');
+      fields.push({ ...base, kind: 'radio', value: value === 'Off' ? '' : value, options });
+    } else if (first.type === 'combobox' || first.type === 'listbox') {
+      const options = (first.items ?? [])
+        .map((item) => String(item.exportValue ?? ''))
+        .filter(Boolean);
+      const value = Array.isArray(first.value)
+        ? String(first.value[0] ?? '')
+        : String(first.value ?? '');
+      fields.push({ ...base, kind: 'choice', value, options });
+    }
+    // Push buttons and signature fields are not fillable values; they are skipped.
+  }
+  return fields;
+}
+
 export interface PreviewDocument {
+  /** Fillable form fields (empty for documents without a form). */
+  fields(): Promise<FormFieldInfo[]>;
+  /** True for XFA-only forms, which browsers cannot fill. */
+  isXfa: boolean;
   pageCount: number;
   /** Page sizes in points as displayed (rotation applied), for laying out placeholders. */
   sizes: { width: number; height: number }[];
@@ -64,6 +145,9 @@ export async function openPreview(file: Blob): Promise<PreviewDocument> {
   const raw = ((await doc.getMetadata()).info ?? {}) as Record<string, unknown>;
   const text = (key: string): string => (typeof raw[key] === 'string' ? (raw[key] as string) : '');
   return {
+    fields: async () =>
+      normaliseFields((await doc.getFieldObjects()) as Map<string, RawField[]> | null),
+    isXfa: doc.isPureXfa,
     pageCount: doc.numPages,
     sizes,
     info: {

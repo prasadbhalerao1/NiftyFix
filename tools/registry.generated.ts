@@ -11,26 +11,28 @@ import content3 from './pdf/crop-pdf/content';
 import manifest3 from './pdf/crop-pdf/manifest';
 import content4 from './pdf/extract-pdf-pages/content';
 import manifest4 from './pdf/extract-pdf-pages/manifest';
-import content5 from './pdf/flatten-pdf/content';
-import manifest5 from './pdf/flatten-pdf/manifest';
-import content6 from './pdf/image-to-pdf/content';
-import manifest6 from './pdf/image-to-pdf/manifest';
-import content7 from './pdf/merge-pdf/content';
-import manifest7 from './pdf/merge-pdf/manifest';
-import content8 from './pdf/organize-pdf/content';
-import manifest8 from './pdf/organize-pdf/manifest';
-import content9 from './pdf/pdf-metadata/content';
-import manifest9 from './pdf/pdf-metadata/manifest';
-import content10 from './pdf/pdf-to-image/content';
-import manifest10 from './pdf/pdf-to-image/manifest';
-import content11 from './pdf/pdf-to-text/content';
-import manifest11 from './pdf/pdf-to-text/manifest';
-import content12 from './pdf/rotate-pdf/content';
-import manifest12 from './pdf/rotate-pdf/manifest';
-import content13 from './pdf/split-pdf/content';
-import manifest13 from './pdf/split-pdf/manifest';
-import content14 from './pdf/watermark-pdf/content';
-import manifest14 from './pdf/watermark-pdf/manifest';
+import content5 from './pdf/fill-pdf-form/content';
+import manifest5 from './pdf/fill-pdf-form/manifest';
+import content6 from './pdf/flatten-pdf/content';
+import manifest6 from './pdf/flatten-pdf/manifest';
+import content7 from './pdf/image-to-pdf/content';
+import manifest7 from './pdf/image-to-pdf/manifest';
+import content8 from './pdf/merge-pdf/content';
+import manifest8 from './pdf/merge-pdf/manifest';
+import content9 from './pdf/organize-pdf/content';
+import manifest9 from './pdf/organize-pdf/manifest';
+import content10 from './pdf/pdf-metadata/content';
+import manifest10 from './pdf/pdf-metadata/manifest';
+import content11 from './pdf/pdf-to-image/content';
+import manifest11 from './pdf/pdf-to-image/manifest';
+import content12 from './pdf/pdf-to-text/content';
+import manifest12 from './pdf/pdf-to-text/manifest';
+import content13 from './pdf/rotate-pdf/content';
+import manifest13 from './pdf/rotate-pdf/manifest';
+import content14 from './pdf/split-pdf/content';
+import manifest14 from './pdf/split-pdf/manifest';
+import content15 from './pdf/watermark-pdf/content';
+import manifest15 from './pdf/watermark-pdf/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'forms/photo-resizer', manifest: manifest0, content: content0 },
@@ -38,14 +40,15 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/add-page-numbers', manifest: manifest2, content: content2 },
   { dir: 'pdf/crop-pdf', manifest: manifest3, content: content3 },
   { dir: 'pdf/extract-pdf-pages', manifest: manifest4, content: content4 },
-  { dir: 'pdf/flatten-pdf', manifest: manifest5, content: content5 },
-  { dir: 'pdf/image-to-pdf', manifest: manifest6, content: content6 },
-  { dir: 'pdf/merge-pdf', manifest: manifest7, content: content7 },
-  { dir: 'pdf/organize-pdf', manifest: manifest8, content: content8 },
-  { dir: 'pdf/pdf-metadata', manifest: manifest9, content: content9 },
-  { dir: 'pdf/pdf-to-image', manifest: manifest10, content: content10 },
-  { dir: 'pdf/pdf-to-text', manifest: manifest11, content: content11 },
-  { dir: 'pdf/rotate-pdf', manifest: manifest12, content: content12 },
-  { dir: 'pdf/split-pdf', manifest: manifest13, content: content13 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest14, content: content14 },
+  { dir: 'pdf/fill-pdf-form', manifest: manifest5, content: content5 },
+  { dir: 'pdf/flatten-pdf', manifest: manifest6, content: content6 },
+  { dir: 'pdf/image-to-pdf', manifest: manifest7, content: content7 },
+  { dir: 'pdf/merge-pdf', manifest: manifest8, content: content8 },
+  { dir: 'pdf/organize-pdf', manifest: manifest9, content: content9 },
+  { dir: 'pdf/pdf-metadata', manifest: manifest10, content: content10 },
+  { dir: 'pdf/pdf-to-image', manifest: manifest11, content: content11 },
+  { dir: 'pdf/pdf-to-text', manifest: manifest12, content: content12 },
+  { dir: 'pdf/rotate-pdf', manifest: manifest13, content: content13 },
+  { dir: 'pdf/split-pdf', manifest: manifest14, content: content14 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest15, content: content15 },
 ];

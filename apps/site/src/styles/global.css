@@ -126,18 +126,25 @@
   }
 
   /* Hero atmosphere: one soft orange glow over a faint grid, fading at the edges. */
+  /* Static grid, rasterised once; the moving glow is a separate GPU layer (.hero-glow). */
   .hero-backdrop {
     @apply pointer-events-none absolute top-0 left-1/2 -z-10 h-full w-screen -translate-x-1/2;
     --grid-line: color-mix(in oklab, var(--color-stone-900) 6%, transparent);
     background:
-      radial-gradient(
-        50% 60% at var(--gx, 70%) var(--gy, 30%),
-        color-mix(in oklab, var(--color-brand-500) 16%, transparent),
-        transparent 70%
-      ),
       linear-gradient(to right, var(--grid-line) 1px, transparent 1px) 0 0 / 64px 64px,
       linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px) 0 0 / 64px 64px;
     mask-image: radial-gradient(80% 80% at 50% 30%, black 35%, transparent 100%);
+  }
+  .hero-glow {
+    @apply pointer-events-none absolute -z-10 size-[56rem] rounded-full;
+    top: -14rem;
+    left: calc(50% - 6rem);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--color-brand-500) 17%, transparent),
+      transparent
+    );
+    will-change: transform;
   }
   :root:not([data-theme='light']) .hero-backdrop {
     --grid-line: color-mix(in oklab, white 5%, transparent);
@@ -178,17 +185,14 @@
   translate: 0 14px;
 }
 
-/* Hero stage: pointer tilt with layered depth */
+/* Hero stage: pointer tilt with layered depth (transforms set directly by motion.ts) */
 .demo-stage {
-  transform: perspective(1400px) rotateX(calc(var(--ty, 0) * -3deg))
-    rotateY(calc(var(--tx, 0) * 4deg));
   transform-style: preserve-3d;
 }
-.demo-stage .depth-1 {
-  translate: calc(var(--tx, 0) * -10px) calc(var(--ty, 0) * -8px);
-}
-.demo-stage .depth-3 {
-  translate: calc(var(--tx, 0) * 16px) calc(var(--ty, 0) * 12px);
+.motion .demo-stage,
+.motion .demo-stage .depth-1,
+.motion .demo-stage .depth-3 {
+  will-change: transform, translate;
 }
 .replay-button {
   @apply absolute -top-10 right-0 z-30 inline-flex items-center gap-1.5 rounded-full border border-stone-300 bg-paper/80 px-3 py-1 font-mono text-[11px] text-stone-700 backdrop-blur transition-colors hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:bg-stone-900/80 dark:text-stone-300 dark:hover:border-brand-400 dark:hover:text-brand-300;

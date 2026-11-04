@@ -119,20 +119,26 @@ if (motion) {
 }
 
 // Pointer depth: the hero stage tilts and its layers shift; the glow follows.
+// Transforms are set on the moving elements themselves (not inherited custom
+// properties), so each frame is compositor work with no style recalculation.
 if (motion && finePointer) {
   for (const stage of document.querySelectorAll<HTMLElement>('[data-tilt]')) {
     const area = stage.closest('section') ?? stage;
-    const glow = area.querySelector<HTMLElement>('.hero-backdrop');
+    const glow = area.querySelector<HTMLElement>('.hero-glow');
+    const back = stage.querySelector<HTMLElement>('.depth-1');
+    const front = stage.querySelector<HTMLElement>('.depth-3');
     let target = { x: 0, y: 0 };
     const current = { x: 0, y: 0 };
     let frame = 0;
     const tick = (): void => {
       current.x += (target.x - current.x) * 0.08;
       current.y += (target.y - current.y) * 0.08;
-      stage.style.setProperty('--tx', current.x.toFixed(4));
-      stage.style.setProperty('--ty', current.y.toFixed(4));
-      glow?.style.setProperty('--gx', `${(50 + current.x * 30).toFixed(1)}%`);
-      glow?.style.setProperty('--gy', `${(30 + current.y * 25).toFixed(1)}%`);
+      const { x, y } = current;
+      stage.style.transform = `perspective(1400px) rotateX(${(y * -3).toFixed(3)}deg) rotateY(${(x * 4).toFixed(3)}deg)`;
+      if (back) back.style.translate = `${(x * -10).toFixed(2)}px ${(y * -8).toFixed(2)}px`;
+      if (front) front.style.translate = `${(x * 16).toFixed(2)}px ${(y * 12).toFixed(2)}px`;
+      if (glow)
+        glow.style.transform = `translate3d(${(x * 220).toFixed(1)}px, ${(y * 140).toFixed(1)}px, 0)`;
       const settled =
         Math.abs(target.x - current.x) < 0.001 && Math.abs(target.y - current.y) < 0.001;
       frame = settled ? 0 : requestAnimationFrame(tick);
@@ -140,8 +146,12 @@ if (motion && finePointer) {
     const nudge = (): void => {
       if (!frame) frame = requestAnimationFrame(tick);
     };
+    // Measure once per hover, not on every move.
+    let box = area.getBoundingClientRect();
+    area.addEventListener('pointerenter', () => {
+      box = area.getBoundingClientRect();
+    });
     area.addEventListener('pointermove', (event) => {
-      const box = area.getBoundingClientRect();
       target = {
         x: ((event.clientX - box.left) / box.width) * 2 - 1,
         y: ((event.clientY - box.top) / box.height) * 2 - 1,

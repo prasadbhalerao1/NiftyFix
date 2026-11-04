@@ -140,6 +140,14 @@ function attach(root: HTMLElement): void {
 
 for (const root of document.querySelectorAll<HTMLElement>('[data-search]')) attach(root);
 
+// Fetch the index while the page is idle, so the first search answers instantly,
+// unless the visitor has asked to save data.
+const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+  ?.saveData;
+if (!saveData && 'requestIdleCallback' in window) {
+  requestIdleCallback(() => void loadIndex(), { timeout: 5000 });
+}
+
 // Command palette: ⌘K / Ctrl+K or "/" anywhere, or any [data-open-search] button.
 const palette = document.querySelector<HTMLDialogElement>('[data-palette]');
 if (palette) {

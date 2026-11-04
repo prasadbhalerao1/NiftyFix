@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '@niftyfix/ui/theme.css';
+@import '@niftyfix/ui/fonts.css';
 
 @source '../../../../packages/ui/src';
 

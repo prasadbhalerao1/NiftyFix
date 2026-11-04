@@ -38,11 +38,13 @@ orange glow behind the hero and the orange-to-amber accent phrase in the display
 | Section            | Geist                   | 40 / 30px, two-tone sentence | 600, −0.03em         |
 | Card title         | Geist                   | 18px                         | 600                  |
 | Body               | Geist                   | 16–18px                      | 400, 1.6 line height |
-| Labels / eyebrows  | Geist Mono              | 12px uppercase               | 500, +0.08em         |
-| Technical metadata | Geist Mono              | 12–14px, tabular numbers     | 400                  |
+| Labels / eyebrows  | system monospace        | 12px uppercase               | 500, +0.08em         |
+| Technical metadata | system monospace        | 12–14px, tabular numbers     | 400                  |
 
-Self-hosted from `@fontsource` (the CSP allows fonts from our own origin only). Variable fonts,
-Latin subsets; Devanagari falls back to Noto Sans Devanagari / the system font.
+Geist and the Instrument Serif letters subset are self-hosted (the CSP allows fonts from our own
+origin only), Latin only, with `font-display: optional`; monospace uses the system font and the
+tool frame uses the system UI font, so no tool ever waits on a font. Devanagari falls back to
+Noto Sans Devanagari / the system font.
 
 ## Spacing and layout
 

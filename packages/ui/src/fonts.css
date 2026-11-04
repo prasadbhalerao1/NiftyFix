@@ -1,0 +1,41 @@
+/*
+ * Site fonts (SIL Open Font License 1.1), imported by the site only: the tool frame
+ * uses the system font, so a tool never waits on, or shares bandwidth with, a font
+ * download. Monospace text uses the system monospace font. Latin only: Devanagari and other
+ * scripts fall back to the system font. `font-display: optional` means a slow
+ * connection keeps the system font for that page instead of swapping later, so text
+ * never re-renders or shifts; the downloaded font is used from the next page on.
+ * Not preloaded: on slow links a preload competes with the stylesheet and delays
+ * the first paint (measured: 2.0 s → 2.3 s on slow 3G).
+ */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 100 900;
+  src: url('../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 100 900;
+  src: url('../node_modules/@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+/* Display accent only: letters, subset from @fontsource/instrument-serif (9 KB). */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-display: optional;
+  font-weight: 400;
+  src: url('./fonts/instrument-serif-italic-letters.woff') format('woff');
+}

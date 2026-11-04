@@ -6,6 +6,19 @@ const shipped = [
   { name: 'Preact', license: 'MIT', url: 'https://github.com/preactjs/preact' },
   { name: 'Valibot', license: 'MIT', url: 'https://github.com/fabian-hiller/valibot' },
 ];
+/** Fonts served from our own site, all under the SIL Open Font License 1.1. */
+const fonts = [
+  {
+    name: 'Geist',
+    license: 'SIL OFL 1.1',
+    url: 'https://github.com/vercel/geist-font',
+  },
+  {
+    name: 'Instrument Serif (letters subset)',
+    license: 'SIL OFL 1.1',
+    url: 'https://github.com/Instrument/instrument-serif',
+  },
+];
 const buildTools = [
   { name: 'Astro', license: 'MIT', url: 'https://github.com/withastro/astro' },
   { name: 'Vite', license: 'MIT', url: 'https://github.com/vitejs/vite' },
@@ -22,6 +35,14 @@ const buildTools = [
   <h2>Code that runs in your browser</h2>
   <ul>
     {shipped.map((item) => (
+      <li>
+        <a href={item.url}>{item.name}</a> — {item.license}
+      </li>
+    ))}
+  </ul>
+  <h2>Fonts</h2>
+  <ul>
+    {fonts.map((item) => (
       <li>
         <a href={item.url}>{item.name}</a> — {item.license}
       </li>

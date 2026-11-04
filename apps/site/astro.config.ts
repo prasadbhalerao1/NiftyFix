@@ -30,6 +30,8 @@ const headersIntegration: AstroIntegration = {
 export default defineConfig({
   site: siteOrigin,
   trailingSlash: 'always',
+  // Load the next page when a link is hovered or touched; skipped on data-saver and 2G.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   output: 'static',
   build: { format: 'directory', inlineStylesheets: 'never' },
   integrations: [headersIntegration],

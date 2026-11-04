@@ -1,3 +1,5 @@
+import { ToolError } from '@niftyfix/tool-sdk';
+
 /**
  * Page selections typed by users, e.g. "1-3, 5, 8-". Pages are 1-based in
  * text and 0-based in results. Pure functions; no PDF library involved.
@@ -110,4 +112,20 @@ export function describePages(indices: readonly number[]): string {
   }
   flush();
   return parts.join(', ');
+}
+
+/**
+ * Resolve a page selection against the real document. Out-of-range or
+ * malformed selections become an INVALID_OPTIONS error with the exact reason
+ * ("This PDF has 10 pages"), shown to the user next to a retry button.
+ */
+export function selectPages(
+  selection: { mode: 'all' | 'custom'; ranges: string },
+  pageCount: number,
+  { allowRepeat = false }: { allowRepeat?: boolean } = {},
+): number[] {
+  if (selection.mode === 'all') return allPages(pageCount);
+  const result = parsePageRange(selection.ranges, pageCount, { allowRepeat });
+  if (!result.ok) throw new ToolError('INVALID_OPTIONS', result.error);
+  return result.pages;
 }

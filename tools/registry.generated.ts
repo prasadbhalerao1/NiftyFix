@@ -15,12 +15,14 @@ import content5 from './pdf/image-to-pdf/content';
 import manifest5 from './pdf/image-to-pdf/manifest';
 import content6 from './pdf/merge-pdf/content';
 import manifest6 from './pdf/merge-pdf/manifest';
-import content7 from './pdf/rotate-pdf/content';
-import manifest7 from './pdf/rotate-pdf/manifest';
-import content8 from './pdf/split-pdf/content';
-import manifest8 from './pdf/split-pdf/manifest';
-import content9 from './pdf/watermark-pdf/content';
-import manifest9 from './pdf/watermark-pdf/manifest';
+import content7 from './pdf/pdf-to-image/content';
+import manifest7 from './pdf/pdf-to-image/manifest';
+import content8 from './pdf/rotate-pdf/content';
+import manifest8 from './pdf/rotate-pdf/manifest';
+import content9 from './pdf/split-pdf/content';
+import manifest9 from './pdf/split-pdf/manifest';
+import content10 from './pdf/watermark-pdf/content';
+import manifest10 from './pdf/watermark-pdf/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'forms/photo-resizer', manifest: manifest0, content: content0 },
@@ -30,7 +32,8 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/flatten-pdf', manifest: manifest4, content: content4 },
   { dir: 'pdf/image-to-pdf', manifest: manifest5, content: content5 },
   { dir: 'pdf/merge-pdf', manifest: manifest6, content: content6 },
-  { dir: 'pdf/rotate-pdf', manifest: manifest7, content: content7 },
-  { dir: 'pdf/split-pdf', manifest: manifest8, content: content8 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest9, content: content9 },
+  { dir: 'pdf/pdf-to-image', manifest: manifest7, content: content7 },
+  { dir: 'pdf/rotate-pdf', manifest: manifest8, content: content8 },
+  { dir: 'pdf/split-pdf', manifest: manifest9, content: content9 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest10, content: content10 },
 ];

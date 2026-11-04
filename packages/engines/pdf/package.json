@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": "./src/index.ts",
-    "./pages": "./src/pages.ts"
+    "./pages": "./src/pages.ts",
+    "./render": "./src/render.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
@@ -13,6 +17,7 @@
   },
   "dependencies": {
     "@cantoo/pdf-lib": "2.11.1",
+    "pdfjs-dist": "6.4.299",
     "@niftyfix/tool-sdk": "workspace:*"
   },
   "devDependencies": {

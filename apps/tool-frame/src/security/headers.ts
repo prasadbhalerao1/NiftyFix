@@ -26,6 +26,7 @@ export function frameHeaders(siteOrigin: string): Record<string, string> {
   return {
     'Content-Security-Policy': csp,
     'Referrer-Policy': 'no-referrer',
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
     'X-Content-Type-Options': 'nosniff',
     'Cross-Origin-Opener-Policy': 'same-origin',
     'Cross-Origin-Resource-Policy': 'same-origin',
@@ -35,8 +36,11 @@ export function frameHeaders(siteOrigin: string): Record<string, string> {
   };
 }
 
+/** Hashed build files never change, so browsers and Cloudflare may keep them for a year. */
+const IMMUTABLE = 'public, max-age=31536000, immutable';
+
 export function renderHeadersFile(headers: Record<string, string>): string {
   return `/*\n${Object.entries(headers)
     .map(([name, value]) => `  ${name}: ${value}`)
-    .join('\n')}\n`;
+    .join('\n')}\n\n/assets/*\n  Cache-Control: ${IMMUTABLE}\n`;
 }

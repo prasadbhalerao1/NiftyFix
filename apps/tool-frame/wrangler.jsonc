@@ -1,0 +1,14 @@
+// The sandboxed tool frame. It must live on a different registrable domain from
+// the site; *.workers.dev is on the Public Suffix List, so it qualifies.
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "niftyfix-frame",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "none",
+    "html_handling": "auto-trailing-slash",
+  },
+  "workers_dev": true,
+  "preview_urls": false,
+}

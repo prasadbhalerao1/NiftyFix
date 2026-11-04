@@ -21,7 +21,8 @@
     "fixtures": "tsx scripts/make-fixtures.ts",
     "check:budgets": "tsx scripts/check-budgets.ts",
     "e2e": "playwright test",
-    "ci": "pnpm format:check && pnpm lint && pnpm check:tools && pnpm check:boundaries && pnpm typecheck && pnpm test && pnpm build && pnpm check:budgets && pnpm e2e"
+    "ci": "pnpm format:check && pnpm lint && pnpm check:tools && pnpm check:boundaries && pnpm typecheck && pnpm test && pnpm build && pnpm check:budgets && pnpm e2e",
+    "deploy:cloudflare": "tsx scripts/deploy.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
@@ -42,6 +43,7 @@
     "tsx": "4.23.15",
     "turbo": "2.11.10",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.1"
+    "typescript-eslint": "8.72.1",
+    "wrangler": "4.157.0"
   }
 }

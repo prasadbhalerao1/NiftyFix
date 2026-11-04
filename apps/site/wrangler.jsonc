@@ -1,0 +1,17 @@
+// The public site: static files only, served from Cloudflare's edge.
+// Deployed by `pnpm deploy:cloudflare`, which builds with production origins first.
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "niftyfix-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // Unknown URLs get dist/404.html with a real 404 status.
+    "not_found_handling": "404-page",
+    // Astro builds /pdf/merge-pdf/index.html; /pdf/merge-pdf redirects to the slash form.
+    "html_handling": "auto-trailing-slash",
+  },
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "niftyfix.in", "custom_domain": true }],
+}

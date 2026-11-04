@@ -13,7 +13,7 @@ pnpm install
 pnpm dev            # site → http://localhost:4321, tool frame → http://127.0.0.1:4322
 ```
 
-Open http://localhost:4321/forms/photo-resizer/.
+Open http://localhost:4321/forms/photo-resizer/ or http://localhost:4321/forms/signature-resizer/.
 
 ## Commands
 

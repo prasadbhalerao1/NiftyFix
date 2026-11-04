@@ -34,5 +34,5 @@ export default defineManifest({
   privacy: 'on-device',
   engine: 'pdf',
   capabilities: { batch: false, cancellable: true, progress: 'determinate', verifiesOutput: true },
-  related: ['pdf.merge-pdf', 'pdf.watermark-pdf'],
+  related: ['pdf.merge-pdf', 'pdf.watermark-pdf', 'pdf.rotate-pdf'],
 });

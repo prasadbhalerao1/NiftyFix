@@ -34,5 +34,5 @@ export default defineManifest({
   privacy: 'on-device',
   engine: 'pdf',
   capabilities: { batch: true, cancellable: true, progress: 'determinate', verifiesOutput: true },
-  related: [],
+  related: ['pdf.split-pdf', 'pdf.image-to-pdf', 'pdf.add-page-numbers', 'pdf.rotate-pdf'],
 });

@@ -35,5 +35,5 @@ export default defineManifest({
   privacy: 'on-device',
   engine: 'pdf',
   capabilities: { batch: true, cancellable: true, progress: 'determinate', verifiesOutput: true },
-  related: ['pdf.merge-pdf'],
+  related: ['pdf.merge-pdf', 'pdf.rotate-pdf', 'forms.photo-resizer'],
 });

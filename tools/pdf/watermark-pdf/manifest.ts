@@ -34,5 +34,5 @@ export default defineManifest({
   privacy: 'on-device',
   engine: 'pdf',
   capabilities: { batch: false, cancellable: true, progress: 'determinate', verifiesOutput: true },
-  related: ['pdf.add-page-numbers', 'pdf.merge-pdf'],
+  related: ['pdf.add-page-numbers', 'pdf.merge-pdf', 'pdf.flatten-pdf'],
 });

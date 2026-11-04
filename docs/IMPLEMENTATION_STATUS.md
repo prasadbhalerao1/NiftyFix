@@ -44,7 +44,7 @@ Auto-crop to the ink (connected components, specks ignored) and manual crop (fre
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Unit (Vitest 5.1.0)                    | **128 passed**, 0 failed: engine-image 29, runtime 27, tool-sdk 25, constraints 20, tools 11, registry 7, portal-specs 5, analytics-schema 4                                                           |
 | E2E (Playwright 1.64.1), local Windows | **195 passed**, 1 skipped (WebKit Tab-to-button: a macOS setting), 0 failed. Chromium, Firefox, WebKit, Pixel 7                                                                                        |
-| E2E on GitHub Actions (Ubuntu)         | Run for sprint-2 foundation commit: **success**. The run for the Signature Resizer commits is recorded in the sprint report.                                                                           |
+| E2E on GitHub Actions (Ubuntu)         | Shared pipeline commit `ad6cc84`: **success** (5 m 51 s). Signature Resizer + docs `979bcb4`: **success** (7 m 6 s).                                                                                   |
 | Signature difficult inputs             | 10 fixtures × 4 browsers: exact 400 × 150, ≤ 20 KB, border ≥ 97 % white, ink 0.4–30 %; plus KB window 10–20 KB, refuse-to-pad, transparent PNG alpha, fill aspect lock, 4 malicious files, 12 MP photo |
 | Accessibility (axe, WCAG 2.2 AA)       | 0 serious/critical in all 4 browsers: 5 site pages; photo tool empty/editing/result/error; signature tool empty/editing with warning and advanced options/result                                       |
 | Visual review                          | Desktop 1366 px and phone 390 px screenshots of every signature state; see "UI review" below                                                                                                           |
@@ -90,7 +90,7 @@ Lighthouse was not re-run this sprint. **Not yet measured:** field Core Web Vita
 6. WebP output unavailable on browsers that cannot encode it (clear message).
 7. Astro files not covered by ESLint (`astro check` covers types).
 8. Dev-only advisory GHSA-g3hv-75wg-m249 (minimatch via ESLint tooling); not shipped (ADR 0003).
-9. Branch protection on `main` not configured (may require a paid plan for private repos).
+9. Branch protection on `main` requires the `verify` CI check and blocks force pushes and deletion, but is not enforced for admins (direct pushes by the owner still bypass it).
 
 ## Next tasks (in order)
 

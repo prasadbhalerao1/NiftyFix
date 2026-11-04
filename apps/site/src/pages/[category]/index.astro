@@ -100,7 +100,7 @@ const indexable = builtTools.some((manifest) => manifest.status === 'live');
         <h2 id="ready-heading" class="eyebrow">
           Ready to use
         </h2>
-        <ul class="mt-4 grid gap-1 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        <ul class="mt-4 grid gap-1 sm:grid-cols-2 lg:grid-cols-3" role="list" data-stagger>
           {builtTools.map((manifest) => (
             <li>
               <ToolRow manifest={manifest} />
@@ -111,7 +111,7 @@ const indexable = builtTools.some((manifest) => manifest.status === 'live');
     ) : null}
 
     {plannedGroups.length > 0 ? (
-      <section class="mt-16" aria-labelledby="planned-heading">
+      <section class="mt-16" aria-labelledby="planned-heading" data-reveal>
         <h2 id="planned-heading" class="text-2xl font-semibold tracking-tight">
           Coming soon
         </h2>

@@ -40,6 +40,28 @@ test.describe('site', () => {
     expect(problems).toEqual([]);
   });
 
+  test('the hero demo plays, can be replayed, and is static with reduced motion', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const demo = page.locator('[data-demo]').first();
+    const results = demo.locator('.check-result');
+    await expect(demo).toHaveClass(/checks-done/, { timeout: 5_000 });
+    await expect(results.first()).toBeVisible();
+    await expect(demo.locator('[data-count-from]')).toHaveText('196 KB', { timeout: 5_000 });
+    // Replay starts again from "Checking".
+    await page.getByRole('button', { name: 'Replay demo' }).click();
+    await expect(demo).not.toHaveClass(/checks-done/);
+    await expect(demo).toHaveClass(/checks-done/, { timeout: 5_000 });
+
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.reload();
+    await expect(page.locator('html')).not.toHaveClass(/(^|\s)motion(\s|$)/);
+    await expect(page.getByRole('button', { name: 'Replay demo' })).toBeHidden();
+    await expect(demo.locator('.check-result').first()).toBeVisible();
+    await expect(demo.locator('.check-pending').first()).toBeHidden();
+  });
+
   test('the command palette opens from anywhere with Ctrl+K', async ({ page }) => {
     await page.goto(TOOL_PATH);
     await page.keyboard.press('ControlOrMeta+k');

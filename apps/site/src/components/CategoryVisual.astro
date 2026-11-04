@@ -27,14 +27,16 @@ const { category } = Astro.props;
           <path d="M6 28c8-2 10-18 18-18s-2 20 6 20 8-12 14-12 2 10 8 10 10-14 16-14 4 8 10 8 12-4 16-6" />
         </svg>
       </div>
-      <CheckRows
-        compact
-        rows={[
-          { label: 'Dimensions', required: '140 × 60 px', actual: '140 × 60 px', status: 'pass' },
-          { label: 'File size', required: '10–20 KB', actual: '14.2 KB', status: 'pass' },
-          { label: 'Format', required: 'JPEG', actual: 'JPEG', status: 'pass' },
-        ]}
-      />
+      <div data-run="checks">
+        <CheckRows
+          compact
+          rows={[
+            { label: 'Dimensions', required: '140 × 60 px', actual: '140 × 60 px', status: 'pass' },
+            { label: 'File size', required: '10–20 KB', actual: '14.2 KB', status: 'pass' },
+            { label: 'Format', required: 'JPEG', actual: 'JPEG', status: 'pass' },
+          ]}
+        />
+      </div>
     </div>
   </Window>
 ) : category === 'pdf' ? (
@@ -43,7 +45,14 @@ const { category } = Astro.props;
       <PagesPreview />
     </Window>
     <Window title="Compress PDF" class="relative z-10 -mt-8 ml-auto w-3/5">
-      <SizePreview before="4.8 MB" after="196 KB" target="200 KB" meter="w-[98%]" />
+      <SizePreview
+        before="4.8 MB"
+        after="196 KB"
+        target="200 KB"
+        meter="w-[98%]"
+        fromKb={4800}
+        toKb={196}
+      />
     </Window>
   </div>
 ) : null}

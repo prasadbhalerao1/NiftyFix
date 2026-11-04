@@ -98,7 +98,7 @@ const jsonLd = [
           <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60"></span>
           <span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
         </span>
-        {liveCount} tools live · runs on your device
+        <span data-count-up>{liveCount}</span> tools live · runs on your device
       </p>
       <h1 class="display mt-5 text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-[4.25rem]">
         Get your files ready for <span class="accent">any</span> upload.
@@ -123,65 +123,95 @@ const jsonLd = [
       </nav>
     </div>
 
-    <!-- Layered composition of real screens: the photo check, a PDF target, the page grid. -->
-    <div class="rise relative mx-auto w-full max-w-[34rem] lg:mx-0" aria-hidden="true">
-      <Window title="Form Photo Resizer — photo.jpg" class="relative z-10">
-        <div class="grid gap-4 p-4 sm:grid-cols-[8rem_1fr]">
-          <div class="hidden sm:block">
-            <div class="overflow-hidden rounded-md ring-2 ring-brand-600 dark:ring-brand-400">
-              <PortraitArt class="w-full" />
+    <!--
+      Layered composition of real screens: the photo check, a PDF target, the page grid.
+      It plays as a short demo when it comes into view (src/scripts/motion.ts) and tilts
+      with the pointer; the Replay button runs it again.
+    -->
+    <div class="rise relative mx-auto w-full max-w-[34rem] lg:mx-0" data-demo>
+      <button type="button" class="replay-button" data-demo-replay hidden>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="size-3.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"></path>
+        </svg>
+        Replay demo
+      </button>
+      <div class="demo-stage" aria-hidden="true" data-tilt>
+        <Window title="Form Photo Resizer — photo.jpg" class="depth-2 relative z-10">
+          <div class="grid gap-4 p-4 sm:grid-cols-[8rem_1fr]">
+            <div class="hidden sm:block">
+              <div class="overflow-hidden rounded-md ring-2 ring-brand-600 dark:ring-brand-400">
+                <PortraitArt class="w-full" />
+              </div>
+              <p class="mt-2 text-center font-mono text-[10px] text-stone-600 dark:text-stone-400">
+                3.1 MB → 38.4 KB
+              </p>
             </div>
-            <p class="mt-2 text-center font-mono text-[10px] text-stone-600 dark:text-stone-400">
-              3.1 MB → 38.4 KB
-            </p>
+            <div data-run="checks">
+              <CheckRows rows={photoChecks.slice(0, 4)} compact />
+            </div>
           </div>
-          <CheckRows rows={photoChecks.slice(0, 4)} compact />
-        </div>
-        <div class="flex items-center justify-between gap-3 border-t border-stone-200 px-4 py-3 dark:border-stone-800">
-          <span class="flex items-center gap-2 text-sm font-medium text-emerald-800 dark:text-emerald-400">
-            <svg
-              viewBox="0 0 16 16"
-              class="size-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M3 8.5 6.5 12 13 4.5"></path>
-            </svg>
-            Meets every requirement
-          </span>
-          <span class="rounded-lg bg-brand-700 px-3 py-1.5 text-sm font-medium text-white">
-            Download
-          </span>
-        </div>
-      </Window>
-      <Window
-        title="Compress PDF"
-        class="relative z-20 -mt-4 ml-auto w-[70%] sm:w-[62%] lg:absolute lg:-right-8 lg:-bottom-32 lg:mt-0 lg:w-[52%]"
-      >
-        <SizePreview before="4.8 MB" after="196 KB" target="200 KB" meter="w-[98%]" />
-      </Window>
-      <Window
-        title="Organize PDF — 4 pages"
-        class="absolute -bottom-40 -left-10 hidden w-[52%] lg:block"
-      >
-        <PagesPreview />
-      </Window>
+          <div class="flex items-center justify-between gap-3 border-t border-stone-200 px-4 py-3 dark:border-stone-800">
+            <span class="verdict flex items-center gap-2 text-sm font-medium text-emerald-800 dark:text-emerald-400">
+              <svg
+                viewBox="0 0 16 16"
+                class="size-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 8.5 6.5 12 13 4.5"></path>
+              </svg>
+              Meets every requirement
+            </span>
+            <span class="demo-download rounded-lg bg-brand-700 px-3 py-1.5 text-sm font-medium text-white">
+              Download
+            </span>
+          </div>
+        </Window>
+        <Window
+          title="Compress PDF"
+          class="depth-3 relative z-20 -mt-4 ml-auto w-[70%] sm:w-[62%] lg:absolute lg:-right-8 lg:-bottom-32 lg:mt-0 lg:w-[52%]"
+        >
+          <SizePreview
+            before="4.8 MB"
+            after="196 KB"
+            target="200 KB"
+            meter="w-[98%]"
+            fromKb={4800}
+            toKb={196}
+          />
+        </Window>
+        <Window
+          title="Organize PDF — 4 pages"
+          class="depth-1 absolute -bottom-40 -left-10 hidden w-[52%] lg:block"
+        >
+          <PagesPreview />
+        </Window>
+      </div>
     </div>
   </section>
 
   <!-- Categories: what is live is large; what is coming is a dense index. -->
-  <section aria-labelledby="workshops-heading">
+  <section data-reveal aria-labelledby="workshops-heading">
     <p class="eyebrow">Categories</p>
     <h2 id="workshops-heading" class="section-title mt-3">
       {registry.activeCategories().length} categories open today.{' '}
       <span class="quiet">{comingCategories.length} more on the roadmap.</span>
     </h2>
 
-    <div class="mt-10 grid gap-4 lg:grid-cols-12">
-      <article class="panel flex flex-col overflow-hidden lg:col-span-7">
+    <div class="mt-10 grid gap-4 lg:grid-cols-12" data-stagger>
+      <article class="panel spotlight flex flex-col overflow-hidden lg:col-span-7">
         <div class="flex flex-col gap-6 p-6 sm:flex-row sm:p-8">
           <div class="flex-1">
             <p class="eyebrow text-brand-800 dark:text-brand-400">Form-ready</p>
@@ -226,7 +256,7 @@ const jsonLd = [
         </div>
       </article>
 
-      <article class="panel flex flex-col overflow-hidden lg:col-span-5">
+      <article class="panel spotlight flex flex-col overflow-hidden lg:col-span-5">
         <div class="p-6 sm:p-8">
           <p class="eyebrow text-brand-800 dark:text-brand-400">PDF · {pdfTools.length} tools</p>
           <h3 class="mt-2 text-2xl font-semibold tracking-tight">
@@ -253,7 +283,7 @@ const jsonLd = [
         </ul>
       </article>
 
-      <article class="panel p-6 sm:p-8 lg:col-span-12">
+      <article class="panel spotlight p-6 sm:p-8 lg:col-span-12">
         <div class="flex flex-wrap items-baseline justify-between gap-3">
           <h3 class="text-lg font-semibold tracking-tight">Coming next</h3>
           <a
@@ -263,7 +293,11 @@ const jsonLd = [
             See the full catalogue →
           </a>
         </div>
-        <ul class="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
+        <ul
+          class="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4"
+          role="list"
+          data-stagger
+        >
           {comingCategories.map(({ id, count, examples }) => (
             <li>
               <a href={categoryPath(id)} class="group block">
@@ -285,7 +319,7 @@ const jsonLd = [
   </section>
 
   <!-- Essentials: a calm two-column list, like a launcher. -->
-  <section aria-labelledby="essentials-heading" class="mt-28">
+  <section data-reveal aria-labelledby="essentials-heading" class="mt-28">
     <div class="grid gap-10 lg:grid-cols-[1.1fr_2fr]">
       <div>
         <p class="eyebrow">Start here</p>
@@ -296,7 +330,7 @@ const jsonLd = [
           </span>
         </h2>
       </div>
-      <ul class="grid gap-1 sm:grid-cols-2" role="list">
+      <ul class="grid gap-1 sm:grid-cols-2" role="list" data-stagger>
         {essentials.map((manifest) => (
           <li>
             <ToolRow manifest={manifest} />
@@ -307,7 +341,7 @@ const jsonLd = [
   </section>
 
   <!-- Upload-ready: the validation report is the product. -->
-  <section aria-labelledby="ready-heading" class="mt-28">
+  <section data-reveal aria-labelledby="ready-heading" class="mt-28">
     <div class="grid items-center gap-12 lg:grid-cols-2">
       <div>
         <p class="eyebrow">Upload-ready</p>
@@ -333,13 +367,13 @@ const jsonLd = [
         </ul>
         <a
           href={categoryPath('forms')}
-          class="mt-8 inline-flex min-h-11 items-center rounded-lg bg-brand-700 px-5 font-medium text-white transition-colors hover:bg-brand-800"
+          class="press mt-8 inline-flex min-h-11 items-center rounded-lg bg-brand-700 px-5 font-medium text-white transition-colors hover:bg-brand-800"
         >
           Prepare a photo or signature
         </a>
       </div>
-      <div class="relative" aria-hidden="true">
-        <Window title="Result — validation report">
+      <div class="relative" aria-hidden="true" data-demo>
+        <Window title="Result — validation report" class="spotlight">
           <div class="grid grid-cols-2 gap-px border-b border-stone-200 bg-stone-200 dark:border-stone-800 dark:bg-stone-800">
             <div class="bg-paper p-4 dark:bg-stone-900">
               <p class="eyebrow">Original</p>
@@ -352,7 +386,7 @@ const jsonLd = [
               </p>
             </div>
           </div>
-          <div class="px-4 pb-2">
+          <div class="px-4 pb-2" data-run="checks">
             <CheckRows rows={photoChecks} />
           </div>
         </Window>
@@ -361,15 +395,15 @@ const jsonLd = [
   </section>
 
   <!-- Workflows: a whole task, step by step. -->
-  <section aria-labelledby="flow-heading" class="mt-28">
+  <section data-reveal aria-labelledby="flow-heading" class="mt-28">
     <p class="eyebrow">Workflows</p>
     <h2 id="flow-heading" class="section-title mt-3">
       Finish the whole task.{' '}
       <span class="quiet">Download from one tool and drop it into the next.</span>
     </h2>
-    <ol class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <ol class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
       {pdfFlow.map((manifest, index) => (
-        <li class="panel relative flex flex-col gap-3 p-5">
+        <li class="panel spotlight relative flex flex-col gap-3 p-5">
           <span class="font-mono text-xs text-brand-800 dark:text-brand-400">Step {index + 1}</span>
           <a
             href={toolPath(manifest)}
@@ -395,6 +429,7 @@ const jsonLd = [
 
   <!-- Privacy: an architecture claim, with a way to verify it. -->
   <section
+    data-reveal
     aria-labelledby="privacy-heading"
     class="panel mt-28 grid gap-10 overflow-hidden p-6 sm:p-10 lg:grid-cols-[1.2fr_1fr]"
   >
@@ -426,7 +461,7 @@ const jsonLd = [
   </section>
 
   <!-- Long tail: every intent page, as plain links. -->
-  <section aria-labelledby="searches-heading" class="mt-28">
+  <section data-reveal aria-labelledby="searches-heading" class="mt-28">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
         <p class="eyebrow">Popular searches</p>
@@ -441,7 +476,7 @@ const jsonLd = [
         Browse all tools →
       </a>
     </div>
-    <ul class="mt-8 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3" role="list">
+    <ul class="mt-8 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3" role="list" data-stagger>
       {intents.map(({ href, h1, tool }) => (
         <li>
           <a

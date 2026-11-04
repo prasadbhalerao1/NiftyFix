@@ -7,6 +7,30 @@ type Violation = Awaited<ReturnType<AxeBuilder['analyze']>>['violations'][number
 const describeViolation = (v: Violation): string =>
   `${v.id}: ${v.help} — ${v.nodes.map((n) => `${n.html} ${n.failureSummary ?? ''}`).join(' | ')}`;
 
+/**
+ * Audit the settled page: reveal everything that would fade in on scroll, then
+ * wait for finite animations (fades, demos) to end. Mid-fade text is not what
+ * readers are left with, and looping indicators never end, so they are skipped.
+ */
+async function settle(page: Page): Promise<void> {
+  await page.evaluate(async () => {
+    for (const el of document.querySelectorAll('[data-reveal], [data-stagger]')) {
+      el.classList.add('is-in');
+    }
+    // Demos start more animations on timers, so wait until nothing finite is left running.
+    const finite = (): Animation[] =>
+      document
+        .getAnimations()
+        .filter((animation) => animation.effect?.getTiming().iterations !== Infinity);
+    for (let round = 0; round < 12; round += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      const running = finite();
+      if (running.length === 0) break;
+      await Promise.all(running.map((animation) => animation.finished.catch(() => undefined)));
+    }
+  });
+}
+
 /** axe cannot see into cross-origin frames from the parent, so tool states are scanned inside the frame. */
 async function scanFrame(page: Page, label: string): Promise<void> {
   const results = await new AxeBuilder({ page })
@@ -37,6 +61,7 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
         '/privacy-verification/',
       ]) {
         await page.goto(path);
+        await settle(page);
         const results = await new AxeBuilder({ page })
           .exclude('iframe[data-tool-frame]')
           .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])

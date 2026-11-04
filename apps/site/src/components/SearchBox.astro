@@ -19,6 +19,15 @@ const {
   suggest = false,
   readQuery = false,
 } = Astro.props;
+
+/** Example searches typed into the hero placeholder: each shows something search understands. */
+const EXAMPLES = [
+  'photo under 50 kb',
+  'merge pdf',
+  'signature 10–20 kb',
+  'compress pdf to 200 kb',
+  'pdf to jpg',
+].join('|');
 ---
 
 <div
@@ -53,6 +62,7 @@ const {
         placeholder="What do you need to do?"
         class="search-input"
         data-search-input
+        data-typewriter={variant === 'hero' ? EXAMPLES : undefined}
       />
       {variant === 'hero' ? (
         <span class="pointer-events-none absolute top-1/2 right-4 hidden -translate-y-1/2 items-center gap-1 sm:flex">

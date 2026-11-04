@@ -1,5 +1,8 @@
 ---
-/** The Organize PDF page grid: numbered page thumbnails, one rotated, one selected. */
+/**
+ * The Organize PDF page grid: numbered page thumbnails, one rotated, one selected,
+ * one removed. When run (data-run), the edits animate in from untouched pages.
+ */
 const pages = [
   { n: 3, state: 'selected' },
   { n: 1, state: '' },
@@ -8,12 +11,13 @@ const pages = [
 ] as const;
 ---
 
-<div class="grid grid-cols-4 gap-3 p-4">
+<div class="grid grid-cols-4 gap-3 p-4" data-run="pages">
   {pages.map(({ n, state }) => (
     <div class="flex flex-col items-center gap-1.5">
       <div
         class:list={[
           'page-thumb',
+          state && `page-${state}`,
           state === 'selected' && 'ring-2 ring-brand-600 dark:ring-brand-400',
           state === 'removed' && 'opacity-35',
           state === 'rotated' && 'rotate-90 scale-[0.78]',

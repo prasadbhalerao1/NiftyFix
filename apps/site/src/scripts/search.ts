@@ -64,6 +64,7 @@ function attach(root: HTMLElement): void {
       row.setAttribute('role', 'option');
       row.setAttribute('aria-selected', 'false');
       row.className = 'search-option';
+      row.style.setProperty('--i', String(i));
       if (record.path && row instanceof HTMLAnchorElement) row.href = record.path;
       else row.setAttribute('aria-disabled', 'true');
       const text = document.createElement('span');

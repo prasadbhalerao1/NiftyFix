@@ -23,6 +23,8 @@ export interface SingleFileToolProps extends ToolUiProps {
   options: unknown;
   /** Tool-specific settings controls. */
   children?: ComponentChildren;
+  /** Optional live preview of the chosen file, shown under the file name. */
+  preview?: (file: File) => ComponentChildren;
 }
 
 /**
@@ -46,6 +48,7 @@ export function SingleFileTool({
   disclaimer,
   options,
   children,
+  preview,
 }: SingleFileToolProps) {
   const urls = useRef(new ObjectUrlRegistry());
   const [file, setFile] = useState<File | null>(null);
@@ -118,6 +121,7 @@ export function SingleFileTool({
               Choose another file
             </Button>
           </div>
+          {preview ? <div class="mt-3">{preview(file)}</div> : null}
         </Panel>
         {phase.kind === 'processing' ? (
           <ProcessingPanel handle={phase.handle} progress={phase.progress} stage={phase.stage} />

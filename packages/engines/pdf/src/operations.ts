@@ -1,4 +1,11 @@
-import { degrees, rgb, StandardFonts, type PDFDocument, type PDFFont } from '@cantoo/pdf-lib';
+import {
+  degrees,
+  rgb,
+  StandardFonts,
+  type PDFDocument,
+  type PDFFont,
+  type PDFPage,
+} from '@cantoo/pdf-lib';
 import { ToolError } from '@niftyfix/tool-sdk';
 import { createPdf } from './document';
 
@@ -197,6 +204,79 @@ export async function addImagePages(
       .addPage([pw, ph])
       .drawImage(embedded, { x: (pw - w) / 2, y: (ph - h) / 2, width: w, height: h });
   }
+}
+
+/** Points per millimetre. */
+export const PT_PER_MM = 72 / 25.4;
+
+export const PAPER_SIZES = {
+  a4: { label: 'A4', width: 595.28, height: 841.89 },
+  letter: { label: 'US Letter', width: 612, height: 792 },
+  legal: { label: 'US Legal', width: 612, height: 1008 },
+  a3: { label: 'A3', width: 841.89, height: 1190.55 },
+  a5: { label: 'A5', width: 419.53, height: 595.28 },
+} as const;
+export type PaperSize = keyof typeof PAPER_SIZES;
+
+/** Margins as the reader sees the page (top = top of the displayed page), in points. */
+export interface Margins {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+/** Smallest visible area a crop may leave, in points (half an inch). */
+export const MIN_CROPPED_SIDE = 36;
+
+/**
+ * Trim margins off the visible page. Works in the orientation the reader
+ * sees: on a page stored rotated, "top" still means the displayed top.
+ * Only the crop box changes — the trimmed content stays in the file.
+ * Returns false (and leaves the page alone) if too little would remain.
+ */
+export function cropPage(page: PDFPage, margins: Margins): boolean {
+  const box = page.getCropBox();
+  const rotation = ((page.getRotation().angle % 360) + 360) % 360;
+  // Map displayed edges to the page's own coordinate edges.
+  const { top, right, bottom, left } = margins;
+  const user =
+    rotation === 90
+      ? { left: top, top: right, right: bottom, bottom: left }
+      : rotation === 180
+        ? { left: right, right: left, top: bottom, bottom: top }
+        : rotation === 270
+          ? { right: top, bottom: right, left: bottom, top: left }
+          : { left, right, top, bottom };
+  const width = box.width - user.left - user.right;
+  const height = box.height - user.top - user.bottom;
+  if (width < MIN_CROPPED_SIDE || height < MIN_CROPPED_SIDE) return false;
+  page.setCropBox(box.x + user.left, box.y + user.bottom, width, height);
+  return true;
+}
+
+/**
+ * Put a page on a standard paper size: content and annotations scale
+ * together (links stay on their text) to fit without distortion, centred by
+ * moving the page box rather than the content. Orientation follows the page.
+ */
+export function fitPageToPaper(page: PDFPage, paper: { width: number; height: number }): void {
+  const visible = page.getCropBox();
+  const sideways = page.getRotation().angle % 180 !== 0;
+  // Compare in the page's own (unrotated) coordinates.
+  const landscape = sideways ? visible.height > visible.width : visible.width > visible.height;
+  const short = Math.min(paper.width, paper.height);
+  const long = Math.max(paper.width, paper.height);
+  const [targetW, targetH] = landscape !== sideways ? [long, short] : [short, long];
+  const scale = Math.min(targetW / visible.width, targetH / visible.height);
+  page.scale(scale, scale);
+  const box = page.getCropBox();
+  const x = box.x - (targetW - box.width) / 2;
+  const y = box.y - (targetH - box.height) / 2;
+  page.setMediaBox(x, y, targetW, targetH);
+  page.setCropBox(x, y, targetW, targetH);
+  page.setTrimBox(x, y, targetW, targetH);
+  page.setBleedBox(x, y, targetW, targetH);
 }
 
 export interface PdfMetadata {

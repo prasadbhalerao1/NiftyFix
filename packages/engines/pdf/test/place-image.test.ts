@@ -1,4 +1,10 @@
-import { decodePDFRawStream, degrees, PDFArray, PDFDocument, PDFRawStream } from '@cantoo/pdf-lib';
+import {
+  decodePDFRawStream,
+  degrees,
+  PDFArray,
+  PDFDocument,
+  type PDFRawStream,
+} from '@cantoo/pdf-lib';
 import { describe, expect, it } from 'vitest';
 import { placeImage } from '../src';
 

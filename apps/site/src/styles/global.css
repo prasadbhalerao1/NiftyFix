@@ -30,3 +30,59 @@
     @apply font-medium text-brand-800 underline underline-offset-4 dark:text-brand-300;
   }
 }
+
+/* Landing page: soft brand glow over a faint grid, fading out at the edges. */
+@layer components {
+  .hero-backdrop {
+    @apply pointer-events-none absolute top-0 left-1/2 -z-10 h-full w-screen -translate-x-1/2;
+    background:
+      radial-gradient(
+        60% 55% at 50% 0%,
+        color-mix(in oklab, var(--color-brand-500) 22%, transparent),
+        transparent 70%
+      ),
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px) 0 0 / 56px 56px,
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px) 0 0 / 56px 56px;
+    mask-image: radial-gradient(70% 70% at 50% 20%, black 30%, transparent 100%);
+    --grid-line: color-mix(in oklab, var(--color-stone-900) 7%, transparent);
+  }
+  :root:not([data-theme='light']) .hero-backdrop {
+    --grid-line: color-mix(in oklab, white 6%, transparent);
+  }
+  .hero-gradient {
+    @apply bg-linear-to-r from-brand-700 via-brand-600 to-amber-600 bg-clip-text text-transparent dark:from-brand-400 dark:via-orange-300 dark:to-amber-200;
+  }
+  .search-shell::before {
+    content: '';
+    @apply pointer-events-none absolute -inset-px -z-10 rounded-2xl opacity-0 blur-xl transition-opacity duration-500;
+    background: linear-gradient(90deg, var(--color-brand-500), var(--color-amber-400));
+  }
+  .search-shell:focus-within::before {
+    @apply opacity-30;
+  }
+  .privacy-panel::before {
+    content: '';
+    @apply pointer-events-none absolute -top-40 -right-40 -z-10 size-96 rounded-full blur-3xl;
+    background: color-mix(in oklab, var(--color-emerald-500) 14%, transparent);
+  }
+  .hero-rise {
+    animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero-rise:nth-child(3) {
+    animation-delay: 60ms;
+  }
+  .hero-rise:nth-child(4) {
+    animation-delay: 120ms;
+  }
+  .hero-rise:nth-child(5),
+  .hero-rise:nth-child(6) {
+    animation-delay: 180ms;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

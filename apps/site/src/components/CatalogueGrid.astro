@@ -1,0 +1,20 @@
+---
+import type { CatalogueItem } from '@niftyfix/registry';
+import PlannedToolCard from './PlannedToolCard.astro';
+import ToolCard from './ToolCard.astro';
+
+export interface Props {
+  items: readonly CatalogueItem[];
+}
+const { items } = Astro.props;
+---
+
+<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+  {items.map((item) =>
+    item.kind === 'built' ? (
+      <ToolCard manifest={item.entry.manifest} />
+    ) : (
+      <PlannedToolCard tool={item.tool} />
+    ),
+  )}
+</div>

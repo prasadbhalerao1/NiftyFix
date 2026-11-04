@@ -1,15 +1,14 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import ToolCard from '../../components/ToolCard.astro';
+import CatalogueGrid from '../../components/CatalogueGrid.astro';
 import { registry, SITE_NAME } from '../../data/registry';
 import { categoryPath } from '@niftyfix/registry';
-import { CATEGORIES, type CategoryId } from '@niftyfix/tool-sdk';
+import { CATEGORIES, CATEGORY_IDS, type CategoryId } from '@niftyfix/tool-sdk';
 
+/** Every category has a hub, listing its built tools and its planned ones. */
 export function getStaticPaths() {
-  return registry
-    .activeCategories()
-    .map((category) => ({ params: { category }, props: { category } }));
+  return CATEGORY_IDS.map((category) => ({ params: { category }, props: { category } }));
 }
 
 interface Props {
@@ -18,16 +17,20 @@ interface Props {
 
 const { category } = Astro.props;
 const info = CATEGORIES[category];
-const tools = registry.inCategory(category);
+const items = registry.catalogue(category);
 const path = categoryPath(category);
-const allBeta = tools.every((tool) => tool.manifest.status !== 'live');
+const ready = items.filter((item) => item.kind === 'built').length;
+// Indexed only once it links to at least one finished (live) tool.
+const indexable = items.some(
+  (item) => item.kind === 'built' && item.entry.manifest.status === 'live',
+);
 ---
 
 <Base
   title={`${info.h1} | ${SITE_NAME}`}
   description={info.description}
   path={path}
-  noindex={allBeta}
+  noindex={!indexable}
 >
   <Breadcrumbs
     items={[
@@ -37,9 +40,11 @@ const allBeta = tools.every((tool) => tool.manifest.status !== 'live');
   />
   <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{info.h1}</h1>
   <p class="mt-2 max-w-[72ch] text-stone-700 dark:text-stone-300">{info.description}</p>
-  <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-    {tools.map((tool) => (
-      <ToolCard manifest={tool.manifest} />
-    ))}
+  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">
+    {ready > 0 ? `${ready} ready to use · ` : ''}
+    {items.length - ready} coming soon
+  </p>
+  <div class="mt-6">
+    <CatalogueGrid items={items} />
   </div>
 </Base>

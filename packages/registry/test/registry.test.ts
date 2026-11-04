@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ToolContent, ToolManifest } from '@niftyfix/tool-sdk';
-import { createRegistry, toolPath, validateEntries, type ToolEntry } from '../src';
+import { CATEGORY_IDS, isCategoryId } from '@niftyfix/tool-sdk';
+import { createRegistry, PLANNED_TOOLS, toolPath, validateEntries, type ToolEntry } from '../src';
 
 const content: ToolContent = {
   intro:
@@ -126,5 +127,54 @@ describe('createRegistry', () => {
 
   it('builds canonical paths with trailing slashes', () => {
     expect(toolPath({ category: 'pdf', slug: 'merge-pdf' })).toBe('/pdf/merge-pdf/');
+  });
+});
+
+describe('catalogue', () => {
+  const planned = [
+    { category: 'pdf' as const, slug: 'merge-pdf', name: 'Merge PDF', mode: 'browser' as const },
+    { category: 'pdf' as const, slug: 'split-pdf', name: 'Split PDF', mode: 'browser' as const },
+  ];
+
+  it('places built tools in roadmap order and keeps the rest as planned', () => {
+    const registry = createRegistry(
+      [entry('pdf', 'split-pdf'), entry('pdf', 'extra-tool')],
+      planned,
+    );
+    const items = registry.catalogue('pdf');
+    expect(items.map((item) => item.kind)).toEqual(['planned', 'built', 'built']);
+    expect(items[1]?.kind === 'built' && items[1].entry.manifest.slug).toBe('split-pdf');
+    expect(items[2]?.kind === 'built' && items[2].entry.manifest.slug).toBe('extra-tool');
+  });
+
+  it('never lists a draft tool as built', () => {
+    const registry = createRegistry([entry('pdf', 'merge-pdf', { status: 'draft' })], planned);
+    expect(registry.catalogue('pdf')[0]?.kind).toBe('planned');
+  });
+
+  it('roadmap has no duplicate tools: every slug and every name appears once', () => {
+    const slugs = new Map<string, string>();
+    const names = new Map<string, string>();
+    for (const tool of PLANNED_TOOLS) {
+      const where = `${tool.category}/${tool.slug}`;
+      // Unique across categories, not just within one: two pages for the same
+      // job would compete with each other in search.
+      expect(slugs.get(tool.slug), `slug "${tool.slug}" in ${where}`).toBeUndefined();
+      slugs.set(tool.slug, where);
+      const name = tool.name.toLowerCase();
+      expect(names.get(name), `name "${tool.name}" in ${where}`).toBeUndefined();
+      names.set(name, where);
+      expect(tool.slug).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+      expect(isCategoryId(tool.category)).toBe(true);
+    }
+  });
+
+  it('every category has at least one tool', () => {
+    for (const id of CATEGORY_IDS) {
+      expect(
+        PLANNED_TOOLS.some((tool) => tool.category === id),
+        id,
+      ).toBe(true);
+    }
   });
 });

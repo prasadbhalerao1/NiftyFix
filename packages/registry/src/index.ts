@@ -6,6 +6,9 @@ import {
   type ToolContent,
   type ToolManifest,
 } from '@niftyfix/tool-sdk';
+import { PLANNED_TOOLS, type PlannedTool } from './planned';
+
+export { PLANNED_TOOLS, type ExecutionMode, type PlannedTool } from './planned';
 
 /** One tool as collected by the generated index (metadata and content only — never code). */
 export interface ToolEntry {
@@ -34,7 +37,15 @@ export interface Registry {
   searchIndex(): readonly SearchRecord[];
   /** Tools that may be indexed by search engines (status 'live'). */
   indexable(): readonly ToolEntry[];
+  /**
+   * Every tool in a category for its hub page: built tools in their roadmap
+   * position, planned ones as "coming soon", built tools not on the roadmap last.
+   */
+  catalogue(category: CategoryId): readonly CatalogueItem[];
 }
+
+export type CatalogueItem =
+  { kind: 'built'; entry: ToolEntry } | { kind: 'planned'; tool: PlannedTool };
 
 export const toolPath = (manifest: Pick<ToolManifest, 'category' | 'slug'>): string =>
   `/${manifest.category}/${manifest.slug}/`;
@@ -44,7 +55,10 @@ export const categoryPath = (category: CategoryId): string => `/${category}/`;
 /** Published = visible on the site. Drafts are hidden; betas are visible but not indexed. */
 export const isPublished = (entry: ToolEntry): boolean => entry.manifest.status !== 'draft';
 
-export function createRegistry(entries: readonly ToolEntry[]): Registry {
+export function createRegistry(
+  entries: readonly ToolEntry[],
+  planned: readonly PlannedTool[] = PLANNED_TOOLS,
+): Registry {
   const tools = entries.filter(isPublished);
   const ids = new Map(tools.map((entry) => [entry.manifest.id, entry]));
   const paths = new Map(tools.map((entry) => [toolPath(entry.manifest), entry]));
@@ -69,6 +83,19 @@ export function createRegistry(entries: readonly ToolEntry[]): Registry {
         terms: [manifest.name, manifest.tagline, ...manifest.searchAliases].join(' ').toLowerCase(),
       })),
     indexable: () => tools.filter((entry) => entry.manifest.status === 'live'),
+    catalogue: (category) => {
+      const built = tools.filter((entry) => entry.manifest.category === category);
+      const bySlug = new Map(built.map((entry) => [entry.manifest.slug, entry]));
+      const items: CatalogueItem[] = planned
+        .filter((tool) => tool.category === category)
+        .map((tool) => {
+          const entry = bySlug.get(tool.slug);
+          return entry ? { kind: 'built', entry } : { kind: 'planned', tool };
+        });
+      const listed = new Set(items.flatMap((item) => (item.kind === 'built' ? [item.entry] : [])));
+      for (const entry of built) if (!listed.has(entry)) items.push({ kind: 'built', entry });
+      return items;
+    },
   };
 }
 

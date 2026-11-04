@@ -2,15 +2,23 @@ import { expect, test } from '@playwright/test';
 import { recordProblems, TOOL_PATH } from './helpers';
 
 test.describe('site', () => {
-  test('homepage lists tools and search filters them', async ({ page }) => {
+  test('homepage shows every category, and search finds tools across them', async ({ page }) => {
     const problems = recordProblems(page);
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Get your files ready');
-    const card = page.getByRole('link', { name: /Form Photo Resizer/ });
-    await expect(card).toBeVisible();
+    const categories = page.locator('[data-category-card]');
+    await expect(categories).toHaveCount(18);
+    await expect(page.getByRole('link', { name: /PDF tools/ })).toHaveAttribute('href', '/pdf/');
 
+    const card = page.getByRole('link', { name: /Form Photo Resizer/ });
     await page.getByLabel('What do you need to do?').fill('exam form photo');
     await expect(card).toBeVisible();
+    await expect(categories.first()).toBeHidden();
+    // Planned tools are found too, marked as coming soon and not linked.
+    await page.getByLabel('What do you need to do?').fill('merge pdf');
+    const planned = page.locator('[data-planned]', { hasText: 'Merge PDF' });
+    await expect(planned).toContainText('Coming soon');
+    await expect(page.getByRole('link', { name: /Merge PDF/ })).toHaveCount(0);
     await page.getByLabel('What do you need to do?').fill('zzz no such tool');
     await expect(card).toBeHidden();
     await expect(page.getByText('No tool matches that yet')).toBeVisible();
@@ -19,6 +27,19 @@ test.describe('site', () => {
     await page.getByLabel('What do you need to do?').press('Enter');
     await expect(page).toHaveURL(TOOL_PATH);
     expect(problems).toEqual([]);
+  });
+
+  test('a category page lists all of its tools, ready and planned', async ({ page }) => {
+    await page.goto('/forms/');
+    await expect(page.getByRole('link', { name: /Form Photo Resizer/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Signature Resizer/ })).toBeVisible();
+    await expect(
+      page.locator('[data-planned]', { hasText: 'Passport and Visa Photo Maker' }),
+    ).toBeVisible();
+    // A hub with no finished tool yet is not offered to search engines.
+    await page.goto('/utilities/');
+    await expect(page.locator('[data-planned]').first()).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   });
 
   test('tool page has SEO essentials and the working tool at its centre', async ({ page }) => {

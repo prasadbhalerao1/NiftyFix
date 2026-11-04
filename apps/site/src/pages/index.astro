@@ -1,9 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
-import ToolCard from '../components/ToolCard.astro';
+import CatalogueGrid from '../components/CatalogueGrid.astro';
 import { absoluteUrl, registry, SITE_NAME } from '../data/registry';
 import { categoryPath } from '@niftyfix/registry';
-import { CATEGORIES } from '@niftyfix/tool-sdk';
+import { CATEGORIES, CATEGORY_IDS } from '@niftyfix/tool-sdk';
+
+const categories = CATEGORY_IDS.map((id) => {
+  const items = registry.catalogue(id);
+  const ready = items.filter((item) => item.kind === 'built').length;
+  return { id, ready, planned: items.length - ready };
+});
+const allTools = CATEGORY_IDS.flatMap((id) => registry.catalogue(id));
 
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: absoluteUrl('/') },
@@ -45,56 +52,70 @@ const jsonLd = [
     </form>
   </section>
 
-  {registry.activeCategories().map((category) => (
-    <section class="mt-8" data-category-section>
-      <div class="mb-3 flex items-baseline justify-between gap-4">
-        <h2 class="text-xl font-semibold">{CATEGORIES[category].h1}</h2>
-        <a
-          href={categoryPath(category)}
-          class="text-sm font-medium text-teal-800 hover:underline dark:text-teal-300"
-        >
-          All {CATEGORIES[category].name.toLowerCase()} tools
-        </a>
-      </div>
-      <p class="mb-4 max-w-[72ch] text-sm text-stone-600 dark:text-stone-400">
-        {CATEGORIES[category].description}
-      </p>
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {registry.inCategory(category).map((tool) => (
-          <ToolCard manifest={tool.manifest} />
-        ))}
-      </div>
-    </section>
-  ))}
-  <p class="mt-8 hidden text-stone-600" data-no-results>
-    No tool matches that yet. Try different words, such as “photo size” or “KB”.
-  </p>
+  <section aria-labelledby="categories-heading" data-browse>
+    <h2 id="categories-heading" class="mb-4 text-xl font-semibold">
+      Browse tools by category
+    </h2>
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      {categories.map(({ id, ready, planned }) => (
+        <li>
+          <a
+            href={categoryPath(id)}
+            class="group flex h-full flex-col gap-1 rounded-[var(--radius-panel)] border border-stone-200 bg-white p-4 transition-colors hover:border-teal-600 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-teal-400"
+            data-category-card
+          >
+            <span class="font-semibold group-hover:text-teal-800 dark:group-hover:text-teal-300">
+              {CATEGORIES[id].h1}
+            </span>
+            <span class="text-sm text-stone-600 dark:text-stone-400">
+              {CATEGORIES[id].description}
+            </span>
+            <span class="mt-2 text-xs font-medium text-stone-700 dark:text-stone-300">
+              {ready > 0 ? `${ready} ready` : 'Coming soon'}
+              {ready > 0 && planned > 0 ? ` · ${planned} coming soon` : ''}
+              {ready === 0 ? ` · ${planned} tools planned` : ''}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-2 hidden" aria-label="Search results" data-results>
+    <CatalogueGrid items={allTools} />
+    <p class="mt-6 hidden text-stone-600 dark:text-stone-400" data-no-results>
+      No tool matches that yet. Try different words, such as “photo size” or “merge PDF”.
+    </p>
+  </section>
 </Base>
 
 <script>
-  // Progressive enhancement: filter the statically rendered tool list as the user types.
+  // Progressive enhancement: while the user types, the category grid gives way to
+  // matching tools from every category (ready tools link; planned ones say so).
   const form = document.querySelector<HTMLFormElement>('[data-tool-search]');
   const input = form?.querySelector<HTMLInputElement>('input[type="search"]');
-  const cards = [...document.querySelectorAll<HTMLElement>('[data-tool-card]')];
+  const browse = document.querySelector<HTMLElement>('[data-browse]');
+  const results = document.querySelector<HTMLElement>('[data-results]');
+  const cards = [...(results?.querySelectorAll<HTMLElement>('[data-tool-card]') ?? [])];
   const empty = document.querySelector<HTMLElement>('[data-no-results]');
 
   const filter = (): void => {
     const words = (input?.value ?? '').toLowerCase().split(/\s+/).filter(Boolean);
+    const searching = words.length > 0;
     let shown = 0;
     for (const card of cards) {
-      const match = words.every((word) => (card.dataset.terms ?? '').includes(word));
+      const match = searching && words.every((word) => (card.dataset.terms ?? '').includes(word));
       card.hidden = !match;
       if (match) shown += 1;
     }
-    for (const section of document.querySelectorAll<HTMLElement>('[data-category-section]')) {
-      section.hidden = section.querySelectorAll('[data-tool-card]:not([hidden])').length === 0;
-    }
+    browse?.toggleAttribute('hidden', searching);
+    results?.classList.toggle('hidden', !searching);
     empty?.classList.toggle('hidden', shown > 0);
   };
 
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
-    const first = cards.find((card) => !card.hidden);
+    const first = cards.find((card) => !card.hidden && card instanceof HTMLAnchorElement);
     if (first instanceof HTMLAnchorElement) first.click();
   });
   input?.addEventListener('input', filter);

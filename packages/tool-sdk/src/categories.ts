@@ -1,3 +1,8 @@
+/**
+ * Every workspace, in navigation order. Each has a hub page listing all of its
+ * tools, built or planned (see @niftyfix/registry PLANNED_TOOLS and
+ * docs/tool-catalogue-v3.md).
+ */
 export const CATEGORIES = {
   forms: {
     name: 'Form-ready',
@@ -5,40 +10,90 @@ export const CATEGORIES = {
     description:
       'Prepare photographs, signatures and documents to match the published upload requirements of exam, recruitment and government portals.',
   },
-  image: {
-    name: 'Image',
-    h1: 'Image tools',
-    description: 'Compress, resize, crop and convert images on your device.',
-  },
   pdf: {
     name: 'PDF',
     h1: 'PDF tools',
-    description: 'Merge, split, organise and compress PDF files.',
+    description: 'Merge, split, organise, compress, edit, sign, secure and convert PDF files.',
+  },
+  documents: {
+    name: 'Documents',
+    h1: 'Document and ebook converters',
+    description: 'Convert Word, Excel, PowerPoint, OpenDocument, ebooks and more.',
+  },
+  image: {
+    name: 'Image',
+    h1: 'Image tools',
+    description: 'Compress, resize, convert, crop, edit, watermark and inspect images.',
   },
   video: {
     name: 'Video',
     h1: 'Video tools',
-    description: 'Trim, compress and convert videos.',
+    description: 'Convert, compress, trim, merge, crop, rotate and record video.',
   },
   audio: {
     name: 'Audio',
     h1: 'Audio tools',
-    description: 'Convert, trim and extract audio.',
+    description: 'Convert, trim, merge, boost, clean up and record audio.',
+  },
+  subtitles: {
+    name: 'Subtitles',
+    h1: 'Subtitle and transcript tools',
+    description: 'Edit, convert, synchronise and fix subtitles and transcripts.',
+  },
+  ocr: {
+    name: 'OCR & files',
+    h1: 'OCR and file inspection',
+    description: 'Extract text from images and scans, and find out what any file really is.',
   },
   text: {
     name: 'Text',
     h1: 'Text tools',
-    description: 'Count, compare and clean up text.',
+    description: 'Count, compare, clean up and transform text.',
+  },
+  data: {
+    name: 'Data',
+    h1: 'Spreadsheet and data tools',
+    description: 'View, clean, split and convert CSV, Excel, JSON, XML and YAML.',
+  },
+  archive: {
+    name: 'Archive',
+    h1: 'ZIP, archive and file tools',
+    description: 'Create, extract, inspect and convert archives, and rename files in bulk.',
   },
   developer: {
     name: 'Developer',
-    h1: 'Developer tools',
-    description: 'Format, encode and decode data for development work.',
+    h1: 'Developer and security tools',
+    description: 'Format, validate, encode, hash and inspect data for development work.',
   },
   generators: {
     name: 'Generators',
-    h1: 'Generators',
-    description: 'Create QR codes and other generated assets.',
+    h1: 'QR, barcode and generators',
+    description: 'Create and scan QR codes and barcodes, and generate text and identifiers.',
+  },
+  design: {
+    name: 'Colour & design',
+    h1: 'Colour and design tools',
+    description: 'Pick, convert and mix colours, build palettes, and create graphics.',
+  },
+  seo: {
+    name: 'SEO & social',
+    h1: 'SEO, publishing and social tools',
+    description: 'Check meta tags, generate structured data and format social posts.',
+  },
+  creator: {
+    name: 'Creator',
+    h1: 'YouTube and creator tools',
+    description: 'Thumbnails, chapters, links, playlists and captions for creators.',
+  },
+  calculators: {
+    name: 'Calculators',
+    h1: 'Calculators and converters',
+    description: 'Maths, finance, date, unit, health, education and file-size calculators.',
+  },
+  utilities: {
+    name: 'Utilities',
+    h1: 'Browser and everyday utilities',
+    description: 'Device testers, recorders, timers, typing tests and quick random tools.',
   },
 } as const satisfies Record<string, { name: string; h1: string; description: string }>;
 

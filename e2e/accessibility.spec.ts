@@ -24,7 +24,13 @@ async function scanFrame(page: Page, label: string): Promise<void> {
 
 test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
   test('site pages have no serious violations', async ({ page }) => {
-    for (const path of ['/', '/forms/', TOOL_PATH, '/privacy-verification/']) {
+    for (const path of [
+      '/',
+      '/forms/',
+      TOOL_PATH,
+      '/forms/signature-resizer/',
+      '/privacy-verification/',
+    ]) {
       await page.goto(path);
       const results = await new AxeBuilder({ page })
         .exclude('iframe[data-tool-frame]')
@@ -55,5 +61,22 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await frame.getByTestId('prepare').click();
     await expect(frame.getByTestId('error-view')).toBeVisible({ timeout: 30_000 });
     await scanFrame(page, 'error');
+  });
+
+  test('signature resizer states have no serious violations', async ({ page }) => {
+    await page.goto('/forms/signature-resizer/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await expect(frame.getByRole('button', { name: /Choose a signature/ })).toBeVisible();
+    await scanFrame(page, 'signature empty');
+    await chooseFile(frame, 'signatures/thin-pen.jpg');
+    await expect(frame.getByTestId('signature-preview')).toBeVisible();
+    await frame.getByText('Black & white', { exact: true }).click();
+    await frame.getByLabel(/^Threshold/).fill('0.1');
+    await expect(frame.getByTestId('preview-warning').first()).toBeVisible();
+    await frame.getByRole('button', { name: 'Advanced options' }).click();
+    await scanFrame(page, 'signature editing with warning and advanced options');
+    await frame.getByTestId('prepare').click();
+    await expect(frame.getByTestId('result')).toBeVisible({ timeout: 30_000 });
+    await scanFrame(page, 'signature result');
   });
 });

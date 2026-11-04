@@ -146,4 +146,212 @@ heic.write('ftypheic', 4, 'latin1');
 writeFileSync(join(MALICIOUS, 'iphone.heic'), heic);
 writeFileSync(join(MALICIOUS, 'empty.jpg'), Buffer.alloc(0));
 
-console.log('Fixtures written to fixtures/images and fixtures/malicious');
+// ---------------------------------------------------------------------------
+// Signatures: one cursive path drawn on different papers, inks and lighting.
+// ---------------------------------------------------------------------------
+const SIGNATURES = join(ROOT, 'fixtures', 'signatures');
+mkdirSync(SIGNATURES, { recursive: true });
+
+interface SignatureVariant {
+  name: string;
+  width: number;
+  height: number;
+  type: 'image/jpeg' | 'image/png';
+  quality: number;
+  /** 'white' | 'grey' | 'gradient' | 'shadow' | 'none' (transparent) */
+  paper: 'white' | 'grey' | 'gradient' | 'shadow' | 'none';
+  ink: string;
+  stroke: number;
+  noise: number;
+}
+
+async function renderSignature(variant: SignatureVariant): Promise<Buffer> {
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage();
+    await page.evaluate('globalThis.__name = (fn) => fn');
+    const base64 = await page.evaluate(async (v: SignatureVariant) => {
+      const canvas = new OffscreenCanvas(v.width, v.height);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('no 2d context');
+      const { width: w, height: h } = v;
+      if (v.paper === 'white') ctx.fillStyle = '#f7f6f2';
+      if (v.paper === 'grey') ctx.fillStyle = '#bdbab3';
+      if (v.paper === 'gradient') {
+        const g = ctx.createLinearGradient(0, 0, w, h);
+        g.addColorStop(0, '#f5f3ee');
+        g.addColorStop(1, '#8f8c86');
+        ctx.fillStyle = g;
+      }
+      if (v.paper !== 'none') ctx.fillRect(0, 0, w, h);
+      if (v.paper === 'shadow') {
+        ctx.fillStyle = '#f6f5f1';
+        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(40, 38, 35, 0.45)';
+        ctx.beginPath();
+        ctx.moveTo(w * 0.55, 0);
+        ctx.lineTo(w, 0);
+        ctx.lineTo(w, h);
+        ctx.lineTo(w * 0.35, h);
+        ctx.closePath();
+        ctx.fill();
+      }
+      // Cursive-like signature centred with generous margins (to exercise auto-crop).
+      const sx = (x: number): number => w * (0.2 + 0.6 * x);
+      const sy = (y: number): number => h * (0.3 + 0.4 * y);
+      ctx.strokeStyle = v.ink;
+      ctx.lineWidth = v.stroke;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(sx(0), sy(0.8));
+      ctx.bezierCurveTo(sx(0.05), sy(-0.2), sx(0.15), sy(-0.2), sx(0.12), sy(0.9));
+      ctx.bezierCurveTo(sx(0.2), sy(0.2), sx(0.3), sy(0.2), sx(0.32), sy(0.8));
+      ctx.bezierCurveTo(sx(0.4), sy(0.1), sx(0.5), sy(1.1), sx(0.58), sy(0.4));
+      ctx.bezierCurveTo(sx(0.66), sy(-0.1), sx(0.76), sy(1.0), sx(0.84), sy(0.5));
+      ctx.bezierCurveTo(sx(0.9), sy(0.2), sx(0.95), sy(0.6), sx(1), sy(0.55));
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(sx(0.05), sy(1.05));
+      ctx.lineTo(sx(0.95), sy(0.95));
+      ctx.stroke();
+      if (v.noise > 0) {
+        let seed = 99;
+        const rand = (): number => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+        const img = ctx.getImageData(0, 0, w, h);
+        for (let i = 0; i < img.data.length; i += 4) {
+          const n = (rand() * 2 - 1) * v.noise;
+          for (let c = i; c < i + 3; c += 1) img.data[c] = (img.data[c] ?? 0) + n;
+        }
+        ctx.putImageData(img, 0, 0);
+      }
+      const blob = await canvas.convertToBlob({ type: v.type, quality: v.quality });
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      let binary = '';
+      for (const byte of bytes) binary += String.fromCharCode(byte);
+      return btoa(binary);
+    }, variant);
+    return Buffer.from(base64, 'base64');
+  } finally {
+    await browser.close();
+  }
+}
+
+const BLACK = '#15151c';
+const SIGNATURE_VARIANTS: SignatureVariant[] = [
+  {
+    name: 'white-black.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.9,
+    paper: 'white',
+    ink: BLACK,
+    stroke: 7,
+    noise: 0,
+  },
+  {
+    name: 'blue-ink.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.9,
+    paper: 'white',
+    ink: '#1d2f9c',
+    stroke: 7,
+    noise: 0,
+  },
+  {
+    name: 'thin-pen.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.9,
+    paper: 'white',
+    ink: BLACK,
+    stroke: 2,
+    noise: 0,
+  },
+  {
+    name: 'thick-marker.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.9,
+    paper: 'white',
+    ink: BLACK,
+    stroke: 22,
+    noise: 0,
+  },
+  {
+    name: 'uneven-lighting.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.9,
+    paper: 'gradient',
+    ink: BLACK,
+    stroke: 6,
+    noise: 0,
+  },
+  {
+    name: 'hand-shadow.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.9,
+    paper: 'shadow',
+    ink: BLACK,
+    stroke: 6,
+    noise: 0,
+  },
+  {
+    name: 'grey-paper.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.9,
+    paper: 'grey',
+    ink: BLACK,
+    stroke: 6,
+    noise: 0,
+  },
+  {
+    name: 'jpeg-noise.jpg',
+    width: 1600,
+    height: 700,
+    type: 'image/jpeg',
+    quality: 0.3,
+    paper: 'white',
+    ink: BLACK,
+    stroke: 6,
+    noise: 18,
+  },
+  {
+    name: 'low-res.jpg',
+    width: 240,
+    height: 100,
+    type: 'image/jpeg',
+    quality: 0.8,
+    paper: 'white',
+    ink: BLACK,
+    stroke: 2,
+    noise: 0,
+  },
+  {
+    name: 'transparent.png',
+    width: 1200,
+    height: 500,
+    type: 'image/png',
+    quality: 1,
+    paper: 'none',
+    ink: BLACK,
+    stroke: 5,
+    noise: 0,
+  },
+];
+for (const variant of SIGNATURE_VARIANTS) {
+  writeFileSync(join(SIGNATURES, variant.name), await renderSignature(variant));
+}
+
+console.log('Fixtures written to fixtures/images, fixtures/malicious and fixtures/signatures');

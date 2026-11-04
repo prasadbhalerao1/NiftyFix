@@ -25,6 +25,12 @@ const BUDGETS = {
 const ENGINE_PROCESSOR_BUDGETS: Record<string, number> = {
   pdf: 260 * KB,
 };
+/**
+ * Processors that render PDF pages load pdf.js (display layer ~129 kB + parser
+ * ~366 kB gzip), detected from the bundle itself (ADR 0005). Worker-side only,
+ * cached across tools, preloaded when a file is chosen.
+ */
+const PDF_RENDER_PROCESSOR_BUDGET = 520 * KB;
 /** Strings that only appear in processing code; none may reach a site page. */
 const ENGINE_MARKERS = ['convertToBlob', 'createImageBitmap', 'OffscreenCanvas'];
 
@@ -78,6 +84,7 @@ for (const css of readdirSync(join(SITE, '_astro')).filter((name) => name.endsWi
 interface Chunk {
   file: string;
   imports?: string[];
+  dynamicImports?: string[];
   css?: string[];
   isEntry?: boolean;
 }
@@ -85,11 +92,22 @@ const manifest = JSON.parse(readFileSync(join(FRAME, '.vite/manifest.json'), 'ut
   string,
   Chunk
 >;
-const closure = (key: string, seen = new Set<string>()): Set<string> => {
+/**
+ * Chunks a key loads. With dynamic, an engine's own lazy imports count too
+ * (e.g. the pdf.js parser, awaited on every run). Lazy imports of other tools
+ * (the loader maps in tools/loaders.ts) are navigation, not cost, and are skipped.
+ */
+const ENGINE_LAZY = /(^|\/)(node_modules|packages\/engines)\//;
+const closure = (key: string, dynamic = false, seen = new Set<string>()): Set<string> => {
   const chunk = manifest[key];
   if (!chunk || seen.has(key)) return seen;
   seen.add(key);
-  for (const dependency of chunk.imports ?? []) closure(dependency, seen);
+  for (const dependency of chunk.imports ?? []) closure(dependency, dynamic, seen);
+  if (dynamic) {
+    for (const dependency of chunk.dynamicImports ?? []) {
+      if (ENGINE_LAZY.test(dependency)) closure(dependency, dynamic, seen);
+    }
+  }
   return seen;
 };
 const size = (keys: Iterable<string>, exclude = new Set<string>()): number => {
@@ -118,8 +136,10 @@ for (const dir of discoverToolDirs()) {
   if (manifest[processor])
     measure(
       `tool ${dir} processor (lazy)`,
-      size(closure(processor), shell),
-      ENGINE_PROCESSOR_BUDGETS[dir.split('/')[0] ?? ''] ?? BUDGETS.toolProcessor,
+      size(closure(processor, true), shell),
+      [...closure(processor, true)].some((key) => key.includes('pdfjs-dist'))
+        ? PDF_RENDER_PROCESSOR_BUDGET
+        : (ENGINE_PROCESSOR_BUDGETS[dir.split('/')[0] ?? ''] ?? BUDGETS.toolProcessor),
     );
   else problems.push(`tool ${dir}: processor.ts not found in frame build manifest`);
 }

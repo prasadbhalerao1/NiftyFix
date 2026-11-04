@@ -29,10 +29,12 @@ import content12 from './pdf/pdf-to-text/content';
 import manifest12 from './pdf/pdf-to-text/manifest';
 import content13 from './pdf/rotate-pdf/content';
 import manifest13 from './pdf/rotate-pdf/manifest';
-import content14 from './pdf/split-pdf/content';
-import manifest14 from './pdf/split-pdf/manifest';
-import content15 from './pdf/watermark-pdf/content';
-import manifest15 from './pdf/watermark-pdf/manifest';
+import content14 from './pdf/sign-pdf/content';
+import manifest14 from './pdf/sign-pdf/manifest';
+import content15 from './pdf/split-pdf/content';
+import manifest15 from './pdf/split-pdf/manifest';
+import content16 from './pdf/watermark-pdf/content';
+import manifest16 from './pdf/watermark-pdf/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'forms/photo-resizer', manifest: manifest0, content: content0 },
@@ -49,6 +51,7 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/pdf-to-image', manifest: manifest11, content: content11 },
   { dir: 'pdf/pdf-to-text', manifest: manifest12, content: content12 },
   { dir: 'pdf/rotate-pdf', manifest: manifest13, content: content13 },
-  { dir: 'pdf/split-pdf', manifest: manifest14, content: content14 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest15, content: content15 },
+  { dir: 'pdf/sign-pdf', manifest: manifest14, content: content14 },
+  { dir: 'pdf/split-pdf', manifest: manifest15, content: content15 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest16, content: content16 },
 ];

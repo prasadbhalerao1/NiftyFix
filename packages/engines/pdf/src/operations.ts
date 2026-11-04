@@ -1,5 +1,6 @@
 import {
   degrees,
+  PDFDict,
   PDFName,
   PDFRef,
   rgb,
@@ -247,6 +248,12 @@ export function placeImage(page: PDFPage, image: PDFImage, rect: DisplayRect): v
     height: h,
     rotate: degrees(rotation),
   });
+}
+
+/** Number of images and other drawable objects a page's resources hold (to verify a stamp landed). */
+export function countPageXObjects(page: PDFPage): number {
+  const xobjects = page.node.Resources()?.lookup(PDFName.of('XObject'));
+  return xobjects instanceof PDFDict ? xobjects.keys().length : 0;
 }
 
 /** Points per millimetre. */

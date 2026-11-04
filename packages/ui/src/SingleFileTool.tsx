@@ -23,6 +23,11 @@ export interface SingleFileToolProps extends ToolUiProps {
   options: unknown;
   /** Tool-specific settings controls. */
   children?: ComponentChildren;
+  /**
+   * Cheap identity for options, when they hold large data (e.g. image bytes) that
+   * would be slow to compare as JSON on every render. Defaults to the options' JSON.
+   */
+  optionsKey?: string;
   /** Optional live preview of the chosen file, shown under the file name. */
   preview?: (file: File) => ComponentChildren;
 }
@@ -47,6 +52,7 @@ export function SingleFileTool({
   successMessage,
   disclaimer,
   options,
+  optionsKey: customKey,
   children,
   preview,
 }: SingleFileToolProps) {
@@ -55,7 +61,7 @@ export function SingleFileTool({
   const [inputError, setInputError] = useState<SerializedToolError | null>(null);
   const job = useToolJob<null>({ run, report }, urls.current);
   const { phase } = job;
-  const optionsKey = JSON.stringify(options);
+  const optionsKey = customKey ?? JSON.stringify(options);
   const limitMb = Math.round(
     (device === 'high' ? manifest.input.maxBytes.desktop : manifest.input.maxBytes.mobile) /
       1_000_000,

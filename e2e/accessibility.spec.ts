@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { chooseFile, openTool, TOOL_PATH } from './helpers';
+import { chooseFile, fixture, openTool, TOOL_PATH } from './helpers';
 
 /** axe cannot see into cross-origin frames from the parent, so tool states are scanned inside the frame. */
 async function scanFrame(page: Page, label: string): Promise<void> {
@@ -109,6 +109,22 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await expect(frame.getByTestId('page-card')).toHaveCount(3);
     await frame.getByRole('button', { name: 'Remove Page 2' }).click();
     await scanFrame(page, 'organize grid with a removed page');
+  });
+
+  test('Sign PDF with a placed signature has no serious violations', async ({ page }) => {
+    const { makePdf } = await import('./pdf-helpers');
+    await page.goto('/pdf/sign-pdf/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await frame.getByTestId('file-input').setInputFiles(await makePdf('a.pdf', 2));
+    await expect(frame.getByTestId('page-indicator')).toBeVisible();
+    await scanFrame(page, 'sign before a signature');
+    await frame.getByText('Upload a photo', { exact: true }).click();
+    await frame
+      .getByTestId('file-input')
+      .last()
+      .setInputFiles(fixture('signatures/white-black.jpg'));
+    await expect(frame.getByTestId('signature-box')).toBeVisible();
+    await scanFrame(page, 'sign with a placed signature');
   });
 
   test('signature resizer states have no serious violations', async ({ page }) => {

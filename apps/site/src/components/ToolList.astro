@@ -1,0 +1,25 @@
+---
+import type { ToolManifest } from '@niftyfix/tool-sdk';
+import ToolListItem from './ToolListItem.astro';
+
+/**
+ * The one way tools are listed: a grid of ToolListItems separated by hairlines,
+ * fading in one after another when scrolled into view (data-stagger).
+ */
+export interface Props {
+  tools: readonly ToolManifest[];
+  columns?: 1 | 2 | 3;
+  dense?: boolean;
+  class?: string;
+}
+const { tools, columns = 3, dense = false, class: className } = Astro.props;
+const COLUMNS = { 1: '', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3' } as const;
+---
+
+<ul class:list={['tool-list grid gap-x-10', COLUMNS[columns], className]} role="list" data-stagger>
+  {tools.map((manifest) => (
+    <li>
+      <ToolListItem manifest={manifest} dense={dense} />
+    </li>
+  ))}
+</ul>

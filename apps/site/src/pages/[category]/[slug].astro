@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import ToolRow from '../../components/ToolRow.astro';
+import ToolList from '../../components/ToolList.astro';
 import ToolFrame from '../../components/ToolFrame.astro';
 import { absoluteUrl, FRAME_ORIGIN, registry, SITE_NAME } from '../../data/registry';
 import { categoryPath, toolPath, variantPath, type ToolEntry } from '@niftyfix/registry';
@@ -103,20 +103,14 @@ const jsonLd = [
       <ul class="mt-2 flex flex-wrap gap-2">
         {variant ? (
           <li>
-            <a
-              href={toolPath(manifest)}
-              class="inline-block rounded-full border border-stone-300 px-3 py-1 text-sm hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:hover:border-brand-400 dark:hover:text-brand-300"
-            >
+            <a href={toolPath(manifest)} class="pill">
               {manifest.name}
             </a>
           </li>
         ) : null}
         {intents.map((other) => (
           <li>
-            <a
-              href={variantPath(manifest, other)}
-              class="inline-block rounded-full border border-stone-300 px-3 py-1 text-sm hover:border-brand-600 hover:text-brand-800 dark:border-stone-700 dark:hover:border-brand-400 dark:hover:text-brand-300"
-            >
+            <a href={variantPath(manifest, other)} class="pill">
               {other.label}
             </a>
           </li>
@@ -197,13 +191,7 @@ const jsonLd = [
   {related.length > 0 ? (
     <section class="mt-14">
       <h2 class="eyebrow">Related tools</h2>
-      <ul class="mt-3 grid gap-1 sm:grid-cols-2 lg:grid-cols-3" role="list">
-        {related.map((tool) => (
-          <li>
-            <ToolRow manifest={tool.manifest} />
-          </li>
-        ))}
-      </ul>
+      <ToolList tools={related.map((tool) => tool.manifest)} class="mt-2" />
     </section>
   ) : null}
 </Base>

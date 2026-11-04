@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 /**
  * Filters the tools inside the nearest [data-filter-scope]: rows with
  * data-tool-card are matched on data-terms; sections ([data-filter-group])
@@ -16,18 +17,10 @@ const { id, label, placeholder } = Astro.props;
   <label for={id} class="sr-only">
     {label}
   </label>
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
+  <Icon
+    name="search"
     class="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-stone-500 dark:text-stone-400"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-  >
-    <circle cx="11" cy="11" r="7"></circle>
-    <path d="m20 20-3.5-3.5"></path>
-  </svg>
+  />
   <input
     id={id}
     type="search"
@@ -54,8 +47,15 @@ const { id, label, placeholder } = Astro.props;
       let shown = 0;
       for (const card of cards) {
         const match = words.every((word) => (card.dataset.terms ?? '').includes(word));
-        (card.closest('li') ?? card).hidden = !match;
-        if (match) shown += 1;
+        const item = card.closest('li') ?? card;
+        item.hidden = !match;
+        if (match) {
+          shown += 1;
+          // Restart the settle-in animation on each change.
+          item.classList.remove('filter-pop');
+          void item.offsetWidth;
+          item.classList.add('filter-pop');
+        }
       }
       for (const group of groups) {
         group.hidden = ![...group.querySelectorAll<HTMLElement>('[data-tool-card]')].some(

@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 /**
  * A tool search combobox (behaviour in src/scripts/search.ts). Without
  * JavaScript the form submits to the home page with ?q=, which runs the search.
@@ -41,18 +42,10 @@ const EXAMPLES = [
       {label}
     </label>
     <div class="relative">
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
+      <Icon
+        name="search"
         class="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-stone-500 dark:text-stone-400"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-      >
-        <circle cx="11" cy="11" r="7"></circle>
-        <path d="m20 20-3.5-3.5"></path>
-      </svg>
+      />
       <input
         id={id}
         type="search"

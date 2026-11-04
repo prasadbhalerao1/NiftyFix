@@ -62,6 +62,19 @@ test.describe('site', () => {
     await expect(demo.locator('.check-pending').first()).toBeHidden();
   });
 
+  test('no page scrolls sideways, on a phone or a desktop', async ({ page }) => {
+    for (const width of [360, 1440]) {
+      await page.setViewportSize({ width, height: 800 });
+      for (const path of ['/', '/pdf/', '/forms/', '/tools/', TOOL_PATH]) {
+        await page.goto(path);
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
+        expect(overflow, `${path} at ${width}px`).toBeLessThanOrEqual(0);
+      }
+    }
+  });
+
   test('the command palette opens from anywhere with Ctrl+K', async ({ page }) => {
     await page.goto(TOOL_PATH);
     await page.keyboard.press('ControlOrMeta+k');

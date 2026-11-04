@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { registry } from '../data/registry';
 import { categoryPath } from '@niftyfix/registry';
@@ -80,18 +81,7 @@ const link =
         class="hidden h-9 items-center gap-2 rounded-lg border border-stone-300 bg-paper/70 pr-1.5 pl-3 text-sm text-stone-600 transition-colors hover:border-stone-400 hover:text-stone-900 sm:flex dark:border-stone-700 dark:bg-stone-900/70 dark:text-stone-400 dark:hover:border-stone-600 dark:hover:text-stone-100"
         data-open-search
       >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          class="size-4"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-        >
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="m20 20-3.5-3.5"></path>
-        </svg>
+        <Icon name="search" class="size-4" />
         <span>Search tools</span>
         <kbd class="keycap ml-4">Ctrl K</kbd>
       </button>
@@ -101,18 +91,7 @@ const link =
         class="inline-flex size-9 items-center justify-center rounded-lg text-stone-700 hover:bg-stone-200/60 sm:hidden dark:text-stone-300 dark:hover:bg-stone-800"
         data-open-search
       >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          class="size-5"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-        >
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="m20 20-3.5-3.5"></path>
-        </svg>
+        <Icon name="search" class="size-5" />
       </button>
       <ThemeToggle />
       <details class="nav-menu relative md:hidden" data-menu>
@@ -120,17 +99,7 @@ const link =
           aria-label="Menu"
           class="flex size-9 cursor-pointer list-none items-center justify-center rounded-lg text-stone-700 hover:bg-stone-200/60 dark:text-stone-300 dark:hover:bg-stone-800"
         >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            class="size-5"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-          >
-            <path d="M4 7h16M4 12h16M4 17h16"></path>
-          </svg>
+          <Icon name="menu" class="size-5" />
         </summary>
         <nav
           aria-label="Mobile"

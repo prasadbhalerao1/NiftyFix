@@ -165,6 +165,25 @@ if (motion && finePointer) {
   }
 }
 
+// Glows without a tilt stage (category headers) just follow the pointer.
+if (motion && finePointer) {
+  for (const glow of document.querySelectorAll<HTMLElement>('.hero-glow')) {
+    const area = glow.parentElement;
+    if (!area || area.querySelector('[data-tilt]')) continue;
+    let frame = 0;
+    area.addEventListener('pointermove', (event) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const box = area.getBoundingClientRect();
+        const x = ((event.clientX - box.left) / box.width) * 2 - 1;
+        const y = ((event.clientY - box.top) / box.height) * 2 - 1;
+        glow.style.transform = `translate3d(${(x * 160).toFixed(1)}px, ${(y * 90).toFixed(1)}px, 0)`;
+      });
+    });
+  }
+}
+
 // Spotlight: a soft light under the pointer on cards.
 if (finePointer) {
   document.addEventListener(

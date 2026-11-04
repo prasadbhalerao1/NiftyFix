@@ -1,0 +1,70 @@
+---
+import { toolPath } from '@niftyfix/registry';
+import { FILE_FORMATS, type FileFormatId, type ToolManifest } from '@niftyfix/tool-sdk';
+import { toolIcon } from '../data/icons';
+
+/**
+ * One tool in a ToolList: plain icon, name, one-line description, and what it
+ * accepts and produces (dense: name only). No box: the list draws hairlines, and
+ * hover shows a soft background, an orange icon and a sliding arrow (.tool-item).
+ * Searchable by data-terms (ScopedFilter).
+ */
+export interface Props {
+  manifest: ToolManifest;
+  dense?: boolean;
+}
+const { manifest, dense = false } = Astro.props;
+
+const list = (ids: readonly FileFormatId[]): string => {
+  const labels = [...new Set(ids.map((id) => FILE_FORMATS[id].label))];
+  return labels.length > 2
+    ? `${labels.slice(0, 2).join(', ')} +${labels.length - 2}`
+    : labels.join(', ');
+};
+const accepts = list(manifest.input.formats);
+const produces = list(manifest.output.formats);
+---
+
+<a
+  href={toolPath(manifest)}
+  class:list={[
+    'tool-item group -mx-3 flex items-start gap-3.5 rounded-lg px-3',
+    dense ? 'py-2.5' : 'py-4',
+  ]}
+  data-tool-card
+  data-terms={[manifest.name, manifest.tagline, ...manifest.searchAliases].join(' ').toLowerCase()}
+>
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    class="tool-item-icon mt-0.5 size-5 shrink-0 text-stone-500 dark:text-stone-400"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d={toolIcon(manifest.id)}></path>
+  </svg>
+  <span class="flex min-w-0 flex-1 flex-col gap-1">
+    <span class="flex items-baseline justify-between gap-3">
+      <span class="font-medium">{manifest.name}</span>
+      <span aria-hidden="true" class="tool-item-arrow text-brand-700 dark:text-brand-400">
+        →
+      </span>
+    </span>
+    {dense ? null : (
+      <>
+        <span class="line-clamp-1 text-sm text-stone-700 dark:text-stone-400">
+          {manifest.tagline}
+        </span>
+        <span class="flex gap-1.5 font-mono text-[11px] text-stone-600 dark:text-stone-400">
+          <span>{accepts}</span>
+          <span aria-hidden="true">→</span>
+          <span class="sr-only">produces</span>
+          <span>{produces}</span>
+        </span>
+      </>
+    )}
+  </span>
+</a>

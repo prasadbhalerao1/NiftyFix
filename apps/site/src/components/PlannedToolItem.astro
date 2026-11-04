@@ -1,0 +1,23 @@
+---
+import type { PlannedTool } from '@niftyfix/registry';
+
+/** A planned tool: listed by name, never linked (no page until it works). */
+export interface Props {
+  tool: PlannedTool;
+  /** Smaller type and spacing for the all-tools directory. */
+  compact?: boolean;
+}
+const { tool, compact = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'border-b border-dashed border-stone-300 text-stone-800 dark:border-stone-800 dark:text-stone-300',
+    compact ? 'py-1.5 text-sm' : 'py-2.5',
+  ]}
+  data-tool-card
+  data-planned
+  data-terms={`${tool.name} ${tool.slug.replaceAll('-', ' ')}`.toLowerCase()}
+>
+  {tool.name}
+</div>

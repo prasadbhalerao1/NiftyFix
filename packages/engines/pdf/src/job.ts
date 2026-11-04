@@ -29,11 +29,13 @@ export interface FinishOptions {
   inputBytes: number;
   facts?: readonly OutputFact[];
   warnings?: readonly string[];
+  /** Set to false to leave the producer field alone (e.g. when the user cleared metadata). */
+  stampProducer?: boolean;
 }
 
 /** Save, re-open independently to verify, and describe the result for the report. */
 export async function finishPdf(doc: PDFDocument, options: FinishOptions): Promise<ProcessedFile> {
-  const bytes = await savePdf(doc);
+  const bytes = await savePdf(doc, { stampProducer: options.stampProducer ?? true });
   const { checks } = await verifyPdfOutput(bytes, {
     pages: options.pages,
     fileName: options.fileName,

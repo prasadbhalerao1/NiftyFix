@@ -48,9 +48,14 @@ export async function loadPdf(bytes: Uint8Array, limits: LoadLimits): Promise<PD
 }
 
 /** Serialise a document. The producer is set so the output says where it was made. */
-export async function savePdf(doc: PDFDocument): Promise<Uint8Array> {
-  doc.setProducer('NiftyFix (niftyfix.in)');
-  doc.setModificationDate(new Date());
+export async function savePdf(
+  doc: PDFDocument,
+  { stampProducer = true }: { stampProducer?: boolean } = {},
+): Promise<Uint8Array> {
+  if (stampProducer) {
+    doc.setProducer('NiftyFix (niftyfix.in)');
+    doc.setModificationDate(new Date());
+  }
   return doc.save({ useObjectStreams: true });
 }
 

@@ -13,6 +13,15 @@ export interface PreviewDocument {
   pageCount: number;
   /** Page sizes in points as displayed (rotation applied), for laying out placeholders. */
   sizes: { width: number; height: number }[];
+  /** Document information as stored in the file (empty strings when absent). */
+  info: {
+    title: string;
+    author: string;
+    subject: string;
+    keywords: string;
+    creator: string;
+    producer: string;
+  };
   /** Draw page `index` (0-based) into `canvas`, fitting `maxCssWidth` at the screen's density. */
   render(index: number, canvas: HTMLCanvasElement, maxCssWidth: number): Promise<void>;
   close(): Promise<void>;
@@ -52,9 +61,19 @@ export async function openPreview(file: Blob): Promise<PreviewDocument> {
       return { width, height };
     }),
   );
+  const raw = ((await doc.getMetadata()).info ?? {}) as Record<string, unknown>;
+  const text = (key: string): string => (typeof raw[key] === 'string' ? (raw[key] as string) : '');
   return {
     pageCount: doc.numPages,
     sizes,
+    info: {
+      title: text('Title'),
+      author: text('Author'),
+      subject: text('Subject'),
+      keywords: text('Keywords'),
+      creator: text('Creator'),
+      producer: text('Producer'),
+    },
     async render(index, canvas, maxCssWidth) {
       const page = await doc.getPage(index + 1);
       const base = page.getViewport({ scale: 1 });

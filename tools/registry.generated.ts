@@ -19,16 +19,18 @@ import content7 from './pdf/merge-pdf/content';
 import manifest7 from './pdf/merge-pdf/manifest';
 import content8 from './pdf/organize-pdf/content';
 import manifest8 from './pdf/organize-pdf/manifest';
-import content9 from './pdf/pdf-to-image/content';
-import manifest9 from './pdf/pdf-to-image/manifest';
-import content10 from './pdf/pdf-to-text/content';
-import manifest10 from './pdf/pdf-to-text/manifest';
-import content11 from './pdf/rotate-pdf/content';
-import manifest11 from './pdf/rotate-pdf/manifest';
-import content12 from './pdf/split-pdf/content';
-import manifest12 from './pdf/split-pdf/manifest';
-import content13 from './pdf/watermark-pdf/content';
-import manifest13 from './pdf/watermark-pdf/manifest';
+import content9 from './pdf/pdf-metadata/content';
+import manifest9 from './pdf/pdf-metadata/manifest';
+import content10 from './pdf/pdf-to-image/content';
+import manifest10 from './pdf/pdf-to-image/manifest';
+import content11 from './pdf/pdf-to-text/content';
+import manifest11 from './pdf/pdf-to-text/manifest';
+import content12 from './pdf/rotate-pdf/content';
+import manifest12 from './pdf/rotate-pdf/manifest';
+import content13 from './pdf/split-pdf/content';
+import manifest13 from './pdf/split-pdf/manifest';
+import content14 from './pdf/watermark-pdf/content';
+import manifest14 from './pdf/watermark-pdf/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'forms/photo-resizer', manifest: manifest0, content: content0 },
@@ -40,9 +42,10 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/image-to-pdf', manifest: manifest6, content: content6 },
   { dir: 'pdf/merge-pdf', manifest: manifest7, content: content7 },
   { dir: 'pdf/organize-pdf', manifest: manifest8, content: content8 },
-  { dir: 'pdf/pdf-to-image', manifest: manifest9, content: content9 },
-  { dir: 'pdf/pdf-to-text', manifest: manifest10, content: content10 },
-  { dir: 'pdf/rotate-pdf', manifest: manifest11, content: content11 },
-  { dir: 'pdf/split-pdf', manifest: manifest12, content: content12 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest13, content: content13 },
+  { dir: 'pdf/pdf-metadata', manifest: manifest9, content: content9 },
+  { dir: 'pdf/pdf-to-image', manifest: manifest10, content: content10 },
+  { dir: 'pdf/pdf-to-text', manifest: manifest11, content: content11 },
+  { dir: 'pdf/rotate-pdf', manifest: manifest12, content: content12 },
+  { dir: 'pdf/split-pdf', manifest: manifest13, content: content13 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest14, content: content14 },
 ];

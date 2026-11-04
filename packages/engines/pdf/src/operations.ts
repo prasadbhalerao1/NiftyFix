@@ -1,5 +1,7 @@
 import {
   degrees,
+  PDFName,
+  PDFRef,
   rgb,
   StandardFonts,
   type PDFDocument,
@@ -305,6 +307,24 @@ export function writeMetadata(doc: PDFDocument, metadata: PdfMetadata): void {
   doc.setKeywords(metadata.keywords === '' ? [] : metadata.keywords.split(/\s*,\s*/));
   doc.setCreator(metadata.creator);
 }
+
+/**
+ * Remove every trace of document information: the Info dictionary fields and
+ * the XMP metadata stream (a second, often forgotten copy of the same details).
+ */
+export function removeAllMetadata(doc: PDFDocument): void {
+  writeMetadata(doc, { title: '', author: '', subject: '', keywords: '', creator: '' });
+  doc.setProducer('');
+  // Delete the stream object itself: an unlinked object is still written into the
+  // saved file, where the details remain readable.
+  const xmp = doc.catalog.get(PDFName.of('Metadata'));
+  doc.catalog.delete(PDFName.of('Metadata'));
+  if (xmp instanceof PDFRef) doc.context.delete(xmp);
+}
+
+/** Whether the document still carries an XMP metadata stream. */
+export const hasXmpMetadata = (doc: PDFDocument): boolean =>
+  doc.catalog.get(PDFName.of('Metadata')) !== undefined;
 
 /** Make form fields permanent page content. Returns how many fields were flattened. */
 export function flattenForm(doc: PDFDocument): number {

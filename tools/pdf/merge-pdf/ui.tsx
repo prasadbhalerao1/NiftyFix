@@ -18,7 +18,7 @@ import { MAX_FILES, MIN_FILES } from './options';
 
 const ACCEPT = '.pdf,application/pdf';
 
-export default function MergePdf({ manifest, device, run, report }: ToolUiProps) {
+export default function MergePdf({ manifest, device, run, preload, report }: ToolUiProps) {
   const urls = useRef(new ObjectUrlRegistry());
   const queue = useFileQueue(manifest.input, device);
   const [fileName, setFileName] = useState('');
@@ -37,7 +37,10 @@ export default function MergePdf({ manifest, device, run, report }: ToolUiProps)
   };
   const add = async (files: File[]): Promise<void> => {
     changed();
-    if ((await queue.add(files)) > 0) report('file_selected');
+    if ((await queue.add(files)) > 0) {
+      report('file_selected');
+      preload();
+    }
   };
 
   const nameError = fileNameError(fileName);

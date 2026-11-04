@@ -12,9 +12,18 @@ export class JobRunner {
   private inline = false;
 
   constructor(
-    private readonly pool: Pick<WorkerPool, 'run'>,
+    private readonly pool: Pick<WorkerPool, 'run'> & Partial<Pick<WorkerPool, 'preload'>>,
     private readonly loadProcessor: (toolId: string) => ProcessorLoader | undefined,
   ) {}
+
+  /** Start loading a tool's processor ahead of its first job. */
+  preload(toolId: string): void {
+    if (this.inline) {
+      void this.loadProcessor(toolId)?.().catch(() => undefined);
+      return;
+    }
+    this.pool.preload?.(toolId);
+  }
 
   get usingMainThread(): boolean {
     return this.inline;

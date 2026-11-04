@@ -12,6 +12,12 @@ export type JobInput = JobFile | readonly JobFile[];
 export const toFileList = (input: JobInput): readonly JobFile[] =>
   Array.isArray(input) ? input : [input as JobFile];
 
+/** Main thread → worker: start loading a tool's processor before the first job needs it. */
+export interface PreloadRequest {
+  type: 'preload';
+  toolId: string;
+}
+
 /** Main thread → worker. Blobs are structured-cloned by reference, not copied. */
 export interface RunRequest {
   type: 'run';

@@ -16,6 +16,15 @@ const BUDGETS = {
   toolUi: 35 * KB,
   toolProcessor: 80 * KB,
 };
+/**
+ * Processors built on a heavyweight engine get their own, explicit ceiling
+ * instead of a raised general one (ADR 0005). Keyed by tool category.
+ * PDF: @cantoo/pdf-lib is ~240 kB gzip; it loads in the worker, is cached
+ * across every PDF tool and is preloaded when files are chosen.
+ */
+const ENGINE_PROCESSOR_BUDGETS: Record<string, number> = {
+  pdf: 260 * KB,
+};
 /** Strings that only appear in processing code; none may reach a site page. */
 const ENGINE_MARKERS = ['convertToBlob', 'createImageBitmap', 'OffscreenCanvas'];
 
@@ -107,7 +116,11 @@ for (const dir of discoverToolDirs()) {
   else problems.push(`tool ${dir}: ui.tsx not found in frame build manifest`);
   // The worker bundles the same processor separately; the lazily loaded copy is a faithful size proxy.
   if (manifest[processor])
-    measure(`tool ${dir} processor (lazy)`, size(closure(processor), shell), BUDGETS.toolProcessor);
+    measure(
+      `tool ${dir} processor (lazy)`,
+      size(closure(processor), shell),
+      ENGINE_PROCESSOR_BUDGETS[dir.split('/')[0] ?? ''] ?? BUDGETS.toolProcessor,
+    );
   else problems.push(`tool ${dir}: processor.ts not found in frame build manifest`);
 }
 

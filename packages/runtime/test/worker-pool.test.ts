@@ -1,20 +1,20 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { ProcessedFile } from '@niftyfix/tool-sdk';
-import type { RunRequest, WorkerMessage } from '../src/protocol';
+import type { PreloadRequest, RunRequest, WorkerMessage } from '../src/protocol';
 import { WorkerPool, type WorkerLike } from '../src/worker-pool';
 
 class FakeWorker implements WorkerLike {
   static all: FakeWorker[] = [];
   onmessage: ((event: MessageEvent<WorkerMessage>) => void) | null = null;
   onerror: ((event: ErrorEvent) => void) | null = null;
-  received: RunRequest[] = [];
+  received: (RunRequest | PreloadRequest)[] = [];
   terminated = false;
 
   constructor() {
     FakeWorker.all.push(this);
   }
 
-  postMessage(message: RunRequest): void {
+  postMessage(message: RunRequest | PreloadRequest): void {
     this.received.push(message);
   }
 
@@ -153,5 +153,24 @@ describe('WorkerPool', () => {
       ok: false,
       error: { code: 'CANCELLED' },
     });
+  });
+});
+
+describe('WorkerPool.preload', () => {
+  it('asks an idle worker to load the processor, starting one if needed', () => {
+    const p = pool(2);
+    p.preload('pdf.merge-pdf');
+    expect(FakeWorker.all).toHaveLength(1);
+    expect(FakeWorker.all[0]?.received).toEqual([{ type: 'preload', toolId: 'pdf.merge-pdf' }]);
+  });
+
+  it('never waits behind a running job and does nothing after dispose', () => {
+    const p = pool(1);
+    p.run('t', file, {});
+    p.preload('t');
+    expect(FakeWorker.all[0]?.received.map((m) => m.type)).toEqual(['run']);
+    p.dispose();
+    p.preload('t');
+    expect(FakeWorker.all).toHaveLength(1);
   });
 });

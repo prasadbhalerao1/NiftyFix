@@ -1,9 +1,15 @@
 import type { ProcessedFile, SerializedToolError } from '@niftyfix/tool-sdk';
-import { toFileList, type JobInput, type RunRequest, type WorkerMessage } from './protocol';
+import {
+  toFileList,
+  type JobInput,
+  type PreloadRequest,
+  type RunRequest,
+  type WorkerMessage,
+} from './protocol';
 
 /** Minimal surface of a Worker, so the pool can be tested without real workers. */
 export interface WorkerLike {
-  postMessage(message: RunRequest): void;
+  postMessage(message: RunRequest | PreloadRequest): void;
   terminate(): void;
   onmessage: ((event: MessageEvent<WorkerMessage>) => void) | null;
   onerror: ((event: ErrorEvent) => void) | null;
@@ -76,6 +82,16 @@ export class WorkerPool {
       this.pump();
     }
     return { promise, cancel: () => this.cancel(pending) };
+  }
+
+  /**
+   * Ask an idle worker (starting one if allowed) to load a tool's processor
+   * now, so a heavy engine downloads while the user is still choosing settings.
+   * Best effort: does nothing when every worker is busy.
+   */
+  preload(toolId: string): void {
+    if (this.disposed) return;
+    this.freeSlot()?.worker.postMessage({ type: 'preload', toolId });
   }
 
   /** Terminate all workers and fail queued jobs. */

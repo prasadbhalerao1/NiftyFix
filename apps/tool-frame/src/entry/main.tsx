@@ -98,6 +98,7 @@ function App({ toolId }: { toolId: string | null }) {
             handlers,
           )
         }
+        preload={() => runner.preload(manifest.id)}
         report={(event, detail) => reportEvent(manifest.id, event, detail?.code)}
       />
     </main>

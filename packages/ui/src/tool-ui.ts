@@ -11,6 +11,8 @@ export interface ToolUiProps {
   device: DeviceClass;
   /** Run this tool's processor in the shared worker pool, on one file or several (in order). */
   run(files: File | readonly File[], options: unknown, handlers?: JobHandlers): JobHandle;
+  /** Start loading this tool's processing engine now (e.g. once files are chosen). */
+  preload(): void;
   report(event: ToolUiEvent, detail?: { code?: string }): void;
 }
 

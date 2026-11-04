@@ -1,7 +1,26 @@
 /*
- * Shared design tokens (Tailwind v4). One accent (teal), warm neutrals (stone),
- * semantic emerald/amber/red. Imported by the site and the tool frame.
+ * Shared design tokens (Tailwind v4). One accent, `brand` (the logo's orange),
+ * warm neutrals (stone), semantic emerald/amber/red. No blue, purple or violet.
+ * Imported by the site and the tool frame.
+ *
+ * Contrast rules (WCAG AA): white text only on brand-700 or darker (5.2:1);
+ * brand text on light backgrounds is brand-700+; on dark backgrounds brand-400.
+ * brand-500/600 only for large text, borders, icons and focus rings.
  */
+@theme inline {
+  --color-brand-50: var(--color-orange-50);
+  --color-brand-100: var(--color-orange-100);
+  --color-brand-200: var(--color-orange-200);
+  --color-brand-300: var(--color-orange-300);
+  --color-brand-400: var(--color-orange-400);
+  --color-brand-500: var(--color-orange-500);
+  --color-brand-600: var(--color-orange-600);
+  --color-brand-700: var(--color-orange-700);
+  --color-brand-800: var(--color-orange-800);
+  --color-brand-900: var(--color-orange-900);
+  --color-brand-950: var(--color-orange-950);
+}
+
 @theme {
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans',
@@ -45,7 +64,7 @@
     @apply bg-stone-50 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
   }
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-teal-600 dark:outline-teal-400;
+    @apply outline-2 outline-offset-2 outline-brand-600 dark:outline-brand-400;
   }
   @media (prefers-reduced-motion: reduce) {
     *,

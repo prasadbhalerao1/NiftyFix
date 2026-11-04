@@ -158,7 +158,7 @@ export function CropBox({
           <span
             aria-hidden="true"
             data-testid="crop-handle"
-            class="absolute right-0.5 bottom-0.5 size-6 cursor-nwse-resize rounded-full border-2 border-white bg-teal-600"
+            class="absolute right-0.5 bottom-0.5 size-6 cursor-nwse-resize rounded-full border-2 border-white bg-brand-600"
             onPointerDown={(event) => startDrag(event, 'resize')}
           />
         </button>

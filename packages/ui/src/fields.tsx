@@ -196,9 +196,9 @@ export function SegmentedControl<T extends string>({
           <label
             key={option.value}
             class={cx(
-              'flex min-h-9 flex-1 cursor-pointer items-center justify-center rounded-md px-3 text-sm font-medium has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-teal-600',
+              'flex min-h-9 flex-1 cursor-pointer items-center justify-center rounded-md px-3 text-sm font-medium has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-brand-600',
               option.value === value
-                ? 'bg-teal-700 text-white dark:bg-teal-500 dark:text-stone-950'
+                ? 'bg-brand-700 text-white dark:bg-brand-500 dark:text-stone-950'
                 : 'text-stone-700 hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800',
               option.disabled && 'cursor-not-allowed opacity-50',
             )}
@@ -247,7 +247,7 @@ export function RangeInput({
       <input
         id={id}
         type="range"
-        class="h-11 w-full accent-teal-700"
+        class="h-11 w-full accent-brand-700"
         min={min}
         max={max}
         step={step}
@@ -283,7 +283,7 @@ export function CheckboxInput({
       <input
         id={id}
         type="checkbox"
-        class="mt-0.5 size-5 shrink-0 accent-teal-700"
+        class="mt-0.5 size-5 shrink-0 accent-brand-700"
         checked={checked}
         disabled={disabled}
         data-testid={testId}

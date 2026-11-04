@@ -27,6 +27,6 @@
     @apply list-decimal;
   }
   .prose-nf a {
-    @apply font-medium text-teal-800 underline underline-offset-4 dark:text-teal-300;
+    @apply font-medium text-brand-800 underline underline-offset-4 dark:text-brand-300;
   }
 }

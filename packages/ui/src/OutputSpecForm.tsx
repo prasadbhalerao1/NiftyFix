@@ -76,7 +76,7 @@ export function OutputSpecForm({
 
       <button
         type="button"
-        class="self-start text-sm font-medium text-teal-800 underline-offset-4 hover:underline dark:text-teal-300"
+        class="self-start text-sm font-medium text-brand-800 underline-offset-4 hover:underline dark:text-brand-300"
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >

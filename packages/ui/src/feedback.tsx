@@ -30,7 +30,7 @@ export function ProgressBar({ value, label }: ProgressBarProps) {
       >
         <div
           class={cx(
-            'h-full rounded-full bg-teal-600 transition-[width] duration-200',
+            'h-full rounded-full bg-brand-600 transition-[width] duration-200',
             percent === null && 'w-1/3 animate-pulse',
           )}
           style={percent === null ? undefined : { width: `${percent}%` }}

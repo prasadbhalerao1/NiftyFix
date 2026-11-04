@@ -35,7 +35,7 @@ const categories = registry.activeCategories();
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
-    <meta name="theme-color" content="#0f766e" />
+    <meta name="theme-color" content="#c2410c" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -53,10 +53,10 @@ const categories = registry.activeCategories();
     </a>
     <header class="border-b border-stone-200 bg-white/90 dark:border-stone-800 dark:bg-stone-950/90">
       <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3">
-        <a href="/" class="flex items-center gap-2 text-lg font-bold tracking-tight">
+        <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-tight">
           <img src="/logo-96.png" width="40" height="40" alt="" class="size-10" decoding="async" />
           <span>
-            Nifty<span class="text-teal-700 dark:text-teal-400">Fix</span>
+            Nifty<span class="text-brand-600 dark:text-brand-400">Fix</span>
           </span>
         </a>
         <div class="flex items-center gap-4">
@@ -66,7 +66,7 @@ const categories = registry.activeCategories();
                 <li>
                   <a
                     href={categoryPath(id)}
-                    class="text-stone-700 hover:text-teal-800 dark:text-stone-300 dark:hover:text-teal-300"
+                    class="text-stone-700 hover:text-brand-800 dark:text-stone-300 dark:hover:text-brand-300"
                   >
                     {CATEGORIES[id].name}
                   </a>

@@ -53,14 +53,14 @@ export function Dropzone({
           'flex w-full flex-col items-center justify-center rounded-[var(--radius-panel)] border-2 border-dashed text-center transition-colors',
           compact ? 'min-h-20 gap-1 px-4 py-4' : 'min-h-56 gap-3 px-6 py-10',
           dragging
-            ? 'border-teal-600 bg-teal-50 dark:border-teal-400 dark:bg-teal-950'
-            : 'border-stone-300 bg-white hover:border-teal-600 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:hover:border-teal-400 dark:hover:bg-stone-800',
+            ? 'border-brand-600 bg-brand-50 dark:border-brand-400 dark:bg-brand-950'
+            : 'border-stone-300 bg-white hover:border-brand-600 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:hover:border-brand-400 dark:hover:bg-stone-800',
         )}
       >
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
-          class={cx('text-teal-700 dark:text-teal-400', compact ? 'size-6' : 'size-10')}
+          class={cx('text-brand-700 dark:text-brand-400', compact ? 'size-6' : 'size-10')}
           fill="none"
           stroke="currentColor"
           stroke-width="1.5"

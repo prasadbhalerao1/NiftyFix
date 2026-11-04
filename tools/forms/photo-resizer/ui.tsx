@@ -177,7 +177,7 @@ export default function PhotoResizer({ manifest, device, run, report }: ToolUiPr
                     class={cx(
                       'min-h-9 rounded-full border px-3 text-sm',
                       active
-                        ? 'border-teal-700 bg-teal-50 text-teal-900 dark:border-teal-400 dark:bg-teal-950 dark:text-teal-100'
+                        ? 'border-brand-700 bg-brand-50 text-brand-900 dark:border-brand-400 dark:bg-brand-950 dark:text-brand-100'
                         : 'border-stone-300 hover:bg-stone-100 dark:border-stone-700 dark:hover:bg-stone-800',
                     )}
                     onClick={() =>

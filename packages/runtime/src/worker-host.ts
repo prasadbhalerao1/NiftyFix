@@ -23,7 +23,7 @@ export function hostProcessors(
     const { jobId } = request;
     // Cancellation terminates the whole worker, so no per-job AbortController wiring is needed here.
     const signal = new AbortController().signal;
-    void executeJob(loaders.get(request.toolId), request.file, request.options, {
+    void executeJob(loaders.get(request.toolId), request.files, request.options, {
       signal,
       progress: (fraction, stage) =>
         scope.postMessage({

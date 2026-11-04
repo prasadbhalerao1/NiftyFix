@@ -25,8 +25,8 @@ export function useToolJob<M>(
     setPhase({ kind: 'idle' });
   };
 
-  const start = async (file: File, options: unknown, meta: M): Promise<void> => {
-    const handle = run(file, options, {
+  const start = async (files: File | readonly File[], options: unknown, meta: M): Promise<void> => {
+    const handle = run(files, options, {
       onProgress: (progress, stage) =>
         setPhase((current) =>
           current.kind === 'processing'

@@ -44,17 +44,39 @@ export interface ProcessedFile {
   warnings: readonly string[];
 }
 
+/** What the runtime executes. Tools write processors with `defineProcessor` or `defineMultiFileProcessor`. */
 export interface ProcessorDefinition<S extends GenericSchema = GenericSchema> {
   /** Options are untrusted (they cross a worker boundary): validated before `run`. */
+  options: S;
+  /** How many input files a job may carry; checked by the runtime before `run`. */
+  inputs: { min: number; max: number };
+  run(
+    inputs: readonly ToolInputFile[],
+    options: InferOutput<S>,
+    context: ProcessingContext,
+  ): Promise<ProcessedFile>;
+}
+
+/** A processor that takes exactly one file (most tools). */
+export const defineProcessor = <S extends GenericSchema>(definition: {
   options: S;
   run(
     input: ToolInputFile,
     options: InferOutput<S>,
     context: ProcessingContext,
   ): Promise<ProcessedFile>;
-}
+}): ProcessorDefinition<S> => ({
+  options: definition.options,
+  inputs: { min: 1, max: 1 },
+  run: (inputs, options, context) => {
+    const [input] = inputs;
+    if (input === undefined) throw new RangeError('No input file.');
+    return definition.run(input, options, context);
+  },
+});
 
-export const defineProcessor = <S extends GenericSchema>(
+/** A processor that combines several files, e.g. Merge PDF or JPG to PDF. */
+export const defineMultiFileProcessor = <S extends GenericSchema>(
   definition: ProcessorDefinition<S>,
 ): ProcessorDefinition<S> => definition;
 

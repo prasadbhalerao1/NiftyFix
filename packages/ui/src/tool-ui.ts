@@ -9,8 +9,8 @@ export type ToolUiEvent =
 export interface ToolUiProps {
   manifest: ToolManifest;
   device: DeviceClass;
-  /** Run this tool's processor in the shared worker pool. */
-  run(file: File, options: unknown, handlers?: JobHandlers): JobHandle;
+  /** Run this tool's processor in the shared worker pool, on one file or several (in order). */
+  run(files: File | readonly File[], options: unknown, handlers?: JobHandlers): JobHandle;
   report(event: ToolUiEvent, detail?: { code?: string }): void;
 }
 

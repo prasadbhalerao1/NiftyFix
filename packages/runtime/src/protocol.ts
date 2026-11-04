@@ -1,11 +1,23 @@
 import type { ProcessedFile, SerializedToolError } from '@niftyfix/tool-sdk';
 
+export interface JobFile {
+  name: string;
+  bytes: number;
+  blob: Blob;
+}
+
+/** One file, or several for tools that combine files (merge, images to PDF). */
+export type JobInput = JobFile | readonly JobFile[];
+
+export const toFileList = (input: JobInput): readonly JobFile[] =>
+  Array.isArray(input) ? input : [input as JobFile];
+
 /** Main thread → worker. Blobs are structured-cloned by reference, not copied. */
 export interface RunRequest {
   type: 'run';
   jobId: string;
   toolId: string;
-  file: { name: string; bytes: number; blob: Blob };
+  files: readonly JobFile[];
   options: unknown;
 }
 

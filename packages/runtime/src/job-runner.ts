@@ -1,5 +1,5 @@
 import { executeJob, type ProcessorLoader } from './execute';
-import type { RunRequest } from './protocol';
+import type { JobInput } from './protocol';
 import type { JobHandle, JobHandlers, JobOutcome, WorkerPool } from './worker-pool';
 
 /**
@@ -20,12 +20,7 @@ export class JobRunner {
     return this.inline;
   }
 
-  run(
-    toolId: string,
-    file: RunRequest['file'],
-    options: unknown,
-    handlers: JobHandlers = {},
-  ): JobHandle {
+  run(toolId: string, file: JobInput, options: unknown, handlers: JobHandlers = {}): JobHandle {
     if (this.inline) return this.runInline(toolId, file, options, handlers);
     let current = this.pool.run(toolId, file, options, handlers);
     let cancelled = false;
@@ -46,7 +41,7 @@ export class JobRunner {
 
   private runInline(
     toolId: string,
-    file: RunRequest['file'],
+    file: JobInput,
     options: unknown,
     handlers: JobHandlers,
   ): JobHandle {

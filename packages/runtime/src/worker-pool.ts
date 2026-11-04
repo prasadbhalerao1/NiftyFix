@@ -1,5 +1,5 @@
 import type { ProcessedFile, SerializedToolError } from '@niftyfix/tool-sdk';
-import type { RunRequest, WorkerMessage } from './protocol';
+import { toFileList, type JobInput, type RunRequest, type WorkerMessage } from './protocol';
 
 /** Minimal surface of a Worker, so the pool can be tested without real workers. */
 export interface WorkerLike {
@@ -57,16 +57,11 @@ export class WorkerPool {
     if (!(options.size >= 1)) throw new RangeError('Pool size must be at least 1.');
   }
 
-  run(
-    toolId: string,
-    file: RunRequest['file'],
-    options: unknown,
-    handlers: JobHandlers = {},
-  ): JobHandle {
+  run(toolId: string, file: JobInput, options: unknown, handlers: JobHandlers = {}): JobHandle {
     let pending!: PendingJob;
     const promise = new Promise<JobOutcome>((resolve) => {
       pending = {
-        request: { type: 'run', jobId: nextJobId(), toolId, file, options },
+        request: { type: 'run', jobId: nextJobId(), toolId, files: toFileList(file), options },
         handlers,
         resolve,
       };

@@ -5,7 +5,7 @@ import {
   type ProcessingContext,
   type ProcessorDefinition,
 } from '@niftyfix/tool-sdk';
-import type { RunRequest } from './protocol';
+import { toFileList, type JobInput } from './protocol';
 import type { JobOutcome } from './worker-pool';
 
 export type ProcessorLoader = () => Promise<{ default: ProcessorDefinition }>;
@@ -17,7 +17,7 @@ export type ProcessorLoader = () => Promise<{ default: ProcessorDefinition }>;
  */
 export async function executeJob(
   load: ProcessorLoader | undefined,
-  file: RunRequest['file'],
+  input: JobInput,
   options: unknown,
   context: ProcessingContext,
 ): Promise<JobOutcome> {
@@ -39,7 +39,16 @@ export async function executeJob(
         'Some settings are invalid. Please check them and try again.',
       );
     }
-    return { ok: true, result: await processor.run(file, parsed.output, context) };
+    const files = toFileList(input);
+    if (files.length < processor.inputs.min || files.length > processor.inputs.max) {
+      throw new ToolError(
+        'TOO_MANY_FILES',
+        processor.inputs.max === 1
+          ? 'Please choose one file.'
+          : `Please choose between ${processor.inputs.min} and ${processor.inputs.max} files.`,
+      );
+    }
+    return { ok: true, result: await processor.run(files, parsed.output, context) };
   } catch (error) {
     const serialized = toSerializedError(error);
     // Unexpected failures are logged locally for debugging; the console never leaves the device.

@@ -86,10 +86,14 @@ function App({ toolId }: { toolId: string | null }) {
       <Ui
         manifest={manifest}
         device={device}
-        run={(file, options, handlers) =>
+        run={(files, options, handlers) =>
           runner.run(
             manifest.id,
-            { name: file.name, bytes: file.size, blob: file },
+            (Array.isArray(files) ? files : [files]).map((file: File) => ({
+              name: file.name,
+              bytes: file.size,
+              blob: file,
+            })),
             options,
             handlers,
           )

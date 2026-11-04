@@ -1,6 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import * as v from 'valibot';
-import { defineProcessor, ToolError, type ProcessedFile } from '@niftyfix/tool-sdk';
+import {
+  defineMultiFileProcessor,
+  defineProcessor,
+  ToolError,
+  type ProcessedFile,
+} from '@niftyfix/tool-sdk';
 import { JobRunner } from '../src/job-runner';
 import { executeJob } from '../src/execute';
 import type { JobHandle, JobOutcome } from '../src/worker-pool';
@@ -119,6 +124,39 @@ describe('JobRunner', () => {
     await expect(handle.promise).resolves.toMatchObject({
       ok: false,
       error: { code: 'CANCELLED' },
+    });
+  });
+});
+
+describe('executeJob — file count', () => {
+  const ctx = { signal: new AbortController().signal, progress: () => {} };
+  const merge = defineMultiFileProcessor({
+    options: v.object({}),
+    inputs: { min: 2, max: 3 },
+    async run(inputs) {
+      return { ...result, fileName: inputs.map((input) => input.name).join('+') };
+    },
+  });
+  const load = async () => ({ default: merge });
+
+  it('passes every file, in order, to a multi-file processor', async () => {
+    const outcome = await executeJob(load, [file, { ...file, name: 'b.png' }], {}, ctx);
+    expect(outcome).toMatchObject({ ok: true, result: { fileName: 'a.png+b.png' } });
+  });
+
+  it('rejects too few or too many files before running', async () => {
+    for (const files of [[file], [file, file, file, file]]) {
+      await expect(executeJob(load, files, {}, ctx)).resolves.toMatchObject({
+        ok: false,
+        error: { code: 'TOO_MANY_FILES' },
+      });
+    }
+  });
+
+  it('a single-file processor refuses several files', async () => {
+    await expect(executeJob(loader, [file, file], { size: 1 }, ctx)).resolves.toMatchObject({
+      ok: false,
+      error: { code: 'TOO_MANY_FILES' },
     });
   });
 });

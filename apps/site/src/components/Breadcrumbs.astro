@@ -1,9 +1,27 @@
 ---
+import { absoluteUrl } from '../data/registry';
+
 export interface Props {
   items: { name: string; path: string }[];
+  /** Also emit BreadcrumbList structured data (pages that do not build their own). */
+  structured?: boolean;
 }
-const { items } = Astro.props;
+const { items, structured = false } = Astro.props;
+const breadcrumbList = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: absoluteUrl(item.path),
+  })),
+};
 ---
+
+{structured ? (
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbList)} />
+) : null}
 
 <nav aria-label="Breadcrumb" class="mb-4 text-sm text-stone-600 dark:text-stone-400">
   <ol class="flex flex-wrap items-center gap-1">

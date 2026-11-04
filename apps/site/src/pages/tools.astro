@@ -28,12 +28,13 @@ const liveTotal = categories.reduce((sum, { built }) => sum + built.length, 0);
 ---
 
 <Base
-  title={`All tools | ${SITE_NAME}`}
+  title={`All free tools — PDF, photo and signature | ${SITE_NAME}`}
   description={`Every NiftyFix tool in one place: ${liveTotal} ready to use, with the rest of the catalogue across ${CATEGORY_IDS.length} categories listed as coming soon.`}
   path="/tools/"
 >
   <div data-filter-scope>
     <Breadcrumbs
+      structured
       items={[
         { name: 'Home', path: '/' },
         { name: 'All tools', path: '/tools/' },

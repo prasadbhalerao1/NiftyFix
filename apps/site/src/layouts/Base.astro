@@ -16,10 +16,12 @@ export interface Props {
 
 const { title, description, path, noindex = false, jsonLd = [] } = Astro.props;
 const canonical = absoluteUrl(path);
+/** Shared link-preview card (public/og.jpg, 1200×630). */
+const SOCIAL_IMAGE = absoluteUrl('/og.jpg');
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-pt-24 overflow-x-clip">
+<html lang="en-IN" class="scroll-pt-24 overflow-x-clip">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,7 +35,13 @@ const canonical = absoluteUrl(path);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:image" content={SOCIAL_IMAGE} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="NiftyFix — get your files ready for any upload" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={SOCIAL_IMAGE} />
     <meta name="theme-color" content="#0c0a09" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />

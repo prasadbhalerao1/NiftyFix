@@ -23,6 +23,9 @@ const { category } = Astro.props;
 const info = CATEGORIES[category];
 const items = registry.catalogue(category);
 const path = categoryPath(category);
+// Say what searchers care about (free, no upload) when it fits in a 65-character title.
+const withPromise = `${info.h1} — free, no upload | ${SITE_NAME}`;
+const title = withPromise.length <= 65 ? withPromise : `${info.h1} | ${SITE_NAME}`;
 const builtTools = items.flatMap((item) => (item.kind === 'built' ? [item.entry.manifest] : []));
 const planned = items.flatMap((item) => (item.kind === 'planned' ? [item.tool] : []));
 const plannedGroups = MODE_GROUPS.map((group) => ({
@@ -38,14 +41,10 @@ const otherLive = registry.activeCategories().filter((id) => id !== category);
 const indexable = builtTools.some((manifest) => manifest.status === 'live');
 ---
 
-<Base
-  title={`${info.h1} | ${SITE_NAME}`}
-  description={info.description}
-  path={path}
-  noindex={!indexable}
->
+<Base title={title} description={info.description} path={path} noindex={!indexable}>
   <div data-filter-scope>
     <Breadcrumbs
+      structured
       items={[
         { name: 'Home', path: '/' },
         { name: info.name, path },

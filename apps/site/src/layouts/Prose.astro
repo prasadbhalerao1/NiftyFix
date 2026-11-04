@@ -3,14 +3,18 @@ import Base from './Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SITE_NAME } from '../data/registry';
 
+/** Text pages (About, Contact, legal, security): a heading, an optional lede and date, then prose. */
 export interface Props {
   title: string;
   description: string;
   path: string;
-  /** Placeholder pages awaiting legal review stay out of search results. */
   noindex?: boolean;
+  /** A short summary shown under the heading. */
+  lede?: string;
+  /** "Last updated" date for policies. */
+  updated?: string;
 }
-const { title, description, path, noindex = false } = Astro.props;
+const { title, description, path, noindex = false, lede, updated } = Astro.props;
 ---
 
 <Base title={`${title} | ${SITE_NAME}`} description={description} path={path} noindex={noindex}>
@@ -20,8 +24,10 @@ const { title, description, path, noindex = false } = Astro.props;
       { name: title, path },
     ]}
   />
-  <article class="prose-nf">
-    <h1 class="mb-6 text-3xl font-bold tracking-tight">{title}</h1>
+  <article class="prose-nf mt-6">
+    <h1 class="display blur-in-late mb-4 text-4xl leading-tight sm:text-5xl">{title}</h1>
+    {lede ? <p class="text-lg text-stone-700 dark:text-stone-300">{lede}</p> : null}
+    {updated ? <p class="eyebrow mt-2 mb-8">Last updated {updated}</p> : null}
     <slot />
   </article>
 </Base>

@@ -1,32 +1,118 @@
 ---
 import Prose from '../layouts/Prose.astro';
+import { LEGAL_UPDATED, mailto, OPERATOR } from '../data/site';
 ---
 
 <Prose
   title="Privacy policy"
-  description="NiftyFix privacy policy (draft pending legal review)."
+  description="NiftyFix processes your files on your device: they are never uploaded. What little data exists, who handles it, and your rights under Indian law."
   path="/privacy/"
-  noindex
+  lede="Your files never leave your device. This page explains, item by item, the little data that does exist and what you can do about it."
+  updated={LEGAL_UPDATED}
 >
+  <aside class="panel my-8 p-6">
+    <p class="eyebrow">The short version</p>
+    <ul class="mt-4 mb-0 grid list-none gap-3 pl-0 text-stone-800 sm:grid-cols-2 dark:text-stone-200">
+      <li>✓ Files and text you use in a tool are processed in your browser and never uploaded.</li>
+      <li>✓ No accounts, no sign-up, nothing to log in to.</li>
+      <li>✓ No analytics, advertising or tracking scripts, and no cookies.</li>
+      <li>✓ If you email us, we use your message only to reply.</li>
+    </ul>
+  </aside>
+
+  <h2>Who we are</h2>
   <p>
-    <strong>Draft — pending legal review.</strong> This page will be replaced by a reviewed policy
-    before launch.
+    NiftyFix (niftyfix.in) is run by {OPERATOR.name}, {OPERATOR.region}. For this policy, "we" means
+    the operator of NiftyFix. You can reach us at <a href={mailto('Privacy')}>{OPERATOR.email}</a>.
   </p>
-  <h2>Facts this policy will be built on</h2>
+
+  <h2>What we collect, and why</h2>
+  <h3>Your files and anything you type into a tool: not collected</h3>
+  <p>
+    Every tool runs inside your browser, on a separate, sandboxed web address whose security rules
+    block it from sending data anywhere. Photos, PDFs, signatures, file names and text you enter are
+    read and processed on your device and are never sent to us or anyone else. You can{' '}
+    <a href="/privacy-verification/">verify this yourself</a>.
+  </p>
+  <h3>Technical request data: handled by our hosting provider</h3>
+  <p>
+    Like every website, the pages and tool code are delivered to your browser over the internet. Our
+    hosting and security provider, Cloudflare, processes the technical details of each request (such
+    as your IP address, browser type and the page requested) to deliver the site and protect it from
+    abuse. We do not use this data to track or profile you, and we do not run analytics on it. See{' '}
+    <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>.
+  </p>
+  <h3>Settings stored in your own browser</h3>
+  <p>
+    If you switch between light and dark mode, that choice is saved in your browser's local storage
+    so the next page matches. It never leaves your device, and clearing your browser's site data
+    removes it. Your browser may also cache the site's files to load faster next time.
+  </p>
+  <h3>Emails you send us</h3>
+  <p>
+    If you email us, we receive your email address and whatever you choose to write. We use it only
+    to reply and to fix the problem you report. Our email is provided by Google (Gmail). We delete
+    support conversations once they are resolved, and in any case within 12 months, unless the law
+    requires us to keep them longer. Please do not send us your documents: we never need them.
+  </p>
+
+  <h2>What we do not do</h2>
   <ul>
-    <li>
-      All current tools process files in your browser. File contents, file names and text you enter
-      are not sent to NiftyFix servers.
-    </li>
-    <li>
-      Tools run on a separate web origin inside a sandboxed frame whose security policy blocks
-      network connections to any other site.
-    </li>
-    <li>No analytics, advertising or tracking scripts are loaded at present.</li>
-    <li>
-      If analytics or advertising are added later, they will run only on the outer page, never
-      inside the tool frame, and this policy and the consent controls required for your region will
-      be updated first.
-    </li>
+    <li>We do not sell, rent or trade personal data.</li>
+    <li>We do not show advertising or use advertising or analytics trackers.</li>
+    <li>We do not set cookies.</li>
+    <li>We do not build profiles or make automated decisions about you.</li>
   </ul>
+  <p>
+    If we ever add analytics or advertising, they will run only on the outer page, never inside the
+    tools, and we will update this policy and ask for any consent the law requires before they
+    start.
+  </p>
+
+  <h2>Who else handles data</h2>
+  <ul>
+    <li>Cloudflare, Inc. — hosting, content delivery and security for the website.</li>
+    <li>Google LLC — our email inbox, only if you email us.</li>
+  </ul>
+  <p>
+    These providers may process data outside India. We disclose information to authorities only when
+    Indian law requires it.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    Under India's Digital Personal Data Protection Act, 2023, you can ask us to tell you what
+    personal data we hold about you, to correct or complete it, and to erase it; you can withdraw
+    any consent you have given, and you can nominate someone to exercise these rights for you. In
+    practice, the only personal data we can hold is an email you sent us. Write to{' '}
+    <a href={mailto('Privacy request')}>{OPERATOR.email}</a> and we will act on your request as soon
+    as possible, and within 30 days.
+  </p>
+
+  <h2>Complaints (grievance officer)</h2>
+  <p>
+    Our grievance officer is {OPERATOR.name}, reachable at{' '}
+    <a href={mailto('Grievance')}>{OPERATOR.email}</a>. We acknowledge complaints promptly and
+    resolve them within 30 days. If you are not satisfied with our response, you may complain to the
+    Data Protection Board of India.
+  </p>
+
+  <h2>Children</h2>
+  <p>
+    The tools can be used by anyone and collect nothing. If you are under 18 and need to contact us,
+    please ask a parent or guardian to email us on your behalf.
+  </p>
+
+  <h2>Security</h2>
+  <p>
+    The site is served only over HTTPS, and each tool runs in an isolated, sandboxed frame. Details
+    are on our <a href="/security/">security page</a>.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    If this policy changes, we will update this page and the date at the top. Significant changes,
+    such as starting to collect a new kind of data, will be announced on the site before they take
+    effect.
+  </p>
 </Prose>

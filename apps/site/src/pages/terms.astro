@@ -1,20 +1,121 @@
 ---
 import Prose from '../layouts/Prose.astro';
+import { LEGAL_UPDATED, mailto, OPERATOR } from '../data/site';
 ---
 
 <Prose
   title="Terms of use"
-  description="NiftyFix terms of use (draft pending legal review)."
+  description="The terms for using NiftyFix's free file tools: your responsibilities, what our validation reports mean, and the limits of our liability."
   path="/terms/"
-  noindex
+  lede="Plain-language terms for using NiftyFix. By using the site, you agree to them."
+  updated={LEGAL_UPDATED}
 >
+  <aside class="panel my-8 p-6">
+    <p class="eyebrow">The short version</p>
+    <ul class="mt-4 mb-0 grid list-none gap-3 pl-0 text-stone-800 sm:grid-cols-2 dark:text-stone-200">
+      <li>✓ The tools are free to use, with no account.</li>
+      <li>✓ Your files stay yours and stay on your device.</li>
+      <li>
+        ✓ Use the tools only for files you have the right to use, and never to forge documents.
+      </li>
+      <li>✓ Always check a portal's official rules: a passing report is not a guarantee.</li>
+    </ul>
+  </aside>
+
+  <h2>1. About these terms</h2>
   <p>
-    <strong>Draft — pending legal review.</strong> Terms of use will be published here before
-    launch.
+    NiftyFix (niftyfix.in) is run by {OPERATOR.name}, {OPERATOR.region} ("we", "us"). These terms
+    apply to the website and every tool on it. Our <a href="/privacy/">privacy policy</a> explains
+    how data is handled. If you do not agree with these terms, please do not use the site.
   </p>
+
+  <h2>2. The service</h2>
   <p>
-    Tools are provided as-is. A passing validation report means the produced file meets the
-    technical requirements you entered; it is not a guarantee that any third-party portal will
-    accept the file.
+    NiftyFix provides free tools that resize, compress, convert and edit files, and check the result
+    against requirements you enter. The tools run in your browser. We may add, change or remove
+    tools, and the site may sometimes be unavailable, without notice.
+  </p>
+
+  <h2>3. Your files and your responsibilities</h2>
+  <ul>
+    <li>
+      You keep all rights to your files. We do not receive them, so we claim no rights over them.
+    </li>
+    <li>
+      Use the tools only for files you own or are allowed to use, and in line with the law and with
+      the rules of the portal or organisation you submit them to.
+    </li>
+    <li>
+      Do not use NiftyFix to forge, falsify or alter official documents, certificates, identity
+      documents or signatures you are not authorised to use, or for any other unlawful purpose.
+    </li>
+    <li>
+      Keep your original files. Tools create new files; keeping backups is your responsibility.
+    </li>
+  </ul>
+
+  <h2>4. What a validation report means</h2>
+  <p>
+    A passing report means the file we produced meets the technical requirements you entered, such
+    as pixel dimensions, file size and format, as measured from the file itself. It is not a promise
+    that any portal, exam body, employer or government office will accept it: they may apply checks
+    they do not publish. Always confirm the current requirements from the official source before you
+    submit.
+  </p>
+
+  <h2>5. Not affiliated</h2>
+  <p>
+    NiftyFix is an independent service. It is not affiliated with, endorsed by or acting for any
+    government department, exam authority, recruitment body or other organisation whose requirements
+    our tools help you meet. Names of portals and file formats are used only to describe
+    compatibility.
+  </p>
+
+  <h2>6. Acceptable use</h2>
+  <p>Please do not:</p>
+  <ul>
+    <li>attack, overload or try to break the site or its security;</li>
+    <li>scrape or copy the site in bulk, or use automated means that degrade it for others;</li>
+    <li>present NiftyFix, or files made with it, as official or endorsed by any authority.</li>
+  </ul>
+
+  <h2>7. Our content and open-source software</h2>
+  <p>
+    The NiftyFix name, logo, design, text and code are ours, except for third-party open-source
+    software and fonts, which are used under their own licences (see{' '}
+    <a href="/licenses/">licences</a>
+    ). Files you create with the tools are yours.
+  </p>
+
+  <h2>8. No warranty</h2>
+  <p>
+    The tools are provided free, "as is" and "as available". To the extent the law allows, we make
+    no promise that they will be error-free, uninterrupted or suitable for a particular purpose.
+  </p>
+
+  <h2>9. Limitation of liability</h2>
+  <p>
+    To the extent the law allows, we are not liable for any indirect or consequential loss, or for
+    losses such as a rejected application, a missed deadline or lost data, arising from use of the
+    site. Nothing in these terms limits any liability that cannot be limited under Indian law.
+  </p>
+
+  <h2>10. Changes to these terms</h2>
+  <p>
+    We may update these terms. The date at the top shows the latest version; continuing to use the
+    site after a change means you accept the updated terms.
+  </p>
+
+  <h2>11. Governing law</h2>
+  <p>
+    These terms are governed by the laws of India. Any dispute will be subject to the jurisdiction
+    of the courts in Maharashtra, India.
+  </p>
+
+  <h2>12. Contact and grievances</h2>
+  <p>
+    Questions, complaints or notices about these terms: {OPERATOR.name} (grievance officer),{' '}
+    <a href={mailto('Terms of use')}>{OPERATOR.email}</a>. We aim to resolve complaints within 30
+    days.
   </p>
 </Prose>

@@ -1,16 +1,55 @@
 ---
 import Prose from '../layouts/Prose.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { mailto, OPERATOR } from '../data/site';
 ---
 
-<Prose title="Contact" description="How to contact the NiftyFix team." path="/contact/" noindex>
-  <p>
-    A support email address and response-time commitment will be published here before public
-    launch. Until then, this site is a preview.
-  </p>
+<Prose
+  title="Contact"
+  description="Email NiftyFix about a problem with a tool, an idea for a new one, a privacy request or a security issue."
+  path="/contact/"
+  lede="Found a problem, need a tool we don't have yet, or want to say hello? Email us."
+>
+  <div class="my-8 flex flex-wrap items-center gap-3">
+    <a
+      href={mailto('NiftyFix')}
+      class="press inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-700 px-5 font-medium text-white no-underline hover:bg-brand-800"
+    >
+      Email us
+    </a>
+    <span class="font-mono text-sm text-stone-700 select-all dark:text-stone-300">
+      {OPERATOR.email}
+    </span>
+  </div>
+  <p>We read every message and usually reply within a few days.</p>
+
   <h2>Reporting a problem with a tool</h2>
+  <p>Please include:</p>
+  <ul>
+    <li>the tool's name and the page address;</li>
+    <li>your device and browser (for example, "Android phone, Chrome");</li>
+    <li>the type and rough size of the file (for example, "JPG photo, 3 MB");</li>
+    <li>the exact message the tool showed, or a screenshot of it.</li>
+  </ul>
   <p>
-    Please include the tool name, your browser and device, the file type, and the error message
-    shown. Do not send us the file itself unless we ask, and never send documents containing
-    personal information.
+    <strong>Please do not send us your files</strong>, especially documents with personal details.
+    We never need them to help you.
   </p>
+
+  <h2>Privacy requests and complaints</h2>
+  <p>
+    To ask what data we hold, to have it corrected or deleted, or to make a complaint, email our
+    grievance officer, {OPERATOR.name}, at <a href={mailto('Privacy request')}>{OPERATOR.email}</a>.
+    See the <a href="/privacy/">privacy policy</a> for details.
+  </p>
+
+  <h2>Security issues</h2>
+  <p>
+    If you find a security problem, email <a href={mailto('Security report')}>{OPERATOR.email}</a>{' '}
+    with the subject "Security report". Please give us a reasonable time to fix it before sharing it
+    publicly. Read how the site is protected on the <a href="/security/">security page</a>.
+  </p>
+
+  <h2>Elsewhere</h2>
+  <SocialLinks class="mt-4" />
 </Prose>

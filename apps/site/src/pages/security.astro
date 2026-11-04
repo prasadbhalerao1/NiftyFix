@@ -1,5 +1,6 @@
 ---
 import Prose from '../layouts/Prose.astro';
+import { mailto, OPERATOR } from '../data/site';
 ---
 
 <Prose
@@ -37,5 +38,8 @@ import Prose from '../layouts/Prose.astro';
     </li>
   </ul>
   <h2>Reporting a vulnerability</h2>
-  <p>A security contact address will be published here before launch.</p>
+  <p>
+    Email <a href={mailto('Security report')}>{OPERATOR.email}</a> with the subject "Security
+    report". Please give us a reasonable time to fix the issue before sharing it publicly.
+  </p>
 </Prose>

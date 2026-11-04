@@ -181,6 +181,38 @@ test.describe('site', () => {
     }
   });
 
+  test('legal and contact pages: indexed, complete, and linked from every page', async ({
+    page,
+  }) => {
+    const email = 'prasadbhalerao279@gmail.com';
+    await page.goto('/contact/');
+    await expect(page.getByRole('link', { name: 'Email us' })).toHaveAttribute(
+      'href',
+      new RegExp(`^mailto:${email}`),
+    );
+    for (const path of ['/privacy/', '/terms/']) {
+      await page.goto(path);
+      // Published policies, not drafts: open to search engines, dated, with a grievance contact.
+      await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+      await expect(page.getByText(/Last updated/)).toBeVisible();
+      await expect(page.getByRole('main')).toContainText('grievance officer');
+      await expect(page.getByRole('main').getByRole('link', { name: email }).first()).toBeVisible();
+    }
+    // Words next to links keep their spaces (Astro drops line breaks before inline elements).
+    await page.goto('/privacy/');
+    await expect(page.getByRole('main')).toContainText('You can verify this yourself');
+    const footer = page.getByRole('contentinfo');
+    await expect(footer.getByRole('link', { name: /on GitHub/ })).toHaveAttribute(
+      'href',
+      'https://github.com/prasadbhalerao1',
+    );
+    await expect(footer.getByRole('link', { name: /on LinkedIn/ })).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/in/prasadbhalerao/',
+    );
+    await expect(footer.getByRole('link', { name: 'Terms' })).toHaveAttribute('href', '/terms/');
+  });
+
   test('security headers are applied to site and frame', async ({ request }) => {
     const site = await request.get(TOOL_PATH);
     expect(site.headers()['content-security-policy']).toContain('frame-src http://127.0.0.1:4322');

@@ -1,36 +1,68 @@
 ---
 import Prose from '../layouts/Prose.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { OPERATOR } from '../data/site';
+import { registry } from '../data/registry';
+
+const liveTools = registry.indexable().length;
 ---
 
 <Prose
   title="About NiftyFix"
-  description="What NiftyFix is, how its tools work, and what it promises."
+  description="Why NiftyFix exists, how its tools work on your device, what it promises, and who builds it."
   path="/about/"
+  lede="NiftyFix gets your files ready for wherever they need to go — without uploading them anywhere."
 >
+  <h2>Why it exists</h2>
   <p>
-    NiftyFix makes files ready for the place you need to upload them. Application portals, email and
-    chat apps all have rules about dimensions, file size and format. Our tools produce a file that
-    meets the rules you enter, then measure the result and show you each requirement passing or
-    failing.
+    Application portals, exam forms and offices all have rules: a photo of exactly 200 × 230 pixels,
+    a signature between 10 and 20 KB, a PDF under 1 MB. Most online tools that fix this ask you to
+    upload your Aadhaar scan, your marksheet or your signature to someone else's server first.
+    NiftyFix exists so you never have to.
   </p>
+
+  <h2>How it works</h2>
+  <ul>
+    <li>
+      <strong>On your device.</strong> Every tool runs in your browser, in a sandbox that is not
+      allowed to send your files anywhere. You can{' '}
+      <a href="/privacy-verification/">check this yourself</a>.
+    </li>
+    <li>
+      <strong>Checked, not guessed.</strong> Tools measure the file they produce and show each
+      requirement passing or failing, so you know before you upload.
+    </li>
+    <li>
+      <strong>Honest about limits.</strong> If a requirement cannot be met, the tool says why
+      instead of handing you a file that only looks right.
+    </li>
+    <li>
+      <strong>Fast on any connection.</strong> Pages are small and work well on slow mobile data.
+    </li>
+  </ul>
+
   <h2>What we promise</h2>
   <ul>
     <li>
-      Basic tools are free, with no account, no trial and no payment surprises after you have done
-      the work.
+      The tools are free, with no account, no trial and no surprise payment after the work is done.
     </li>
+    <li>No advertising or tracking inside the tools, ever.</li>
     <li>
-      Files are processed on your device, inside an isolated frame that cannot send them anywhere.
-    </li>
-    <li>
-      If we cannot meet a requirement, we tell you why instead of producing a file that only looks
-      right.
+      {liveTools} tools today, with many more planned in the <a href="/tools/">full catalogue</a>.
     </li>
   </ul>
-  <h2>What we do not promise</h2>
+
+  <h2>What we cannot promise</h2>
   <p>
-    Portals can apply checks they do not publish, such as face detection or live photo capture. We
-    verify the technical requirements you give us; we cannot guarantee that a portal will accept a
-    file.
+    Portals can apply checks they do not publish, such as face detection or a live photo. We verify
+    the technical requirements you give us; we cannot guarantee that a portal will accept a file.
+    See our <a href="/terms/">terms of use</a>.
   </p>
+
+  <h2>Who builds it</h2>
+  <p>
+    NiftyFix is designed and built by {OPERATOR.name} in {OPERATOR.region}. Feedback and ideas for
+    new tools are always welcome on the <a href="/contact/">contact page</a>.
+  </p>
+  <SocialLinks class="mt-4" />
 </Prose>

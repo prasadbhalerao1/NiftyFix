@@ -1,4 +1,5 @@
 ---
+import SocialLinks from './SocialLinks.astro';
 import { registry, SITE_NAME } from '../data/registry';
 import { categoryPath, toolPath } from '@niftyfix/registry';
 import { CATEGORIES } from '@niftyfix/tool-sdk';
@@ -42,7 +43,7 @@ const columns = [
     title: 'NiftyFix',
     links: [
       { name: 'About', path: '/about/' },
-      { name: 'Contact and support', path: '/contact/' },
+      { name: 'Contact', path: '/contact/' },
     ],
   },
 ];
@@ -68,6 +69,7 @@ const columns = [
       <p class="mt-4 max-w-xs text-sm text-stone-700 dark:text-stone-400">
         File tools that run on your device and check their own output.
       </p>
+      <SocialLinks class="mt-5" />
     </div>
     {columns.map(({ title, links }) => (
       <nav aria-label={title}>
@@ -92,7 +94,7 @@ const columns = [
       <span>
         © {new Date().getFullYear()} {SITE_NAME}
       </span>
-      <span>Files are processed on your device.</span>
+      <span>Independent service · not affiliated with any government or exam authority.</span>
     </p>
   </div>
 </footer>

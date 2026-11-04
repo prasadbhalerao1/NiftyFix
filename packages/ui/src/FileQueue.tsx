@@ -91,7 +91,7 @@ export function FileQueue({ items, disabled = false, onMove, onRemove }: FileQue
       {items.map((item, index) => (
         <li
           key={item.id}
-          class="flex items-center gap-3 rounded-[var(--radius-control)] border border-stone-200 bg-white px-3 py-2 dark:border-stone-800 dark:bg-stone-900"
+          class="flex items-center gap-3 rounded-[var(--radius-control)] border border-stone-200 bg-paper px-3 py-2 dark:border-stone-800 dark:bg-stone-900"
           data-testid="queued-file"
         >
           <span class="w-6 shrink-0 text-right text-sm tabular-nums text-stone-600 dark:text-stone-400">

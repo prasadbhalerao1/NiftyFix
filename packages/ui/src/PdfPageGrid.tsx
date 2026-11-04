@@ -182,7 +182,7 @@ export function PdfPageGrid({ preview, pages, onChange, disabled = false }: PdfP
             }}
             onDragEnd={() => setDragging(null)}
             class={cx(
-              'flex flex-col gap-2 rounded-[var(--radius-control)] border bg-white p-2 dark:bg-stone-900',
+              'flex flex-col gap-2 rounded-[var(--radius-control)] border bg-paper p-2 dark:bg-stone-900',
               dragging === position
                 ? 'border-brand-600 opacity-60 dark:border-brand-400'
                 : 'border-stone-200 dark:border-stone-800',

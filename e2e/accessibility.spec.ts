@@ -2,6 +2,11 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { chooseFile, fixture, openTool, TOOL_PATH } from './helpers';
 
+/** A violation with the offending elements, so a failure says what to fix. */
+type Violation = Awaited<ReturnType<AxeBuilder['analyze']>>['violations'][number];
+const describeViolation = (v: Violation): string =>
+  `${v.id}: ${v.help} — ${v.nodes.map((n) => `${n.html} ${n.failureSummary ?? ''}`).join(' | ')}`;
+
 /** axe cannot see into cross-origin frames from the parent, so tool states are scanned inside the frame. */
 async function scanFrame(page: Page, label: string): Promise<void> {
   const results = await new AxeBuilder({ page })
@@ -16,35 +21,33 @@ async function scanFrame(page: Page, label: string): Promise<void> {
   const serious = results.violations.filter(
     (v) => v.impact === 'serious' || v.impact === 'critical',
   );
-  expect(
-    serious.map((v) => `${v.id}: ${v.help}`),
-    label,
-  ).toEqual([]);
+  expect(serious.map(describeViolation), label).toEqual([]);
 }
 
 test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
-  test('site pages have no serious violations', async ({ page }) => {
-    for (const path of [
-      '/',
-      '/forms/',
-      TOOL_PATH,
-      '/forms/signature-resizer/',
-      '/privacy-verification/',
-    ]) {
-      await page.goto(path);
-      const results = await new AxeBuilder({ page })
-        .exclude('iframe[data-tool-frame]')
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-        .analyze();
-      const serious = results.violations.filter(
-        (v) => v.impact === 'serious' || v.impact === 'critical',
-      );
-      expect(
-        serious.map((v) => `${v.id}: ${v.help}`),
-        path,
-      ).toEqual([]);
-    }
-  });
+  for (const theme of ['dark', 'light'] as const) {
+    test(`site pages have no serious violations (${theme})`, async ({ page }) => {
+      if (theme === 'light')
+        await page.addInitScript(() => localStorage.setItem('niftyfix-theme', 'light'));
+      for (const path of [
+        '/',
+        '/forms/',
+        TOOL_PATH,
+        '/forms/signature-resizer/',
+        '/privacy-verification/',
+      ]) {
+        await page.goto(path);
+        const results = await new AxeBuilder({ page })
+          .exclude('iframe[data-tool-frame]')
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+          .analyze();
+        const serious = results.violations.filter(
+          (v) => v.impact === 'serious' || v.impact === 'critical',
+        );
+        expect(serious.map(describeViolation), `${path} (${theme})`).toEqual([]);
+      }
+    });
+  }
 
   test('every tool state has no serious violations', async ({ page }) => {
     const frame = await openTool(page);
@@ -63,8 +66,7 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await scanFrame(page, 'error');
   });
 
-  test('dark mode: hovered drop zone keeps readable text', async ({ page }) => {
-    await page.emulateMedia({ colorScheme: 'dark' });
+  test('dark (default) theme: hovered drop zone keeps readable text', async ({ page }) => {
     for (const path of [TOOL_PATH, '/forms/signature-resizer/']) {
       await page.goto(path);
       const frame = page.frameLocator('iframe[data-tool-frame]');

@@ -128,7 +128,9 @@ export default function PhotoResizer({ manifest, device, run, report, preset }: 
               onChange={setCrop}
             />
           ) : (
-            <p class="text-sm text-stone-600">Enter valid dimensions to position the crop.</p>
+            <p class="text-sm text-stone-600 dark:text-stone-400">
+              Enter valid dimensions to position the crop.
+            </p>
           )}
         </Panel>
 

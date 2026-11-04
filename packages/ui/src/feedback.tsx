@@ -54,7 +54,7 @@ export function ErrorView({ error, onRetry, focusOnMount = false }: ErrorViewPro
       ref={ref}
       role="alert"
       tabIndex={-1}
-      class="rounded-[var(--radius-panel)] border border-red-300 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/50"
+      class="rounded-[var(--radius-panel)] border border-red-300 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950"
       data-testid="error-view"
       data-error-code={error.code}
     >
@@ -77,7 +77,7 @@ const STATUS_STYLE: Record<
 > = {
   pass: { icon: '✓', text: 'text-emerald-700 dark:text-emerald-400', label: 'Passed' },
   fail: { icon: '✗', text: 'text-red-700 dark:text-red-400', label: 'Failed' },
-  'not-checked': { icon: '–', text: 'text-stone-500', label: 'Not checked' },
+  'not-checked': { icon: '–', text: 'text-stone-500 dark:text-stone-400', label: 'Not checked' },
 };
 
 /** The checklist that proves (or disproves) each requested requirement on the produced file. */
@@ -86,7 +86,7 @@ export function ValidationReport({ checks }: { checks: readonly VerificationChec
     <div class="overflow-x-auto">
       <table class="w-full text-left text-sm" data-testid="validation-report">
         <caption class="mb-2 text-left text-sm font-semibold">Validation report</caption>
-        <thead class="text-xs uppercase tracking-wide text-stone-500">
+        <thead class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">
           <tr>
             <th scope="col" class="py-2 pr-3 font-medium">
               Requirement
@@ -114,7 +114,9 @@ export function ValidationReport({ checks }: { checks: readonly VerificationChec
                 <td class="py-2 pr-3 tabular-nums">
                   {check.actual}
                   {check.note ? (
-                    <span class="block text-xs text-stone-500">{check.note}</span>
+                    <span class="block text-xs text-stone-500 dark:text-stone-400">
+                      {check.note}
+                    </span>
                   ) : null}
                 </td>
                 <td class={cx('py-2 font-medium whitespace-nowrap', style.text)}>
@@ -142,7 +144,7 @@ export function Panel({
   return (
     <section
       class={cx(
-        'rounded-[var(--radius-panel)] border border-stone-200 bg-white p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-900',
+        'rounded-[var(--radius-panel)] border border-stone-200 bg-paper p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-900',
         className,
       )}
     >

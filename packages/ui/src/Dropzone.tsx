@@ -54,7 +54,7 @@ export function Dropzone({
           compact ? 'min-h-20 gap-1 px-4 py-4' : 'min-h-56 gap-3 px-6 py-10',
           dragging
             ? 'border-brand-600 bg-brand-50 dark:border-brand-400 dark:bg-brand-950'
-            : 'border-stone-300 bg-white hover:border-brand-600 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:hover:border-brand-400 dark:hover:bg-stone-800',
+            : 'border-stone-300 bg-paper hover:border-brand-600 hover:bg-cream dark:border-stone-700 dark:bg-stone-900 dark:hover:border-brand-400 dark:hover:bg-stone-800',
         )}
       >
         <svg

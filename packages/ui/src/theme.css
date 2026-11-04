@@ -26,42 +26,33 @@
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans',
     'Noto Sans Devanagari', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+  /* Light theme is warm, never pure white: cream page, paper surfaces. White stays for previews of real output. */
+  --color-cream: #f8f3ea;
+  --color-paper: #fffcf6;
   --radius-control: 0.5rem;
   --radius-panel: 0.75rem;
 }
 
 /*
- * `dark:` follows the user's choice (data-theme on <html>, set by the site's
- * theme toggle and forwarded to the tool frame), else the system setting.
+ * Dark is the default. `dark:` applies unless the user chose light (data-theme
+ * on <html>, set by the site's theme toggle and forwarded to the tool frame).
  */
-@custom-variant dark {
-  &:where([data-theme='dark'], [data-theme='dark'] *) {
-    @slot;
-  }
-  @media (prefers-color-scheme: dark) {
-    &:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *) {
-      @slot;
-    }
-  }
-}
+@custom-variant dark (&:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *));
 
 @layer base {
-  :root {
-    color-scheme: light dark;
-  }
   /* Must match the page theme: a frame whose color-scheme differs from its parent gets an opaque backdrop. */
+  :root {
+    color-scheme: dark;
+  }
   :root[data-theme='light'] {
     color-scheme: light;
-  }
-  :root[data-theme='dark'] {
-    color-scheme: dark;
   }
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-stone-50 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
+    @apply bg-cream text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand-600 dark:outline-brand-400;

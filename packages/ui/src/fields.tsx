@@ -3,7 +3,7 @@ import { useId } from 'preact/hooks';
 import { cx } from './cx';
 
 const CONTROL =
-  'min-h-11 w-full rounded-[var(--radius-control)] border border-stone-300 bg-white px-3 text-base tabular-nums text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 aria-[invalid=true]:border-red-600';
+  'min-h-11 w-full rounded-[var(--radius-control)] border border-stone-300 bg-paper px-3 text-base tabular-nums text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 aria-[invalid=true]:border-red-600';
 
 interface FieldShellProps {
   id: string;
@@ -85,7 +85,7 @@ export function NumberInput({
           }}
         />
         {suffix ? (
-          <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-stone-500">
+          <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-stone-500 dark:text-stone-400">
             {suffix}
           </span>
         ) : null}
@@ -191,7 +191,7 @@ export function SegmentedControl<T extends string>({
   return (
     <fieldset class="flex flex-col gap-1.5">
       <legend class="mb-1.5 text-sm font-medium text-stone-800 dark:text-stone-200">{label}</legend>
-      <div class="inline-flex rounded-[var(--radius-control)] border border-stone-300 bg-white p-1 dark:border-stone-700 dark:bg-stone-900">
+      <div class="inline-flex rounded-[var(--radius-control)] border border-stone-300 bg-paper p-1 dark:border-stone-700 dark:bg-stone-900">
         {options.map((option) => (
           <label
             key={option.value}

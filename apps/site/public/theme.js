@@ -4,5 +4,5 @@ try {
   const theme = localStorage.getItem('niftyfix-theme');
   if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
 } catch {
-  // Storage blocked (private mode, disabled cookies): follow the system setting.
+  // Storage blocked (private mode, disabled cookies): the default dark theme applies.
 }

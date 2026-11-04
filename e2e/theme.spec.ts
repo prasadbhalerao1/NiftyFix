@@ -5,11 +5,14 @@ const toggle = (page: Page) => page.locator('[data-theme-toggle]');
 const frameRoot = (page: Page) => page.frameLocator('iframe[data-tool-frame]').locator('html');
 
 test.describe('theme toggle', () => {
-  test('follows the system setting until the user chooses', async ({ page }) => {
-    await page.emulateMedia({ colorScheme: 'dark' });
-    await page.goto('/');
+  test('is dark by default, even when the system is light', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.goto(TOOL_PATH);
     await expect(page.locator('html')).not.toHaveAttribute('data-theme');
     await expect(toggle(page)).toHaveAttribute('aria-label', 'Switch to light mode');
+    const scheme = (el: Element) => getComputedStyle(el).colorScheme;
+    expect(await page.locator('html').evaluate(scheme)).toBe('dark');
+    await expect.poll(() => frameRoot(page).evaluate(scheme)).toBe('dark');
   });
 
   test('switches site and tool frame, and remembers the choice', async ({ page }) => {
@@ -23,7 +26,7 @@ test.describe('theme toggle', () => {
     await expect(frameRoot(page)).toHaveAttribute('data-theme', 'light');
     await expect(toggle(page)).toHaveAttribute('aria-label', 'Switch to dark mode');
     // The frame really renders light: light color-scheme, and a light drop zone surface
-    // (white, or near-white stone-50 while touch emulation leaves it in hover state).
+    // (paper, or cream while touch emulation leaves it in hover state).
     // Polled: the surface animates (transition-colors) from the dark colour.
     const measure = () =>
       frame.getByRole('button', { name: /Choose a/ }).evaluate((el) => {
@@ -50,13 +53,13 @@ test.describe('theme toggle', () => {
     await expect(frameRoot(page)).toHaveAttribute('data-theme', 'dark');
   });
 
-  test('works when the system is light', async ({ page }) => {
+  test('light is a choice, not the system setting', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
-    await page.goto(TOOL_PATH);
-    await expect(toggle(page)).toHaveAttribute('aria-label', 'Switch to dark mode');
-    await toggle(page).click();
-    await expect(frameRoot(page)).toHaveAttribute('data-theme', 'dark');
+    await page.goto('/');
     const body = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    expect(body).not.toBe('rgb(250, 250, 249)'); // stone-50, the light background
+    expect(body).not.toBe('rgb(248, 243, 234)'); // cream, the light background
+    await toggle(page).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect(toggle(page)).toHaveAttribute('aria-label', 'Switch to dark mode');
   });
 });

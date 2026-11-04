@@ -1,7 +1,7 @@
 ---
 /**
- * Switches between light and dark. Until the user chooses, the theme follows
- * the system setting. Hidden without JavaScript, where it could not work.
+ * Switches between light and dark. Dark until the user chooses light.
+ * Hidden without JavaScript, where it could not work.
  */
 ---
 
@@ -46,13 +46,7 @@
 
   const KEY = 'niftyfix-theme';
   const root = document.documentElement;
-  const media = window.matchMedia('(prefers-color-scheme: dark)');
-  const current = (): 'light' | 'dark' =>
-    root.dataset.theme === 'light' || root.dataset.theme === 'dark'
-      ? root.dataset.theme
-      : media.matches
-        ? 'dark'
-        : 'light';
+  const current = (): 'light' | 'dark' => (root.dataset.theme === 'light' ? 'light' : 'dark');
 
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
     const label = (): void => {
@@ -62,7 +56,6 @@
       );
     };
     label();
-    media.addEventListener('change', label);
     button.hidden = false;
     button.addEventListener('click', () => {
       const next = current() === 'dark' ? 'light' : 'dark';

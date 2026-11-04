@@ -190,7 +190,7 @@ export default function SignatureResizer({ manifest, device, run, report, preset
               </div>
             </>
           ) : (
-            <p class="text-sm text-stone-600">Loading image…</p>
+            <p class="text-sm text-stone-600 dark:text-stone-400">Loading image…</p>
           )}
         </Panel>
 

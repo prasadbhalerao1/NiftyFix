@@ -1,0 +1,10 @@
+// Sends www.niftyfix.in (http or https) to the canonical https://niftyfix.in.
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "niftyfix-www-redirect",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "www.niftyfix.in", "custom_domain": true }],
+}

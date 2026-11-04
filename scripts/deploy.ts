@@ -3,7 +3,8 @@
  *
  * 1. Build and deploy the tool frame; it may only be embedded by the site.
  * 2. Build the site pointing at the frame's deployed origin, and deploy it.
- * 3. Smoke-check the live URLs: pages, robots.txt, sitemap, 404 and headers.
+ * 3. Deploy the www → apex redirect.
+ * 4. Smoke-check the live URLs: pages, redirects, robots.txt, sitemap, 404 and headers.
  *
  * Needs `wrangler login` (or CLOUDFLARE_API_TOKEN). Run the full CI first.
  */
@@ -31,7 +32,10 @@ function build(filter: string, env: Record<string, string>): void {
 const deploy = (app: string): string =>
   run('pnpm', ['--dir', `apps/${app}`, 'exec', 'wrangler', 'deploy']);
 
-async function check(url: string, expect: { status: number; text?: string; header?: string }) {
+async function check(
+  url: string,
+  expect: { status: number; text?: string; header?: string; location?: string },
+) {
   const response = await fetch(url, { redirect: 'manual' });
   const body = await response.text();
   const problems = [
@@ -40,6 +44,9 @@ async function check(url: string, expect: { status: number; text?: string; heade
       : `status ${response.status}, expected ${expect.status}`,
     expect.text && !body.includes(expect.text) ? `body lacks "${expect.text}"` : null,
     expect.header && !response.headers.has(expect.header) ? `no ${expect.header} header` : null,
+    expect.location && response.headers.get('location') !== expect.location
+      ? `redirects to ${response.headers.get('location')}, expected ${expect.location}`
+      : null,
   ].filter((problem) => problem !== null);
   console.log(
     `${problems.length === 0 ? 'ok  ' : 'FAIL'} ${url}${problems.length ? ` — ${problems.join('; ')}` : ''}`,
@@ -53,6 +60,7 @@ if (!frameOrigin) throw new Error('Could not read the frame URL from wrangler ou
 
 build('@niftyfix/site', { PUBLIC_SITE_ORIGIN: SITE_ORIGIN, PUBLIC_FRAME_ORIGIN: frameOrigin });
 deploy('site');
+deploy('www-redirect');
 
 console.log('\nSmoke checks');
 const results = [
@@ -62,6 +70,13 @@ const results = [
   await check(`${SITE_ORIGIN}/robots.txt`, { status: 200, text: `${SITE_ORIGIN}/sitemap.xml` }),
   await check(`${SITE_ORIGIN}/sitemap.xml`, { status: 200, text: '<urlset' }),
   await check(`${SITE_ORIGIN}/no-such-page/`, { status: 404 }),
+  await check('https://www.niftyfix.in/pdf/?a=1', {
+    status: 301,
+    location: `${SITE_ORIGIN}/pdf/?a=1`,
+  }),
+  await check('http://niftyfix.in/', { status: 301, location: `${SITE_ORIGIN}/` }),
+  // "Always Use HTTPS" upgrades first, then the www Worker moves it to the apex.
+  await check('http://www.niftyfix.in/', { status: 301, location: 'https://www.niftyfix.in/' }),
   await check(`${frameOrigin}/?tool=pdf.compress-pdf`, { status: 200, header: 'x-robots-tag' }),
 ];
 if (results.includes(false)) process.exit(1);

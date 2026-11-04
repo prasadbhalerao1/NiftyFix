@@ -44,7 +44,20 @@ const indexable = items.some(
     {ready > 0 ? `${ready} ready to use · ` : ''}
     {items.length - ready} coming soon
   </p>
-  <div class="mt-6">
-    <CatalogueGrid items={items} />
-  </div>
+  {ready > 0 ? (
+    <section class="mt-6" aria-labelledby="ready-heading">
+      <h2 id="ready-heading" class="sr-only">
+        Ready to use
+      </h2>
+      <CatalogueGrid items={items.filter((item) => item.kind === 'built')} />
+    </section>
+  ) : null}
+  {items.length > ready ? (
+    <section class="mt-10" aria-labelledby="planned-heading">
+      <h2 id="planned-heading" class="mb-3 text-lg font-semibold">
+        Coming soon
+      </h2>
+      <CatalogueGrid items={items.filter((item) => item.kind === 'planned')} />
+    </section>
+  ) : null}
 </Base>

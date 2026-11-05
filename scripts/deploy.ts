@@ -80,4 +80,22 @@ const results = [
   await check(`${frameOrigin}/?tool=pdf.compress-pdf`, { status: 200, header: 'x-robots-tag' }),
 ];
 if (results.includes(false)) process.exit(1);
+
+// Tell IndexNow search engines (Bing, Yandex and others) about every page in the sitemap.
+// The key file is public by design: apps/site/public/<key>.txt proves we own the host.
+const INDEXNOW_KEY = '5f61e8227bcb4d6ea1e9b4dfe81044c3';
+const sitemap = await (await fetch(`${SITE_ORIGIN}/sitemap.xml`)).text();
+const urlList = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+const indexNow = await fetch('https://api.indexnow.org/indexnow', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json; charset=utf-8' },
+  body: JSON.stringify({
+    host: new URL(SITE_ORIGIN).host,
+    key: INDEXNOW_KEY,
+    keyLocation: `${SITE_ORIGIN}/${INDEXNOW_KEY}.txt`,
+    urlList,
+  }),
+});
+// Not fatal: the site is live either way; search engines will still crawl the sitemap.
+console.log(`IndexNow: ${urlList.length} URLs submitted, response ${indexNow.status}`);
 console.log(`\nLive: ${SITE_ORIGIN} (tools served from ${frameOrigin})`);

@@ -12,3 +12,5 @@ tools/registry.generated.ts
 docs/tool-catalogue-v3.md
 tool-catalogue*.md
 *catalogue*.md
+# Search-engine verification files must stay byte-exact.
+**/yandex_*.html

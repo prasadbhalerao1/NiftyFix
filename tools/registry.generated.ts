@@ -5,80 +5,83 @@ import content0 from './forms/passport-photo-maker/content';
 import manifest0 from './forms/passport-photo-maker/manifest';
 import content1 from './forms/photo-resizer/content';
 import manifest1 from './forms/photo-resizer/manifest';
-import content2 from './forms/signature-resizer/content';
-import manifest2 from './forms/signature-resizer/manifest';
-import content3 from './image/compress-image/content';
-import manifest3 from './image/compress-image/manifest';
-import content4 from './image/convert-image/content';
-import manifest4 from './image/convert-image/manifest';
-import content5 from './image/crop-image/content';
-import manifest5 from './image/crop-image/manifest';
-import content6 from './image/remove-exif/content';
-import manifest6 from './image/remove-exif/manifest';
-import content7 from './image/resize-image/content';
-import manifest7 from './image/resize-image/manifest';
-import content8 from './image/rotate-image/content';
-import manifest8 from './image/rotate-image/manifest';
-import content9 from './image/watermark-image/content';
-import manifest9 from './image/watermark-image/manifest';
-import content10 from './pdf/add-page-numbers/content';
-import manifest10 from './pdf/add-page-numbers/manifest';
-import content11 from './pdf/compress-pdf/content';
-import manifest11 from './pdf/compress-pdf/manifest';
-import content12 from './pdf/crop-pdf/content';
-import manifest12 from './pdf/crop-pdf/manifest';
-import content13 from './pdf/extract-pdf-pages/content';
-import manifest13 from './pdf/extract-pdf-pages/manifest';
-import content14 from './pdf/fill-pdf-form/content';
-import manifest14 from './pdf/fill-pdf-form/manifest';
-import content15 from './pdf/flatten-pdf/content';
-import manifest15 from './pdf/flatten-pdf/manifest';
-import content16 from './pdf/image-to-pdf/content';
-import manifest16 from './pdf/image-to-pdf/manifest';
-import content17 from './pdf/merge-pdf/content';
-import manifest17 from './pdf/merge-pdf/manifest';
-import content18 from './pdf/organize-pdf/content';
-import manifest18 from './pdf/organize-pdf/manifest';
-import content19 from './pdf/pdf-metadata/content';
-import manifest19 from './pdf/pdf-metadata/manifest';
-import content20 from './pdf/pdf-to-image/content';
-import manifest20 from './pdf/pdf-to-image/manifest';
-import content21 from './pdf/pdf-to-text/content';
-import manifest21 from './pdf/pdf-to-text/manifest';
-import content22 from './pdf/rotate-pdf/content';
-import manifest22 from './pdf/rotate-pdf/manifest';
-import content23 from './pdf/sign-pdf/content';
-import manifest23 from './pdf/sign-pdf/manifest';
-import content24 from './pdf/split-pdf/content';
-import manifest24 from './pdf/split-pdf/manifest';
-import content25 from './pdf/watermark-pdf/content';
-import manifest25 from './pdf/watermark-pdf/manifest';
+import content2 from './forms/photo-sheet-maker/content';
+import manifest2 from './forms/photo-sheet-maker/manifest';
+import content3 from './forms/signature-resizer/content';
+import manifest3 from './forms/signature-resizer/manifest';
+import content4 from './image/compress-image/content';
+import manifest4 from './image/compress-image/manifest';
+import content5 from './image/convert-image/content';
+import manifest5 from './image/convert-image/manifest';
+import content6 from './image/crop-image/content';
+import manifest6 from './image/crop-image/manifest';
+import content7 from './image/remove-exif/content';
+import manifest7 from './image/remove-exif/manifest';
+import content8 from './image/resize-image/content';
+import manifest8 from './image/resize-image/manifest';
+import content9 from './image/rotate-image/content';
+import manifest9 from './image/rotate-image/manifest';
+import content10 from './image/watermark-image/content';
+import manifest10 from './image/watermark-image/manifest';
+import content11 from './pdf/add-page-numbers/content';
+import manifest11 from './pdf/add-page-numbers/manifest';
+import content12 from './pdf/compress-pdf/content';
+import manifest12 from './pdf/compress-pdf/manifest';
+import content13 from './pdf/crop-pdf/content';
+import manifest13 from './pdf/crop-pdf/manifest';
+import content14 from './pdf/extract-pdf-pages/content';
+import manifest14 from './pdf/extract-pdf-pages/manifest';
+import content15 from './pdf/fill-pdf-form/content';
+import manifest15 from './pdf/fill-pdf-form/manifest';
+import content16 from './pdf/flatten-pdf/content';
+import manifest16 from './pdf/flatten-pdf/manifest';
+import content17 from './pdf/image-to-pdf/content';
+import manifest17 from './pdf/image-to-pdf/manifest';
+import content18 from './pdf/merge-pdf/content';
+import manifest18 from './pdf/merge-pdf/manifest';
+import content19 from './pdf/organize-pdf/content';
+import manifest19 from './pdf/organize-pdf/manifest';
+import content20 from './pdf/pdf-metadata/content';
+import manifest20 from './pdf/pdf-metadata/manifest';
+import content21 from './pdf/pdf-to-image/content';
+import manifest21 from './pdf/pdf-to-image/manifest';
+import content22 from './pdf/pdf-to-text/content';
+import manifest22 from './pdf/pdf-to-text/manifest';
+import content23 from './pdf/rotate-pdf/content';
+import manifest23 from './pdf/rotate-pdf/manifest';
+import content24 from './pdf/sign-pdf/content';
+import manifest24 from './pdf/sign-pdf/manifest';
+import content25 from './pdf/split-pdf/content';
+import manifest25 from './pdf/split-pdf/manifest';
+import content26 from './pdf/watermark-pdf/content';
+import manifest26 from './pdf/watermark-pdf/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'forms/passport-photo-maker', manifest: manifest0, content: content0 },
   { dir: 'forms/photo-resizer', manifest: manifest1, content: content1 },
-  { dir: 'forms/signature-resizer', manifest: manifest2, content: content2 },
-  { dir: 'image/compress-image', manifest: manifest3, content: content3 },
-  { dir: 'image/convert-image', manifest: manifest4, content: content4 },
-  { dir: 'image/crop-image', manifest: manifest5, content: content5 },
-  { dir: 'image/remove-exif', manifest: manifest6, content: content6 },
-  { dir: 'image/resize-image', manifest: manifest7, content: content7 },
-  { dir: 'image/rotate-image', manifest: manifest8, content: content8 },
-  { dir: 'image/watermark-image', manifest: manifest9, content: content9 },
-  { dir: 'pdf/add-page-numbers', manifest: manifest10, content: content10 },
-  { dir: 'pdf/compress-pdf', manifest: manifest11, content: content11 },
-  { dir: 'pdf/crop-pdf', manifest: manifest12, content: content12 },
-  { dir: 'pdf/extract-pdf-pages', manifest: manifest13, content: content13 },
-  { dir: 'pdf/fill-pdf-form', manifest: manifest14, content: content14 },
-  { dir: 'pdf/flatten-pdf', manifest: manifest15, content: content15 },
-  { dir: 'pdf/image-to-pdf', manifest: manifest16, content: content16 },
-  { dir: 'pdf/merge-pdf', manifest: manifest17, content: content17 },
-  { dir: 'pdf/organize-pdf', manifest: manifest18, content: content18 },
-  { dir: 'pdf/pdf-metadata', manifest: manifest19, content: content19 },
-  { dir: 'pdf/pdf-to-image', manifest: manifest20, content: content20 },
-  { dir: 'pdf/pdf-to-text', manifest: manifest21, content: content21 },
-  { dir: 'pdf/rotate-pdf', manifest: manifest22, content: content22 },
-  { dir: 'pdf/sign-pdf', manifest: manifest23, content: content23 },
-  { dir: 'pdf/split-pdf', manifest: manifest24, content: content24 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest25, content: content25 },
+  { dir: 'forms/photo-sheet-maker', manifest: manifest2, content: content2 },
+  { dir: 'forms/signature-resizer', manifest: manifest3, content: content3 },
+  { dir: 'image/compress-image', manifest: manifest4, content: content4 },
+  { dir: 'image/convert-image', manifest: manifest5, content: content5 },
+  { dir: 'image/crop-image', manifest: manifest6, content: content6 },
+  { dir: 'image/remove-exif', manifest: manifest7, content: content7 },
+  { dir: 'image/resize-image', manifest: manifest8, content: content8 },
+  { dir: 'image/rotate-image', manifest: manifest9, content: content9 },
+  { dir: 'image/watermark-image', manifest: manifest10, content: content10 },
+  { dir: 'pdf/add-page-numbers', manifest: manifest11, content: content11 },
+  { dir: 'pdf/compress-pdf', manifest: manifest12, content: content12 },
+  { dir: 'pdf/crop-pdf', manifest: manifest13, content: content13 },
+  { dir: 'pdf/extract-pdf-pages', manifest: manifest14, content: content14 },
+  { dir: 'pdf/fill-pdf-form', manifest: manifest15, content: content15 },
+  { dir: 'pdf/flatten-pdf', manifest: manifest16, content: content16 },
+  { dir: 'pdf/image-to-pdf', manifest: manifest17, content: content17 },
+  { dir: 'pdf/merge-pdf', manifest: manifest18, content: content18 },
+  { dir: 'pdf/organize-pdf', manifest: manifest19, content: content19 },
+  { dir: 'pdf/pdf-metadata', manifest: manifest20, content: content20 },
+  { dir: 'pdf/pdf-to-image', manifest: manifest21, content: content21 },
+  { dir: 'pdf/pdf-to-text', manifest: manifest22, content: content22 },
+  { dir: 'pdf/rotate-pdf', manifest: manifest23, content: content23 },
+  { dir: 'pdf/sign-pdf', manifest: manifest24, content: content24 },
+  { dir: 'pdf/split-pdf', manifest: manifest25, content: content25 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest26, content: content26 },
 ];

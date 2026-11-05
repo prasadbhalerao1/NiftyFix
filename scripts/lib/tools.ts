@@ -6,6 +6,13 @@ export const TOOLS_DIR = join(ROOT, 'tools');
 export const GENERATED_FILE = join(TOOLS_DIR, 'registry.generated.ts');
 export const REQUIRED_FILES = ['manifest.ts', 'content.ts', 'processor.ts', 'ui.tsx'] as const;
 
+/** Interactive tools (no file input) compute in their UI and have no processor. */
+export const isInteractive = (dir: string): boolean =>
+  /kind:\s*'interactive'/.test(readFileSync(join(TOOLS_DIR, dir, 'manifest.ts'), 'utf8'));
+
+export const requiredFiles = (dir: string): readonly string[] =>
+  isInteractive(dir) ? REQUIRED_FILES.filter((file) => file !== 'processor.ts') : REQUIRED_FILES;
+
 /** Every "category/slug" directory under tools/ that contains a manifest. */
 export function discoverToolDirs(): string[] {
   const dirs: string[] = [];

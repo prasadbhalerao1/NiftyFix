@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { downloadBlob, ObjectUrlRegistry } from '@niftyfix/runtime';
-import { fileNameError } from '@niftyfix/tool-sdk';
+import { fileInput, fileNameError } from '@niftyfix/tool-sdk';
 import {
   Button,
   Dropzone,
@@ -20,13 +20,14 @@ const ACCEPT = '.pdf,application/pdf';
 
 export default function MergePdf({ manifest, device, run, preload, report }: ToolUiProps) {
   const urls = useRef(new ObjectUrlRegistry());
-  const queue = useFileQueue(manifest.input, device);
+  const queue = useFileQueue(fileInput(manifest), device);
   const [fileName, setFileName] = useState('');
   const job = useToolJob<null>({ run, report }, urls.current);
   const { phase } = job;
   const limitMb = Math.round(
-    (device === 'high' ? manifest.input.maxBytes.desktop : manifest.input.maxBytes.mobile) /
-      1_000_000,
+    (device === 'high'
+      ? fileInput(manifest).maxBytes.desktop
+      : fileInput(manifest).maxBytes.mobile) / 1_000_000,
   );
 
   useEffect(() => () => urls.current.revokeAll(), []);

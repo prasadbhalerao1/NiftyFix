@@ -21,7 +21,7 @@ const list = (ids: readonly FileFormatId[]): string => {
     ? `${labels.slice(0, 2).join(', ')} +${labels.length - 2}`
     : labels.join(', ');
 };
-const accepts = list(manifest.input.formats);
+const accepts = manifest.input.kind === 'files' ? list(manifest.input.formats) : '';
 const produces = list(manifest.output.formats);
 ---
 
@@ -58,12 +58,14 @@ const produces = list(manifest.output.formats);
         <span class="line-clamp-1 text-sm text-stone-700 dark:text-stone-400">
           {manifest.tagline}
         </span>
-        <span class="flex gap-1.5 font-mono text-[11px] text-stone-600 dark:text-stone-400">
-          <span>{accepts}</span>
-          <span aria-hidden="true">→</span>
-          <span class="sr-only">produces</span>
-          <span>{produces}</span>
-        </span>
+        {accepts ? (
+          <span class="flex gap-1.5 font-mono text-[11px] text-stone-600 dark:text-stone-400">
+            <span>{accepts}</span>
+            <span aria-hidden="true">→</span>
+            <span class="sr-only">produces</span>
+            <span>{produces}</span>
+          </span>
+        ) : null}
       </>
     )}
   </span>

@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { downloadBlob, ObjectUrlRegistry, validateFile } from '@niftyfix/runtime';
-import { formatBytes, toSerializedError, type SerializedToolError } from '@niftyfix/tool-sdk';
+import {
+  fileInput,
+  formatBytes,
+  toSerializedError,
+  type SerializedToolError,
+} from '@niftyfix/tool-sdk';
 import {
   Button,
   Dropzone,
@@ -40,7 +45,7 @@ export default function OrganizePdf({ manifest, device, run, preload, report }: 
     if (!next) return;
     setInputError(null);
     try {
-      await validateFile(next, manifest.input, device);
+      await validateFile(next, fileInput(manifest), device);
       job.reset();
       setFile(next);
       report('file_selected');
@@ -73,7 +78,7 @@ export default function OrganizePdf({ manifest, device, run, preload, report }: 
         <Dropzone
           accept={ACCEPT}
           title="Choose a PDF"
-          detail={`Up to ${Math.round((device === 'high' ? manifest.input.maxBytes.desktop : manifest.input.maxBytes.mobile) / 1_000_000)} MB · stays on your device`}
+          detail={`Up to ${Math.round((device === 'high' ? fileInput(manifest).maxBytes.desktop : fileInput(manifest).maxBytes.mobile) / 1_000_000)} MB · stays on your device`}
           onFiles={(files) => void choose(files)}
         />
         {inputError ? <ErrorView error={inputError} /> : null}

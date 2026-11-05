@@ -33,6 +33,11 @@ async function settle(page: Page): Promise<void> {
 
 /** axe cannot see into cross-origin frames from the parent, so tool states are scanned inside the frame. */
 async function scanFrame(page: Page, label: string): Promise<void> {
+  // Audit the settled frame: panels fade in, and mid-fade text is not what users read.
+  await page
+    .frameLocator('iframe[data-tool-frame]')
+    .locator('body')
+    .evaluate(() => Promise.all(document.getAnimations().map((animation) => animation.finished)));
   const results = await new AxeBuilder({ page })
     .include('iframe[data-tool-frame]')
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])

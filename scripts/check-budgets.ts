@@ -6,7 +6,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { discoverToolDirs, ROOT } from './lib/tools';
+import { discoverToolDirs, isInteractive, ROOT } from './lib/tools';
 
 const KB = 1000;
 const BUDGETS = {
@@ -157,7 +157,8 @@ for (const dir of discoverToolDirs()) {
         ? PDF_RENDER_PROCESSOR_BUDGET
         : (ENGINE_PROCESSOR_BUDGETS[dir.split('/')[0] ?? ''] ?? BUDGETS.toolProcessor),
     );
-  else problems.push(`tool ${dir}: processor.ts not found in frame build manifest`);
+  else if (!isInteractive(dir))
+    problems.push(`tool ${dir}: processor.ts not found in frame build manifest`);
 }
 
 const pad = (text: string, width: number): string => text.padEnd(width);

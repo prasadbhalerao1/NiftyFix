@@ -54,7 +54,7 @@ export function ErrorView({ error, onRetry, focusOnMount = false }: ErrorViewPro
       ref={ref}
       role="alert"
       tabIndex={-1}
-      class="rounded-[var(--radius-panel)] border border-red-300 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950"
+      class="nf-enter rounded-[var(--radius-panel)] border border-red-300 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950"
       data-testid="error-view"
       data-error-code={error.code}
     >
@@ -144,7 +144,7 @@ export function Panel({
   return (
     <section
       class={cx(
-        'rounded-[var(--radius-panel)] border border-stone-200 bg-paper p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-900',
+        'nf-enter rounded-[var(--radius-panel)] border border-stone-200 bg-paper p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-900',
         className,
       )}
     >

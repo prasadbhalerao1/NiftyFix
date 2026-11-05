@@ -32,7 +32,7 @@ export function Button({
     <button
       type={type}
       class={cx(
-        'inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-control)] font-medium transition-colors disabled:cursor-not-allowed',
+        'inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-control)] font-medium transition-[background-color,border-color,color,transform] duration-150 active:scale-[0.97] disabled:cursor-not-allowed disabled:active:scale-100',
         size === 'lg' ? 'px-6 text-base' : 'px-4 text-sm',
         fullWidth && 'w-full',
         VARIANTS[variant],

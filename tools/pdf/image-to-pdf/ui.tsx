@@ -15,19 +15,20 @@ import {
   type ToolUiProps,
 } from '@niftyfix/ui';
 import { MAX_IMAGES, type ImageToPdfOptions } from './options';
+import { fileInput } from '@niftyfix/tool-sdk';
 
 const ACCEPT =
   '.jpg,.jpeg,.png,.webp,.avif,.bmp,.gif,image/jpeg,image/png,image/webp,image/avif,image/bmp,image/gif';
 
 export default function ImageToPdf({ manifest, device, run, preload, report }: ToolUiProps) {
   const urls = useRef(new ObjectUrlRegistry());
-  const queue = useFileQueue(manifest.input, device);
+  const queue = useFileQueue(fileInput(manifest), device);
   const [pageSize, setPageSize] = useState<ImageToPdfOptions['pageSize']>('a4');
   const [orientation, setOrientation] = useState<ImageToPdfOptions['orientation']>('auto');
   const [margin, setMargin] = useState<number | null>(18);
   const job = useToolJob<null>({ run, report }, urls.current);
   const { phase } = job;
-  const limit = manifest.input.maxPixels;
+  const limit = fileInput(manifest).maxPixels;
   const maxPixels = limit ? (device === 'high' ? limit.desktop : limit.mobile) : 50_000_000;
 
   useEffect(() => () => urls.current.revokeAll(), []);

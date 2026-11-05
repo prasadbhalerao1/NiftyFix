@@ -187,9 +187,11 @@ export function validateEntries(entries: readonly ToolEntry[]): string[] {
     problems.push(...checkSeo(where, m));
     if (m.h1.trim() === '' || m.name.trim() === '' || m.tagline.trim() === '')
       problems.push(`${where} name, h1 and tagline are required`);
-    if (m.input.formats.length === 0) problems.push(`${where} input.formats must not be empty`);
-    if (m.input.maxBytes.mobile > m.input.maxBytes.desktop)
-      problems.push(`${where} mobile size limit exceeds desktop limit`);
+    if (m.input.kind === 'files') {
+      if (m.input.formats.length === 0) problems.push(`${where} input.formats must not be empty`);
+      if (m.input.maxBytes.mobile > m.input.maxBytes.desktop)
+        problems.push(`${where} mobile size limit exceeds desktop limit`);
+    }
     for (const relatedId of m.related) {
       if (relatedId === m.id) problems.push(`${where} lists itself as related`);
       else if (!allIds.has(relatedId))

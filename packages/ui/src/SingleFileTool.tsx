@@ -6,7 +6,13 @@ import {
   validateFile,
   validateFileCount,
 } from '@niftyfix/runtime';
-import { formatBytes, toSerializedError, type SerializedToolError } from '@niftyfix/tool-sdk';
+import {
+  fileInput,
+  formatBytes,
+  toSerializedError,
+  type ProcessedFile,
+  type SerializedToolError,
+} from '@niftyfix/tool-sdk';
 import { BatchFiles, useBatchJob } from './BatchFiles';
 import { Button } from './Button';
 import { Dropzone } from './Dropzone';
@@ -38,6 +44,8 @@ export interface SingleFileToolProps extends ToolUiProps {
   preview?: (file: File) => ComponentChildren;
   /** Told when a valid file is chosen (or cleared), for settings that depend on it. */
   onFileChange?: (file: File | null) => void;
+  /** Shown in the result panel above the report, e.g. the extracted text to read and copy. */
+  resultPreview?: (result: ProcessedFile) => ComponentChildren;
 }
 
 /**
@@ -66,11 +74,13 @@ export function SingleFileTool({
   children,
   preview,
   onFileChange,
+  resultPreview,
 }: SingleFileToolProps) {
+  const input = fileInput(manifest);
   const urls = useRef(new ObjectUrlRegistry());
   const [file, setFile] = useState<File | null>(null);
   // Tools whose settings suit any file also take several at once (manifest: batch).
-  const batchable = manifest.capabilities.batch && manifest.input.maxFiles > 1;
+  const batchable = manifest.capabilities.batch && input.maxFiles > 1;
   const [batchFiles, setBatchFiles] = useState<File[] | null>(null);
   const [skipped, setSkipped] = useState<string[]>([]);
   const [inputError, setInputError] = useState<SerializedToolError | null>(null);
@@ -79,8 +89,7 @@ export function SingleFileTool({
   const { phase } = job;
   const optionsKey = customKey ?? JSON.stringify(options);
   const limitMb = Math.round(
-    (device === 'high' ? manifest.input.maxBytes.desktop : manifest.input.maxBytes.mobile) /
-      1_000_000,
+    (device === 'high' ? input.maxBytes.desktop : input.maxBytes.mobile) / 1_000_000,
   );
 
   useEffect(() => () => urls.current.revokeAll(), []);
@@ -92,7 +101,7 @@ export function SingleFileTool({
 
   const chooseMany = async (files: File[]): Promise<void> => {
     try {
-      validateFileCount(files.length, manifest.input);
+      validateFileCount(files.length, input);
     } catch (error) {
       setInputError(toSerializedError(error));
       return;
@@ -102,7 +111,7 @@ export function SingleFileTool({
     let firstError: unknown = null;
     for (const candidate of files) {
       try {
-        await validateFile(candidate, manifest.input, device);
+        await validateFile(candidate, input, device);
         valid.push(candidate);
       } catch (error) {
         rejected.push(candidate.name);
@@ -130,7 +139,7 @@ export function SingleFileTool({
     if (!next) return;
     setInputError(null);
     try {
-      await validateFile(next, manifest.input, device);
+      await validateFile(next, input, device);
       job.reset();
       setFile(next);
       onFileChange?.(next);
@@ -212,7 +221,7 @@ export function SingleFileTool({
           title={chooseTitle}
           detail={
             batchable
-              ? `One or up to ${manifest.input.maxFiles} files, ${limitMb} MB each · stays on your device`
+              ? `One or up to ${input.maxFiles} files, ${limitMb} MB each · stays on your device`
               : `Up to ${limitMb} MB · stays on your device`
           }
           multiple={batchable}
@@ -259,6 +268,7 @@ export function SingleFileTool({
             result={phase.result}
             successMessage={successMessage}
             disclaimer={disclaimer}
+            preview={resultPreview?.(phase.result)}
             onDownload={() => {
               downloadBlob(phase.result.blob, phase.result.fileName);
               report('download');

@@ -11,3 +11,29 @@ body {
 .loading {
   @apply p-6 text-center text-sm text-stone-600 dark:text-stone-400;
 }
+
+/*
+ * Micro-animations for every tool: transform and opacity only (GPU, no layout),
+ * short, and switched off by the reduced-motion rule in the shared theme.
+ */
+@keyframes nf-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes nf-tick {
+  from {
+    opacity: 0.55;
+    transform: translateY(3px);
+  }
+}
+/* Panels (settings, results, errors) ease in when they appear. */
+.nf-enter {
+  animation: nf-enter 200ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* A value that just changed (re-keyed on change, so it replays). */
+.nf-tick {
+  display: inline-block;
+  animation: nf-tick 160ms ease-out both;
+}

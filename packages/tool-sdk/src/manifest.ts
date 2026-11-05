@@ -29,6 +29,14 @@ export interface FileInputSpec {
   maxFiles: number;
 }
 
+/**
+ * Tools that take no file: text, developer and calculator tools that work as
+ * the user types. They have no processor; the tool UI computes in place.
+ */
+export interface InteractiveInputSpec {
+  kind: 'interactive';
+}
+
 export interface ToolManifest {
   /** Stable forever, never reused: '<category>.<slug>'. */
   id: string;
@@ -45,7 +53,8 @@ export interface ToolManifest {
   seoDescription: string;
   /** Task-language phrases users search with ("photo size for exam form"). */
   searchAliases: readonly string[];
-  input: FileInputSpec;
+  input: FileInputSpec | InteractiveInputSpec;
+  /** Files the tool produces; empty for interactive tools that only show results. */
   output: { formats: readonly FileFormatId[] };
   execution: ExecutionMode;
   privacy: PrivacyClass;
@@ -92,6 +101,20 @@ export interface ToolVariant {
   faqs?: readonly { question: string; answer: string }[];
 }
 
-/** Identity helpers that give authors full type checking. */
-export const defineManifest = (manifest: ToolManifest): ToolManifest => manifest;
+/**
+ * Identity helpers that give authors full type checking. The manifest keeps its
+ * literal type, so a file tool's processor can read `manifest.input.maxPixels`.
+ */
+export const defineManifest = <M extends ToolManifest>(manifest: M): M => manifest;
 export const defineContent = (content: ToolContent): ToolContent => content;
+
+/** True for tools that take files (and so have a processor). */
+export const takesFiles = (
+  manifest: ToolManifest,
+): manifest is ToolManifest & { input: FileInputSpec } => manifest.input.kind === 'files';
+
+/** The file input spec of a file tool; a programming error for interactive tools. */
+export function fileInput(manifest: ToolManifest): FileInputSpec {
+  if (!takesFiles(manifest)) throw new TypeError(`${manifest.id} takes no files`);
+  return manifest.input;
+}

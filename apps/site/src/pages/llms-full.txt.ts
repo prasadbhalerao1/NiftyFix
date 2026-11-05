@@ -34,8 +34,12 @@ export const GET: APIRoute = () => {
         '',
         content.intro,
         '',
-        `Accepts: ${formats(manifest.input.formats)}. Produces: ${formats(manifest.output.formats)}.`,
-        '',
+        ...(manifest.input.kind === 'files'
+          ? [
+              `Accepts: ${formats(manifest.input.formats)}. Produces: ${formats(manifest.output.formats)}.`,
+              '',
+            ]
+          : []),
         'How to use it:',
         ...content.howTo.map((step, index) => `${index + 1}. ${step}`),
         '',

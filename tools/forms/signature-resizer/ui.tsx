@@ -2,7 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { expandToAspect, type Rect, type Size } from '@niftyfix/constraints';
 import { DEFAULT_ENHANCE, NO_ENHANCE, type EnhanceSettings } from '@niftyfix/engine-image';
 import { downloadBlob, ObjectUrlRegistry } from '@niftyfix/runtime';
-import { parseKbPreset, toSerializedError, type SerializedToolError } from '@niftyfix/tool-sdk';
+import {
+  fileInput,
+  parseKbPreset,
+  toSerializedError,
+  type SerializedToolError,
+} from '@niftyfix/tool-sdk';
 import {
   Button,
   CheckboxInput,
@@ -90,7 +95,7 @@ export default function SignatureResizer({ manifest, device, run, report, preset
     if (!file) return;
     setInputError(null);
     try {
-      const next = await loadImageSource(file, manifest.input, device, urls.current);
+      const next = await loadImageSource(file, fileInput(manifest), device, urls.current);
       if (source) urls.current.revoke(source.url);
       job.reset();
       setCrop(null);

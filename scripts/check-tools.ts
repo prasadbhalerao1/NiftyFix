@@ -12,7 +12,7 @@ import {
   discoverToolDirs,
   GENERATED_FILE,
   renderRegistry,
-  REQUIRED_FILES,
+  requiredFiles,
   TOOLS_DIR,
 } from './lib/tools';
 
@@ -20,7 +20,7 @@ const problems: string[] = [];
 const dirs = discoverToolDirs();
 
 for (const dir of dirs) {
-  for (const file of REQUIRED_FILES) {
+  for (const file of requiredFiles(dir)) {
     if (!existsSync(join(TOOLS_DIR, dir, file))) problems.push(`[${dir}] missing ${file}`);
   }
   // Metadata must stay importable by the static site without pulling in processing code.

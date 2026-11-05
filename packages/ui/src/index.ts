@@ -17,3 +17,5 @@ export * from './SingleFileTool';
 export * from './PdfPageGrid';
 export * from './TargetSize';
 export * from './BatchFiles';
+export * from './TextResult';
+export * from './StatTile';

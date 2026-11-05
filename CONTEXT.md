@@ -8,7 +8,7 @@ Read this first. It is the single page an agent needs to continue building Nifty
 - **Privacy model:** files never leave the user's device.
 - **Owner:** Prasad Bhalerao, Maharashtra (GitHub `prasadbhalerao1`, public contact prasadbhalerao279@gmail.com).
 - **Repo:** private, `prasadbhalerao1/Tools`, branch `main`. CI must be green.
-- **Status:** 18 tools are live (2 form tools, 16 PDF tools), plus 18 search-intent pages. About 400 more are planned.
+- **Status:** 25 tools are built (2 form tools, 16 PDF tools, 7 image tools), plus 26 search-intent pages (63 URLs in the sitemap). About 395 more are planned. Image tools added on 5 Nov 2026 are committed; check whether they are deployed (`curl -s https://niftyfix.in/image/compress-image/`).
 
 ## 2. Owner rules (non-negotiable)
 
@@ -98,13 +98,9 @@ scripts/           Generators and CI gates
 The full scope is in `docs/tool-catalogue-v3.md`; the planned list the site reads is `packages/registry/src/planned.ts`.
 
 1. **Wave 1, image tools:**
-   - Compress Image, with intent pages for 20 KB, 50 KB and 100 KB.
-   - Resize Image, Convert Image (JPG, PNG, WebP, AVIF, HEIC input).
-   - Crop Image, Rotate and Flip.
-   - Passport and Visa Photo Maker, and ID and Photo Sheet Maker (in `forms`).
-   - EXIF viewer and remover, Watermark Image.
-
-   Batch processing and ZIP download use the runtime queue; MozJPEG and WebP encoders are lazy-loaded per codec.
+   - Done (5 Nov 2026): Compress Image (20, 50, 100, 200 KB pages), Resize Image (cm page), Convert Image (6 format-pair pages), Crop Image, Rotate and Flip, Remove EXIF (EXIF viewer and remove-location pages), Watermark Image. All single-file, built on `SingleFileTool` and the shared image pipeline (`sameFormatAs`, `webpOrPng`, `exportImage`, `verifyImageOutput`, `readMetadata`/`stripMetadata`).
+   - Next: Passport and Visa Photo Maker, and ID and Photo Sheet Maker (in `forms`).
+   - Later: batch mode (many files, ZIP download) as a shared `SingleFileTool` sibling, so every image tool gains it at once. HEIC input needs a decoder (not supported by most browsers).
 
 2. **Indian-script text and OCR:** Devanagari and other scripts in PDF stamps and text tools; Image to Text (OCR) with Indian languages.
 3. **Calculators, text tools, developer tools and data tools:** many cheap, fast tools with good long-tail search demand.
@@ -112,7 +108,7 @@ The full scope is in `docs/tool-catalogue-v3.md`; the planned list the site read
 
 ## 6. Open items
 
-- **CI flake (fix committed 5 Nov 2026, needs a green run):** the hero demo test failed on Pixel 7 in GitHub CI (`e2e/site.spec.ts`, "the hero demo plays"). The demo starts only once 35% of it is visible, and on the CI phone it could sit below the fold. The test now scrolls it into view first. Confirm the next CI run is green.
+- **CI** runs browser tests in four parallel jobs (one per browser) behind a single `verify` check, about 6 minutes. Each push cancels the previous run.
 - **Real-device testing:** not done yet (`docs/testing/REAL_DEVICE_TEST_PLAN.md`).
 - **Analytics consent:** a DPDP consent notice is needed before May 2027.
 - **Owner's manual to-dos:**

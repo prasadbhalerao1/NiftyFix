@@ -88,12 +88,22 @@ const jsonLd = [
   </p>
   <p class="eyebrow mt-4 flex items-center gap-2">
     <span aria-hidden="true" class="size-2 rounded-full bg-emerald-500"></span>
-    Runs on your device — your file is not uploaded
+    Runs on your device: your file is not uploaded
   </p>
 
   <div class="mt-6">
     <ToolFrame toolId={manifest.id} title={`${manifest.name} tool`} preset={variant?.preset} />
   </div>
+  <p class="mt-2 text-xs text-stone-600 dark:text-stone-400">
+    By using this tool, you agree to our{' '}
+    <a
+      href="/terms/"
+      class="underline underline-offset-2 hover:text-stone-900 dark:hover:text-stone-200"
+    >
+      terms of use
+    </a>
+    .
+  </p>
 
   {intents.length > 0 ? (
     <nav aria-labelledby="intents-heading" class="mt-4">

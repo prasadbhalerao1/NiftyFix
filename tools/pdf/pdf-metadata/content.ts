@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Every PDF carries hidden details: a title, the author’s name, the program that made it, keywords. They show up in search results, in file properties and in browser tabs — and they can reveal more than you intend, such as a colleague’s name on a document you are forwarding. This tool shows those details, lets you correct them, or removes all of them, including the second hidden copy (XMP) most tools miss.',
+    'Every PDF carries hidden details: a title, the author’s name, the program that made it, keywords. They show up in search results, in file properties and in browser tabs, and they can reveal more than you intend, such as a colleague’s name on a document you are forwarding. This tool shows those details, lets you correct them, or removes all of them, including the second hidden copy (XMP) most tools miss.',
   howTo: [
     'Choose a PDF. Its current details appear in the fields.',
     'Change any field, or select "Remove all metadata".',

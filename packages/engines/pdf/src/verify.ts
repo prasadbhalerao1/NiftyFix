@@ -10,8 +10,8 @@ export interface PdfExpectations {
 }
 
 /**
- * Re-open the produced bytes from scratch — never trusting the in-memory
- * document that wrote them — and measure what the user will download.
+ * Re-open the produced bytes from scratch, never trusting the in-memory
+ * document that wrote them, and measure what the user will download.
  */
 export async function verifyPdfOutput(
   bytes: Uint8Array,
@@ -46,7 +46,7 @@ export async function verifyPdfOutput(
     id: 'pages',
     label: 'Pages',
     required: `${expect.pages}`,
-    actual: reopened ? `${pages}` : '—',
+    actual: reopened ? `${pages}` : 'None',
     status: reopened && pages === expect.pages ? 'pass' : 'fail',
   });
 

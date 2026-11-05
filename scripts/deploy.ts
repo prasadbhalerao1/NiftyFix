@@ -49,7 +49,7 @@ async function check(
       : null,
   ].filter((problem) => problem !== null);
   console.log(
-    `${problems.length === 0 ? 'ok  ' : 'FAIL'} ${url}${problems.length ? ` — ${problems.join('; ')}` : ''}`,
+    `${problems.length === 0 ? 'ok  ' : 'FAIL'} ${url}${problems.length ? `: ${problems.join('; ')}` : ''}`,
   );
   return problems.length === 0;
 }

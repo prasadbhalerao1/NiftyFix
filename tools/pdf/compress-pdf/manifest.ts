@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'Compress PDF',
   h1: 'Compress a PDF to a smaller size',
   tagline:
-    'Make a PDF smaller by recompressing its photos and scans — pick a level, or enter the size limit your portal asks for.',
-  seoTitle: 'Compress PDF — reduce PDF size to KB or MB, free | NiftyFix',
+    'Make a PDF smaller by recompressing its photos and scans: pick a level, or enter the size limit your portal asks for.',
+  seoTitle: 'Compress PDF: reduce PDF size to KB or MB, free | NiftyFix',
   seoDescription:
     'Reduce PDF file size by recompressing images, or compress to a target such as 1 MB or 200 KB. Text stays sharp. Free, nothing uploaded.',
   searchAliases: [

@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Printing a document just to sign it and scan it back is slow and makes the file blurry. Here you draw your signature with a mouse, finger or stylus — or upload a photo of it, which is cleaned so only the ink remains — then drag it exactly where it belongs on the page and save. The signature can go on one page or every page, and the saved file is checked to make sure it landed where you placed it.',
+    'Printing a document just to sign it and scan it back is slow and makes the file blurry. Here you draw your signature with a mouse, finger or stylus (or upload a photo of it, which is cleaned so only the ink remains) then drag it exactly where it belongs on the page and save. The signature can go on one page or every page, and the saved file is checked to make sure it landed where you placed it.',
   howTo: [
     'Choose the PDF to sign. Its first page appears.',
     'Draw your signature in the box, or upload a photo of it on white paper.',

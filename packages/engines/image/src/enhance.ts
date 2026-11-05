@@ -1,6 +1,6 @@
 /**
  * Document/signature enhancement on raw RGBA pixels. Pure functions: no DOM,
- * no canvas — the same code drives the live preview (main thread, downscaled)
+ * no canvas: the same code drives the live preview (main thread, downscaled)
  * and the final render (worker), and is unit-tested in Node.
  *
  * Pipeline: flatten lighting → brightness/contrast → whiten background →

@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Add a watermark to a PDF',
   tagline:
     'Stamp text such as "CONFIDENTIAL" or "COPY" across your PDF pages, with the opacity, colour and angle you choose.',
-  seoTitle: 'Watermark PDF — add text watermark, free | NiftyFix',
+  seoTitle: 'Watermark PDF: add text watermark, free | NiftyFix',
   seoDescription:
     'Add a text watermark like CONFIDENTIAL, DRAFT or COPY to all or selected PDF pages. Choose opacity, colour and angle. Free, nothing uploaded.',
   searchAliases: [

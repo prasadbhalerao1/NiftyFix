@@ -128,7 +128,7 @@ describe('JobRunner', () => {
   });
 });
 
-describe('executeJob — file count', () => {
+describe('executeJob: file count', () => {
   const ctx = { signal: new AbortController().signal, progress: () => {} };
   const merge = defineMultiFileProcessor({
     options: v.object({}),

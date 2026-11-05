@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'Sign PDF',
   h1: 'Sign a PDF online',
   tagline:
-    'Draw your signature or upload a photo of it, drag it into place on the page, and save the signed PDF — all on your device.',
-  seoTitle: 'Sign PDF — add your signature to a PDF, free | NiftyFix',
+    'Draw your signature or upload a photo of it, drag it into place on the page, and save the signed PDF, all on your device.',
+  seoTitle: 'Sign PDF: add your signature to a PDF, free | NiftyFix',
   seoDescription:
     'Draw your signature or upload a photo, place it anywhere on a PDF page, and download the signed file. Free, private, nothing uploaded.',
   searchAliases: [

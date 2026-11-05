@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Resize and clean up a signature for an application form',
   tagline:
     'Turn a phone photo or scan of your signature into a clean image with exact pixel dimensions and a file-size range, and check every requirement before you upload.',
-  seoTitle: 'Signature Resizer — clean background, exact KB size | NiftyFix',
+  seoTitle: 'Signature Resizer: clean background, exact KB size | NiftyFix',
   seoDescription:
     'Crop a signature photo, whiten the paper without losing pen strokes, and resize to exact pixels and a KB range. Runs on your device; every check is verified.',
   searchAliases: [

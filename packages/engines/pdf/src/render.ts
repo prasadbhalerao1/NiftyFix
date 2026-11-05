@@ -6,7 +6,7 @@
  * so its parser runs in the same thread ("fake worker", loaded lazily). Its
  * defaults assume a DOM, so this module supplies DOM-free factories and
  * absolute asset URLs. Assets (standard fonts, CMaps, image decoders) are
- * served by the frame itself under /pdfjs/ — the frame CSP allows nothing else.
+ * served by the frame itself under /pdfjs/: the frame CSP allows nothing else.
  */
 import {
   getDocument,

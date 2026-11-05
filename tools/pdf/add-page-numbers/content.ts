@@ -23,7 +23,7 @@ export default defineContent({
     {
       name: 'Start at',
       description:
-        'The number shown on the first numbered page — useful when this file continues a longer document.',
+        'The number shown on the first numbered page, useful when this file continues a longer document.',
     },
     {
       name: 'Pages',

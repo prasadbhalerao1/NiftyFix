@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Convert JPG and other images to PDF',
   tagline:
     'Turn photos and scans into one PDF, one image per page, in the order you choose. JPEG and PNG keep their full quality.',
-  seoTitle: 'JPG to PDF — convert images to PDF, free | NiftyFix',
+  seoTitle: 'JPG to PDF: convert images to PDF, free | NiftyFix',
   seoDescription:
     'Convert JPG, PNG, WebP and other images into one PDF, one per page, on A4, Letter or the image size. Free, no upload, no watermark.',
   searchAliases: [

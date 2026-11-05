@@ -7,7 +7,7 @@ import type { CategoryId } from '@niftyfix/tool-sdk';
  * Shown on category hubs as "coming soon" without a link: a planned tool gets
  * its own page only when it is built, because an empty page helps no one and
  * hurts search ranking. A built tool with the same category and slug replaces
- * its planned entry. The slug is the tool's future URL — keep it stable — and
+ * its planned entry. The slug is the tool's future URL (keep it stable) and
  * follows how people search ("merge-pdf", not "pdf-merger").
  */
 export type ExecutionMode =
@@ -33,7 +33,7 @@ const tools = (category: CategoryId, rows: Row[]): PlannedTool[] =>
   rows.map(([slug, name, mode = 'browser']) => ({ category, slug, name, mode }));
 
 export const PLANNED_TOOLS: readonly PlannedTool[] = [
-  // Q. Upload readiness — our own product layer.
+  // Q. Upload readiness: our own product layer.
   ...tools('forms', [
     ['photo-resizer', 'Form Photo Resizer'],
     ['signature-resizer', 'Signature Resizer'],
@@ -388,7 +388,7 @@ export const PLANNED_TOOLS: readonly PlannedTool[] = [
     ['character-counter', 'Social Media Character Counter'],
     ['social-post-formatter', 'Social Post Formatter'],
   ]),
-  // N. YouTube and creators — permitted APIs and user-provided files only.
+  // N. YouTube and creators: permitted APIs and user-provided files only.
   ...tools('creator', [
     ['youtube-video-info', 'YouTube Video and Channel Inspector', 'server'],
     ['youtube-thumbnail', 'YouTube Thumbnail Viewer and Checker'],

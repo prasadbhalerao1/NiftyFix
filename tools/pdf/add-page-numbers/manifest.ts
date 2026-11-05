@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'Add Page Numbers',
   h1: 'Add page numbers to a PDF',
   tagline:
-    'Number the pages of a PDF in the position and style you choose — including "Page 3 of 10" — without changing anything else.',
-  seoTitle: 'Add Page Numbers to PDF — free, no upload | NiftyFix',
+    'Number the pages of a PDF in the position and style you choose (including "Page 3 of 10") without changing anything else.',
+  seoTitle: 'Add Page Numbers to PDF: free, no upload | NiftyFix',
   seoDescription:
     'Add page numbers to a PDF: choose position, style such as "Page 1 of 10", starting number and which pages. Free, private, no watermark.',
   searchAliases: [

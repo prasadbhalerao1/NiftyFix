@@ -2,10 +2,10 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Upload portals often cap documents at 1 MB, 500 KB or less, and scanned PDFs are usually far bigger. Almost all of that size is photos and scans, so this tool recompresses the images — shrinking oversized scans to a sensible resolution — while text and line drawings stay exactly as sharp as before. Choose a level, or type the limit your portal gives and the tool finds the gentlest setting that fits. It never gives you a file that is bigger, broken or missing pages.',
+    'Upload portals often cap documents at 1 MB, 500 KB or less, and scanned PDFs are usually far bigger. Almost all of that size is photos and scans, so this tool recompresses the images (shrinking oversized scans to a sensible resolution) while text and line drawings stay exactly as sharp as before. Choose a level, or type the limit your portal gives and the tool finds the gentlest setting that fits. It never gives you a file that is bigger, broken or missing pages.',
   howTo: [
     'Choose a PDF.',
-    'Pick a level — Recommended suits most documents — or choose Target size and enter the limit.',
+    'Pick a level (Recommended suits most documents) or choose Target size and enter the limit.',
     'Select "Compress PDF", check the report, then download.',
   ],
   options: [
@@ -70,7 +70,7 @@ export default defineContent({
       h1: 'Compress a PDF to 200 KB',
       seoTitle: 'Compress PDF to 200KB online, free | NiftyFix',
       seoDescription:
-        'Shrink a PDF to under 200 KB for application and exam forms. Text stays sharp, only images are reduced. Free and private — nothing is uploaded.',
+        'Shrink a PDF to under 200 KB for application and exam forms. Text stays sharp, only images are reduced. Free and private: nothing is uploaded.',
       intro:
         'Many online application forms cap each document at 200 KB. The target is already set: choose your PDF, and the tool reduces images only as much as needed to get under 200 KB, so certificates and ID scans stay readable.',
       faqs: [
@@ -101,7 +101,7 @@ export default defineContent({
       seoDescription:
         'Reduce a PDF to under 500 KB for upload portals and email. Text stays crisp; only photos and scans shrink. Free, nothing is uploaded.',
       intro:
-        '500 KB is a common cap for documents on government, bank and university portals. The target is already set: choose your PDF and the tool keeps as much image quality as fits under 500 KB — usually enough for multi-page scans to stay easy to read.',
+        '500 KB is a common cap for documents on government, bank and university portals. The target is already set: choose your PDF and the tool keeps as much image quality as fits under 500 KB, usually enough for multi-page scans to stay easy to read.',
     },
     {
       slug: 'compress-pdf-to-1mb',
@@ -121,9 +121,9 @@ export default defineContent({
       h1: 'Compress a PDF to 2 MB',
       seoTitle: 'Compress PDF to 2MB online, free | NiftyFix',
       seoDescription:
-        'Bring a large PDF under 2 MB for email attachments and upload limits, keeping photos looking good. Free and private — no upload.',
+        'Bring a large PDF under 2 MB for email attachments and upload limits, keeping photos looking good. Free and private: no upload.',
       intro:
-        'A 2 MB limit is generous, so photos and scans keep nearly all of their detail. The target is already set to 2 MB: choose your PDF — even a long report with many pictures — and the tool reduces only what it must.',
+        'A 2 MB limit is generous, so photos and scans keep nearly all of their detail. The target is already set to 2 MB: choose your PDF (even a long report with many pictures) and the tool reduces only what it must.',
     },
   ],
 });

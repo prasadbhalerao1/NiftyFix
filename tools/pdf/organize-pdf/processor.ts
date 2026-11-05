@@ -20,7 +20,7 @@ export default defineProcessor({
       [{ doc, pages: options.pages.map((page) => page.index) }],
       signal,
     );
-    // Expected rotation from the source page plus the user's change — independent of
+    // Expected rotation from the source page plus the user's change, independent of
     // the document being written, so the check on the saved file can actually fail.
     const rotations = new Map<number, number>();
     options.pages.forEach((page, position) => {

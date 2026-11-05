@@ -104,7 +104,7 @@ export function readFormValues(
  */
 export async function refreshAppearances(doc: PDFDocument): Promise<void> {
   const form = doc.getForm();
-  // The library does not reject unsupported characters — it saves unreadable boxes —
+  // The library does not reject unsupported characters (it saves unreadable boxes),
   // so check every text value against the font's own character set first.
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const supported = new Set(font.getCharacterSet());

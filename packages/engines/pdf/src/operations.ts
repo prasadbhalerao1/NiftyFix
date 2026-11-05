@@ -45,7 +45,7 @@ export function rotatePages(doc: PDFDocument, pages: readonly number[], by: Rota
 
 /**
  * Standard fonts only cover Latin text (WinAnsi). The library does not reject
- * other characters — it would print garbage — so check the font's own
+ * other characters (it would print garbage) so check the font's own
  * character set and refuse with a clear message.
  */
 function checkEncodable(font: PDFFont, text: string, what: string): void {
@@ -220,7 +220,7 @@ export interface DisplayRect {
 
 /**
  * Draw an embedded image at a rectangle given in displayed-page fractions,
- * upright as the reader sees it — also on pages stored rotated.
+ * upright as the reader sees it, also on pages stored rotated.
  */
 export function placeImage(page: PDFPage, image: PDFImage, rect: DisplayRect): void {
   const box = page.getCropBox();
@@ -282,7 +282,7 @@ export const MIN_CROPPED_SIDE = 36;
 /**
  * Trim margins off the visible page. Works in the orientation the reader
  * sees: on a page stored rotated, "top" still means the displayed top.
- * Only the crop box changes — the trimmed content stays in the file.
+ * Only the crop box changes: the trimmed content stays in the file.
  * Returns false (and leaves the page alone) if too little would remain.
  */
 export function cropPage(page: PDFPage, margins: Margins): boolean {

@@ -11,7 +11,7 @@ import type { JobOutcome } from './worker-pool';
 export type ProcessorLoader = () => Promise<{ default: ProcessorDefinition }>;
 
 /**
- * The one place a processor is executed — inside a worker or, as a fallback,
+ * The one place a processor is executed, inside a worker or, as a fallback,
  * on the main thread: load lazily, validate untrusted options, run, and turn
  * any failure into a safe, user-presentable error.
  */

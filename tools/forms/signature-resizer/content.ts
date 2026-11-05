@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'A signature photographed on a phone usually comes out grey, shadowed and far too large. Portals then reject it for its size, its dimensions, or a dirty background. This tool crops the signature, evens out the lighting, whitens the paper while keeping thin pen strokes, and produces exact pixels inside your KB range — with a report that measures the final file.',
+    'A signature photographed on a phone usually comes out grey, shadowed and far too large. Portals then reject it for its size, its dimensions, or a dirty background. This tool crops the signature, evens out the lighting, whitens the paper while keeping thin pen strokes, and produces exact pixels inside your KB range, with a report that measures the final file.',
   howTo: [
     'Sign on plain white paper with a dark pen, then photograph or scan it in good, even light.',
     'Choose the image. The tool crops to the signature automatically; drag the frame or its corner to adjust.',
@@ -24,7 +24,7 @@ export default defineContent({
     {
       name: 'Ink: Colour, Grayscale or Black & white',
       description:
-        'Colour keeps blue ink blue. Grayscale removes colour. Black & white uses a hard threshold — the crispest result, but the setting most likely to break very thin strokes, so it is never the default.',
+        'Colour keeps blue ink blue. Grayscale removes colour. Black & white uses a hard threshold: the crispest result, but the setting most likely to break very thin strokes, so it is never the default.',
     },
     {
       name: 'Fit inside or fill',

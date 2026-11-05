@@ -32,7 +32,7 @@ export function describeByteRange(range: { minBytes?: number; maxBytes?: number 
   return 'any';
 }
 
-/** "48.2 KB (48,213 bytes)" — exact byte counts matter when a portal is strict. */
+/** "48.2 KB (48,213 bytes)": exact byte counts matter when a portal is strict. */
 export function formatBytesExact(bytes: number): string {
   return `${formatBytes(bytes)} (${bytes.toLocaleString('en-US')} bytes)`;
 }

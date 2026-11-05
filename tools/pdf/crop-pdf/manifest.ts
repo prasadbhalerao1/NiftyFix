@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Crop PDF margins or resize pages to A4',
   tagline:
     'Trim white margins off PDF pages with a live preview, or put every page on A4, Letter, A3 or A5 without distorting it.',
-  seoTitle: 'Crop PDF and Resize PDF to A4 — free, private | NiftyFix',
+  seoTitle: 'Crop PDF and Resize PDF to A4: free, private | NiftyFix',
   seoDescription:
     'Crop margins from PDF pages with a live preview, or resize every page to A4, Letter, A3 or A5 without distortion. Free, nothing uploaded.',
   searchAliases: [

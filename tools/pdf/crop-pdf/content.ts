@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Two common fixes for awkward PDFs. Crop trims the white margins off scanned or exported pages, with a live preview so you see exactly what stays. Resize puts every page on a standard paper size — A4 for India and most of the world, Letter for the US — scaling the content to fit without stretching it, and keeping links working.',
+    'Two common fixes for awkward PDFs. Crop trims the white margins off scanned or exported pages, with a live preview so you see exactly what stays. Resize puts every page on a standard paper size (A4 for India and most of the world, Letter for the US), scaling the content to fit without stretching it, and keeping links working.',
   howTo: [
     'Choose a PDF.',
     'Pick Crop margins or Resize pages.',
@@ -13,7 +13,7 @@ export default defineContent({
     {
       name: 'Crop margins (mm)',
       description:
-        'Measured on the page as you see it, so "top" is always the top — even on pages stored sideways. The preview shades what will be cut.',
+        'Measured on the page as you see it, so "top" is always the top, even on pages stored sideways. The preview shades what will be cut.',
     },
     {
       name: 'Resize to',
@@ -46,7 +46,7 @@ export default defineContent({
       h1: 'Resize a PDF to A4',
       seoTitle: 'Resize PDF to A4 online, free | NiftyFix',
       seoDescription:
-        'Fit every page of a PDF onto A4 paper — letter-size, legal or odd-sized scans — without cropping or stretching. Free, nothing is uploaded.',
+        'Fit every page of a PDF onto A4 paper (letter-size, legal or odd-sized scans) without cropping or stretching. Free, nothing is uploaded.',
       intro:
         'Portals and printers often expect A4, but PDFs arrive as US Letter, Legal or whatever size a phone scanner chose. This page opens with Resize to A4 selected: each page is scaled to fit A4 and centred, keeping its proportions, so nothing is cut off or stretched.',
       faqs: [

@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Some upload forms accept only images, and some apps cannot show a PDF at all. This tool draws each page of your PDF as an image — JPG for small files, PNG for perfectly crisp text — at the resolution you pick. One page downloads as a single image; several come together in a ZIP, named in page order. Each image is checked for its exact pixel size before you download.',
+    'Some upload forms accept only images, and some apps cannot show a PDF at all. This tool draws each page of your PDF as an image (JPG for small files, PNG for perfectly crisp text) at the resolution you pick. One page downloads as a single image; several come together in a ZIP, named in page order. Each image is checked for its exact pixel size before you download.',
   howTo: [
     'Choose a PDF.',
     'Pick JPG or PNG and the resolution: 72 DPI for screens, 150 for most uses, 300 for printing.',

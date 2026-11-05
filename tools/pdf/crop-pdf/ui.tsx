@@ -45,7 +45,7 @@ function CropPreview({ preview, margins }: { preview: PreviewDocument; margins: 
         <div class={`${shade} inset-y-0 right-0`} style={{ width: pct('right', size.width) }} />
       </div>
       <figcaption class="text-xs text-stone-600 dark:text-stone-400">
-        Page 1 — shaded areas will be cut
+        Page 1: shaded areas will be cut
       </figcaption>
     </figure>
   );

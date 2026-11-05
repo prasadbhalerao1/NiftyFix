@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'Split PDF',
   h1: 'Split a PDF into separate files',
   tagline:
-    'Split a PDF into single pages, into parts of a set length, or by your own page ranges — downloaded together as a ZIP.',
-  seoTitle: 'Split PDF — separate pages into files, free | NiftyFix',
+    'Split a PDF into single pages, into parts of a set length, or by your own page ranges, downloaded together as a ZIP.',
+  seoTitle: 'Split PDF: separate pages into files, free | NiftyFix',
   seoDescription:
     'Split a PDF into one file per page, every few pages, or by custom ranges, and download them as a ZIP. Free and private: nothing is uploaded.',
   searchAliases: [

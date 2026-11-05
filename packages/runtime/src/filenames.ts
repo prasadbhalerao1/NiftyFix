@@ -25,7 +25,7 @@ export function outputFileName(originalName: string, suffix: string, extension: 
 }
 
 /**
- * The user's custom name (e.g. "signature" — some portals require plain names)
+ * The user's custom name (e.g. "signature": some portals require plain names)
  * if given, otherwise the original name with a suffix. Always gets `extension`.
  */
 export function resolveOutputName(

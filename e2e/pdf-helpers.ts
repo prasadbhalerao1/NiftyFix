@@ -43,7 +43,7 @@ export async function openPdfTool(page: Page, path: string, button: RegExp): Pro
   return frame;
 }
 
-/** Run the tool, download the result, and parse it in Node — independent of the tool's report. */
+/** Run the tool, download the result, and parse it in Node, independent of the tool's report. */
 export async function runAndDownload(
   page: Page,
   frame: FrameLocator,

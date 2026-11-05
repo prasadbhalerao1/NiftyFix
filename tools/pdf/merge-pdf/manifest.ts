@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Merge PDF files into one',
   tagline:
     'Combine several PDFs into a single file in the order you choose. Files are merged on your device and never uploaded.',
-  seoTitle: 'Merge PDF — combine PDF files online, free | NiftyFix',
+  seoTitle: 'Merge PDF: combine PDF files online, free | NiftyFix',
   seoDescription:
     'Combine multiple PDF files into one PDF in any order. Free, no sign-up, no watermark, and your files never leave your device.',
   searchAliases: [

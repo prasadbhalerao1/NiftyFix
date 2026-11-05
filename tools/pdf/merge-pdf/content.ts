@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Application portals, offices and email often want one PDF, not five. Add your PDFs, put them in order, and this tool joins every page into a single file. Pages are copied exactly as they are — text stays selectable, and nothing is re-compressed or re-printed — and the merged file is opened again to confirm its page count before you download it.',
+    'Application portals, offices and email often want one PDF, not five. Add your PDFs, put them in order, and this tool joins every page into a single file. Pages are copied exactly as they are (text stays selectable, and nothing is re-compressed or re-printed) and the merged file is opened again to confirm its page count before you download it.',
   howTo: [
     'Choose two or more PDF files, or drop them onto the box. You can add more later.',
     'Put the files in order with the up and down arrows. Pages follow the file order.',

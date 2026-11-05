@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'PDF to JPG / PNG',
   h1: 'Convert PDF pages to JPG or PNG images',
   tagline:
-    'Turn each PDF page into a sharp JPG or PNG image at the resolution you choose — one page or the whole document.',
-  seoTitle: 'PDF to JPG — convert PDF pages to images, free | NiftyFix',
+    'Turn each PDF page into a sharp JPG or PNG image at the resolution you choose, one page or the whole document.',
+  seoTitle: 'PDF to JPG: convert PDF pages to images, free | NiftyFix',
   seoDescription:
     'Convert PDF pages to high-quality JPG or PNG images at 72, 150 or 300 DPI. Pick pages, download a ZIP. Free, and nothing is uploaded.',
   searchAliases: [

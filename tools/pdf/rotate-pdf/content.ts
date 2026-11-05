@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Scanned forms and phone scans often come out sideways or upside down, and many viewers only rotate the page on screen without saving it. This tool turns the pages inside the file itself, so they open the right way up everywhere — in email, on a portal and when printed. Choose all pages or just the ones that need it; the rest stay exactly as they were.',
+    'Scanned forms and phone scans often come out sideways or upside down, and many viewers only rotate the page on screen without saving it. This tool turns the pages inside the file itself, so they open the right way up everywhere, in email, on a portal and when printed. Choose all pages or just the ones that need it; the rest stay exactly as they were.',
   howTo: [
     'Choose a PDF.',
     'Pick the direction: right (90° clockwise), upside down (180°) or left (90° anticlockwise).',

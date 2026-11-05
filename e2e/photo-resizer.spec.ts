@@ -27,7 +27,7 @@ async function downloadBytes(download: Download): Promise<Uint8Array> {
   return new Uint8Array(readFileSync(path));
 }
 
-test.describe('Form Photo Resizer — end to end', () => {
+test.describe('Form Photo Resizer: end to end', () => {
   test('upload → exact dimensions → KB range → verify → download', async ({ page }) => {
     const problems = recordProblems(page);
     const frame = await openTool(page);
@@ -247,7 +247,7 @@ test.describe('Form Photo Resizer — end to end', () => {
   });
 });
 
-test.describe('Form Photo Resizer — mobile layout', () => {
+test.describe('Form Photo Resizer: mobile layout', () => {
   test.use({ viewport: { width: 360, height: 640 } });
 
   test('dropzone is above the fold and nothing scrolls horizontally', async ({ page }) => {

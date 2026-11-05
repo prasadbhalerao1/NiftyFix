@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'PDF Metadata Editor',
   h1: 'Edit or remove PDF metadata',
   tagline:
-    'See and change the hidden title, author, subject and keywords of a PDF — or remove them all before you share the file.',
-  seoTitle: 'PDF Metadata Editor — edit or remove, free | NiftyFix',
+    'See and change the hidden title, author, subject and keywords of a PDF, or remove them all before you share the file.',
+  seoTitle: 'PDF Metadata Editor: edit or remove, free | NiftyFix',
   seoDescription:
     'View and edit PDF title, author, subject and keywords, or remove all metadata including hidden XMP data. Free, private, nothing uploaded.',
   searchAliases: [

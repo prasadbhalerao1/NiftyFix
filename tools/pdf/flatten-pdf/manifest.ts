@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Flatten a PDF form',
   tagline:
     'Turn filled-in form fields into ordinary page content, so the answers can no longer be changed and look the same in every viewer.',
-  seoTitle: 'Flatten PDF — lock filled form fields, free | NiftyFix',
+  seoTitle: 'Flatten PDF: lock filled form fields, free | NiftyFix',
   seoDescription:
     'Flatten a filled PDF form so its answers become part of the page and cannot be edited. Looks the same everywhere. Free and private.',
   searchAliases: [

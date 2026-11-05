@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'Extract Text from PDF',
   h1: 'Extract text from a PDF',
   tagline:
-    'Copy all the text out of a PDF into a plain .txt file, page by page — and find out which pages are scans that need OCR.',
-  seoTitle: 'PDF to Text — extract text from PDF, free | NiftyFix',
+    'Copy all the text out of a PDF into a plain .txt file, page by page, and find out which pages are scans that need OCR.',
+  seoTitle: 'PDF to Text: extract text from PDF, free | NiftyFix',
   seoDescription:
     'Extract the text of a PDF into a plain TXT file, page by page, in reading order. Detects scanned pages. Free, private, nothing uploaded.',
   searchAliases: [

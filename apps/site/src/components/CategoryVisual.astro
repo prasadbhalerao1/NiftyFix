@@ -13,7 +13,7 @@ const { category } = Astro.props;
 ---
 
 {category === 'forms' ? (
-  <Window title="Signature Resizer — signature.jpg">
+  <Window title="Signature Resizer: signature.jpg">
     <div class="grid grid-cols-[7rem_1fr] gap-4 p-4">
       <div class="flex aspect-[3/1] items-center justify-center self-start rounded-md bg-white ring-2 ring-brand-600 dark:ring-brand-400">
         <svg
@@ -41,7 +41,7 @@ const { category } = Astro.props;
   </Window>
 ) : category === 'pdf' ? (
   <div class="relative">
-    <Window title="Organize PDF — 4 pages">
+    <Window title="Organize PDF: 4 pages">
       <PagesPreview />
     </Window>
     <Window title="Compress PDF" class="relative z-10 -mt-8 ml-auto w-3/5">

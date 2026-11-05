@@ -72,7 +72,7 @@ export interface ToolContent {
   /**
    * Search-intent pages built on this tool ("compress pdf to 200kb"): each has
    * its own URL, title and explanation, and opens the tool with a preset.
-   * Only for intents with genuinely different needs — never thin duplicates.
+   * Only for intents with genuinely different needs, never thin duplicates.
    */
   variants?: readonly ToolVariant[];
 }

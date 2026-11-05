@@ -7,9 +7,9 @@ import { defineMultiFileProcessor, sniffFormat, ToolError } from '@niftyfix/tool
 import { ImageToPdfOptions, MAX_IMAGES } from './options';
 
 /**
- * JPEG and PNG bytes go into the PDF unchanged (lossless). Anything else —
- * and JPEGs whose EXIF says "rotate me", which a PDF would otherwise show
- * sideways — is decoded upright and stored as PNG or high-quality JPEG.
+ * JPEG and PNG bytes go into the PDF unchanged (lossless). Anything else,
+ * and JPEGs whose EXIF says "rotate me" (which a PDF would otherwise show
+ * sideways), is decoded upright and stored as PNG or high-quality JPEG.
  */
 async function pageImage(
   blob: Blob,

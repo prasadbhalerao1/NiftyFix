@@ -65,7 +65,7 @@ const photoChecks = [
   { label: 'File size', required: '20–50 KB', actual: '38.4 KB', status: 'pass' },
   { label: 'Format', required: 'JPEG', actual: 'JPEG', status: 'pass' },
   { label: 'File extension', required: '.jpg', actual: '.jpg', status: 'pass' },
-  { label: 'Resolution (DPI)', required: 'Not set', actual: '—', status: 'not-checked' },
+  { label: 'Resolution (DPI)', required: 'Not set', actual: 'None', status: 'not-checked' },
 ] as const;
 
 const pdfFlow = ['pdf.merge-pdf', 'pdf.organize-pdf', 'pdf.compress-pdf', 'pdf.sign-pdf'].flatMap(
@@ -85,7 +85,7 @@ const jsonLd = [
 ---
 
 <Base
-  title="NiftyFix — get your files ready for any upload"
+  title="NiftyFix: get your files ready for any upload"
   description="Free tools that prepare photos, signatures, documents and media to meet exact upload requirements, then verify the result. Files are processed on your device."
   path="/"
   jsonLd={jsonLd}
@@ -106,8 +106,8 @@ const jsonLd = [
         Get your files ready for <span class="accent">any</span> upload.
       </h1>
       <p class="mt-6 max-w-xl text-lg text-pretty text-stone-700 dark:text-stone-300">
-        The exact photo, signature or PDF a form asks for — right size, right dimensions, right
-        format — checked before you download. Nothing is uploaded.
+        The exact photo, signature or PDF a form asks for, at the right size, dimensions and format,
+        and checked before you download. Nothing is uploaded.
       </p>
       <div class="mt-8 max-w-xl">
         <SearchBox id="tool-search" label="What do you need to do?" readQuery />
@@ -133,7 +133,7 @@ const jsonLd = [
         Replay demo
       </button>
       <div class="demo-stage" aria-hidden="true" data-tilt>
-        <Window title="Form Photo Resizer — photo.jpg" class="depth-2 relative z-10">
+        <Window title="Form Photo Resizer: photo.jpg" class="depth-2 relative z-10">
           <div class="grid gap-4 p-4 sm:grid-cols-[8rem_1fr]">
             <div class="hidden sm:block">
               <div class="overflow-hidden rounded-md ring-2 ring-brand-600 dark:ring-brand-400">
@@ -171,7 +171,7 @@ const jsonLd = [
           />
         </Window>
         <Window
-          title="Organize PDF — 4 pages"
+          title="Organize PDF: 4 pages"
           class="depth-1 absolute -bottom-40 -left-10 hidden w-[52%] lg:block"
         >
           <PagesPreview />
@@ -337,7 +337,7 @@ const jsonLd = [
         </a>
       </div>
       <div class="relative" aria-hidden="true" data-demo>
-        <Window title="Result — validation report" class="spotlight">
+        <Window title="Result: validation report" class="spotlight">
           <div class="grid grid-cols-2 gap-px border-b border-stone-200 bg-stone-200 dark:border-stone-800 dark:bg-stone-800">
             <div class="bg-paper p-4 dark:bg-stone-900">
               <p class="eyebrow">Original</p>

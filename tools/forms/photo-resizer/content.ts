@@ -84,7 +84,7 @@ export default defineContent({
       h1: 'Resize a photo to 20 KB',
       seoTitle: 'Resize photo to 20KB online, free | NiftyFix',
       seoDescription:
-        'Reduce a photo to under 20 KB for online application forms, at the exact pixel size you need. Free and private — your photo stays on your device.',
+        'Reduce a photo to under 20 KB for online application forms, at the exact pixel size you need. Free and private: your photo stays on your device.',
       intro:
         'A 20 KB limit is tight for a photo, so the tool finds the highest quality that still fits and shows the exact final size. The maximum is already set to 20 KB; enter the pixel size your form asks for, position your face, and download.',
       faqs: [
@@ -115,7 +115,7 @@ export default defineContent({
       seoDescription:
         'Compress a photo to under 100 KB without making it look blurry. Set exact pixel dimensions and crop in one step. Free and private.',
       intro:
-        'With a 100 KB limit there is room for a sharp photo at most form sizes. The maximum is already set to 100 KB; choose your photo and set the dimensions, and the tool keeps as much quality as fits — then confirms the final size before you upload.',
+        'With a 100 KB limit there is room for a sharp photo at most form sizes. The maximum is already set to 100 KB; choose your photo and set the dimensions, and the tool keeps as much quality as fits, then confirms the final size before you upload.',
     },
   ],
 });

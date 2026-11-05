@@ -11,8 +11,8 @@ export default defineManifest({
   name: 'Rotate PDF',
   h1: 'Rotate PDF pages',
   tagline:
-    'Turn sideways or upside-down pages the right way up — all pages or only the ones you choose. Runs on your device.',
-  seoTitle: 'Rotate PDF — turn pages permanently, free | NiftyFix',
+    'Turn sideways or upside-down pages the right way up, all pages or only the ones you choose. Runs on your device.',
+  seoTitle: 'Rotate PDF: turn pages permanently, free | NiftyFix',
   seoDescription:
     'Rotate all or selected pages of a PDF by 90, 180 or 270 degrees and save it permanently. Free, no upload, no watermark.',
   searchAliases: [

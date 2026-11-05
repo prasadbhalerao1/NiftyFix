@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Organize PDF pages: reorder, rotate and delete',
   tagline:
     'See every page as a thumbnail, then drag pages into order, turn the sideways ones and remove the ones you do not need.',
-  seoTitle: 'Organize PDF — reorder, rotate, delete pages | NiftyFix',
+  seoTitle: 'Organize PDF: reorder, rotate, delete pages | NiftyFix',
   seoDescription:
     'Rearrange PDF pages with live thumbnails: drag to reorder, rotate, and delete pages, then save. Free, private, nothing is uploaded.',
   searchAliases: [

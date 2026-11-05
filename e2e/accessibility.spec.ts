@@ -5,7 +5,7 @@ import { chooseFile, fixture, openTool, TOOL_PATH } from './helpers';
 /** A violation with the offending elements, so a failure says what to fix. */
 type Violation = Awaited<ReturnType<AxeBuilder['analyze']>>['violations'][number];
 const describeViolation = (v: Violation): string =>
-  `${v.id}: ${v.help} — ${v.nodes.map((n) => `${n.html} ${n.failureSummary ?? ''}`).join(' | ')}`;
+  `${v.id}: ${v.help}: ${v.nodes.map((n) => `${n.html} ${n.failureSummary ?? ''}`).join(' | ')}`;
 
 /**
  * Audit the settled page: reveal everything that would fade in on scroll, then

@@ -13,7 +13,7 @@ export default defineContent({
     {
       name: 'Reorder',
       description:
-        'Drag thumbnails with a mouse, or use the arrow buttons — they also work with a keyboard and on phones.',
+        'Drag thumbnails with a mouse, or use the arrow buttons: they also work with a keyboard and on phones.',
     },
     {
       name: 'Rotate',
@@ -51,7 +51,7 @@ export default defineContent({
       seoDescription:
         'Remove blank, duplicate or unwanted pages from a PDF by clicking them in a thumbnail view. Free, private, and nothing is uploaded.',
       intro:
-        'Choose your PDF and every page appears as a thumbnail. Select ✕ on each page you want gone — a blank scan, a duplicate, an instructions sheet — and save. Removed pages can be restored until you save, and the saved file is checked to contain exactly the pages you kept.',
+        'Choose your PDF and every page appears as a thumbnail. Select ✕ on each page you want gone (a blank scan, a duplicate, an instructions sheet) and save. Removed pages can be restored until you save, and the saved file is checked to contain exactly the pages you kept.',
       faqs: [
         {
           question: 'Can I delete pages by number instead of clicking?',

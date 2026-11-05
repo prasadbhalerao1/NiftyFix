@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Resize a photo for an application form',
   tagline:
     'Crop, resize and compress your photo to exact pixel dimensions and a file-size range, then check the result against each requirement.',
-  seoTitle: 'Form Photo Resizer — exact pixels and KB size | NiftyFix',
+  seoTitle: 'Form Photo Resizer: exact pixels and KB size | NiftyFix',
   seoDescription:
     'Resize a photo to exact pixel dimensions and a minimum/maximum KB size for exam and government forms. Runs on your device; every requirement is verified.',
   searchAliases: [

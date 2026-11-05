@@ -23,7 +23,7 @@ export default defineContent({
   ],
   limits: [
     'Only fillable PDFs (with form fields) can be filled. For a scanned or flat form, use a PDF editor to place text.',
-    'XFA forms — an older Adobe-only format used by some government forms — cannot be filled in a browser. The tool tells you if your form is one.',
+    'XFA forms (an older Adobe-only format used by some government forms) cannot be filled in a browser. The tool tells you if your form is one.',
     'Answers must use Latin letters and digits for now; Hindi and other scripts are refused instead of being saved unreadably.',
     'Signature fields are not filled here; use Sign PDF.',
   ],

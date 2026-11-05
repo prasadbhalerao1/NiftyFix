@@ -62,7 +62,7 @@ export default defineProcessor({
       fileName: resolveOutputName(input.name, options.fileName, options.paper, 'pdf'),
       pages: count,
       inputBytes: input.bytes,
-      facts: [{ label: 'Resized to', value: `${paper.label} — ${which}` }],
+      facts: [{ label: 'Resized to', value: `${paper.label}: ${which}` }],
     });
   },
 });

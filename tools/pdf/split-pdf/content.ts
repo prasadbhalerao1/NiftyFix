@@ -6,7 +6,7 @@ export default defineContent({
   howTo: [
     'Choose a PDF.',
     'Choose how to split: every few pages (1 = every page on its own), or by ranges.',
-    'For ranges, type each part separated by commas — for example 1-2, 3, 4-6 makes three files.',
+    'For ranges, type each part separated by commas, for example 1-2, 3, 4-6 makes three files.',
     'Select "Split PDF", check the report, then download the ZIP.',
   ],
   options: [

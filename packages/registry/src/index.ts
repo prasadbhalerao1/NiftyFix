@@ -12,7 +12,7 @@ import type { SearchRecord } from './search';
 
 export { PLANNED_TOOLS, type ExecutionMode, type PlannedTool } from './planned';
 
-/** One tool as collected by the generated index (metadata and content only — never code). */
+/** One tool as collected by the generated index (metadata and content only, never code). */
 export interface ToolEntry {
   /** Directory under tools/, e.g. "forms/photo-resizer". */
   dir: string;
@@ -215,7 +215,7 @@ export function validateEntries(entries: readonly ToolEntry[]): string[] {
       if (v.h1.trim() === '' || v.label.trim() === '')
         problems.push(`${at} h1 and label are required`);
       if (v.intro.length < 120)
-        problems.push(`${at} intro is too short — say what is specific to this intent`);
+        problems.push(`${at} intro is too short: say what is specific to this intent`);
     }
   }
   return problems;

@@ -2,10 +2,10 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'When a portal wants only your marksheet but it sits on page 4 of a 20-page document, you need just that page as its own PDF. Type the pages you want and this tool copies exactly those into a new file, in the order you typed them — so it can also reorder pages. Text stays selectable and nothing is re-compressed.',
+    'When a portal wants only your marksheet but it sits on page 4 of a 20-page document, you need just that page as its own PDF. Type the pages you want and this tool copies exactly those into a new file, in the order you typed them, so it can also reorder pages. Text stays selectable and nothing is re-compressed.',
   howTo: [
     'Choose a PDF.',
-    'Type the pages to keep, separated by commas — for example 4, or 1-3, 7.',
+    'Type the pages to keep, separated by commas, for example 4, or 1-3, 7.',
     'Select "Extract pages", check the report, then download the new PDF.',
   ],
   options: [
@@ -34,7 +34,7 @@ export default defineContent({
     {
       question: 'How is this different from Split PDF?',
       answer:
-        'Extract makes one new PDF from the pages you pick. Split makes several PDFs at once — one per range, or one per page — and gives you a ZIP.',
+        'Extract makes one new PDF from the pages you pick. Split makes several PDFs at once (one per range, or one per page) and gives you a ZIP.',
     },
   ],
 });

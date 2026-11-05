@@ -100,7 +100,7 @@ export interface ImageResultPanelProps {
   url: string;
   size: { width: number; height: number };
   original: { url: string; width: number; height: number; bytes: number };
-  /** "photo", "signature" — used in the status sentence. */
+  /** "photo", "signature", used in the status sentence. */
   subject: string;
   disclaimer: string;
   onDownload(): void;

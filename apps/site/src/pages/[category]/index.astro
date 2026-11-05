@@ -24,7 +24,7 @@ const info = CATEGORIES[category];
 const items = registry.catalogue(category);
 const path = categoryPath(category);
 // Say what searchers care about (free, no upload) when it fits in a 65-character title.
-const withPromise = `${info.h1} — free, no upload | ${SITE_NAME}`;
+const withPromise = `${info.h1}: free, no upload | ${SITE_NAME}`;
 const title = withPromise.length <= 65 ? withPromise : `${info.h1} | ${SITE_NAME}`;
 const builtTools = items.flatMap((item) => (item.kind === 'built' ? [item.entry.manifest] : []));
 const planned = items.flatMap((item) => (item.kind === 'planned' ? [item.tool] : []));

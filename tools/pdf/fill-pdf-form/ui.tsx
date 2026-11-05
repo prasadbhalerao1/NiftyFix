@@ -124,7 +124,7 @@ export default function FillPdfForm(props: ToolUiProps) {
                   label={label}
                   value={typeof value === 'string' ? value : ''}
                   options={[
-                    { value: '', label: '— Not selected —' },
+                    { value: '', label: 'Not selected' },
                     ...field.options.map((option) => ({ value: option, label: option })),
                   ]}
                   onChange={(next) => !field.readOnly && set(next)}

@@ -4,8 +4,8 @@ import type { JobHandle, JobHandlers, JobOutcome, WorkerPool } from './worker-po
 
 /**
  * Runs jobs in the worker pool. If a worker reports WORKER_UNSUPPORTED (the
- * browser's workers lack an API such as OffscreenCanvas), the job — and every
- * later job — runs on the frame's main thread instead. Main-thread jobs cancel
+ * browser's workers lack an API such as OffscreenCanvas), the job, and every
+ * later job, runs on the frame's main thread instead. Main-thread jobs cancel
  * cooperatively via AbortSignal rather than by terminating a worker.
  */
 export class JobRunner {

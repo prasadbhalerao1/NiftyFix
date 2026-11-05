@@ -12,7 +12,7 @@ export default defineManifest({
   h1: 'Extract pages from a PDF',
   tagline:
     'Save only the pages you need as a new PDF, in the order you type them. The original file is not changed.',
-  seoTitle: 'Extract PDF Pages — save selected pages, free | NiftyFix',
+  seoTitle: 'Extract PDF Pages: save selected pages, free | NiftyFix',
   seoDescription:
     'Pull selected pages out of a PDF into a new file, in any order. Type pages like 1-3, 5. Free, private, nothing is uploaded.',
   searchAliases: [

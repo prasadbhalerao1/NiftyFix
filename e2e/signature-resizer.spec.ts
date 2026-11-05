@@ -53,7 +53,7 @@ interface PixelStats {
   cornerAlpha: number;
 }
 
-/** Decode the downloaded file in the browser and measure it — independent of the tool's own report. */
+/** Decode the downloaded file in the browser and measure it, independent of the tool's own report. */
 async function analyse(page: Page, bytes: Uint8Array, mime: string): Promise<PixelStats> {
   return page.evaluate(
     async ({ data, mime }) => {
@@ -99,7 +99,7 @@ async function analyse(page: Page, bytes: Uint8Array, mime: string): Promise<Pix
   );
 }
 
-test.describe('Signature Resizer — difficult inputs', () => {
+test.describe('Signature Resizer: difficult inputs', () => {
   for (const name of [
     'white-black.jpg',
     'blue-ink.jpg',
@@ -139,7 +139,7 @@ test.describe('Signature Resizer — difficult inputs', () => {
   }
 });
 
-test.describe('Signature Resizer — controls and honesty', () => {
+test.describe('Signature Resizer: controls and honesty', () => {
   test('auto-crop trims the empty margins', async ({ page }) => {
     const frame = await open(page);
     await choose(frame, 'signatures/white-black.jpg');

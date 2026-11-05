@@ -33,5 +33,5 @@ export default defineManifest({
     progress: 'determinate',
     verifiesOutput: false,
   },
-  related: [],
+  related: ['calculators.gst-calculator'],
 });

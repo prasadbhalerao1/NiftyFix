@@ -20,10 +20,12 @@ const BUDGETS = {
  * Processors built on a heavyweight engine get their own, explicit ceiling
  * instead of a raised general one (ADR 0005). Keyed by tool category.
  * PDF: @cantoo/pdf-lib is ~240 kB gzip; it loads in the worker, is cached
- * across every PDF tool and is preloaded when files are chosen.
+ * across every PDF tool and is preloaded when files are chosen. Raised from
+ * 260 to 270 kB (Nov 2026): JPG to PDF also bundles the shared image helpers,
+ * which grew with the image tools.
  */
 const ENGINE_PROCESSOR_BUDGETS: Record<string, number> = {
-  pdf: 260 * KB,
+  pdf: 270 * KB,
 };
 /**
  * Processors that render PDF pages load pdf.js (display layer ~129 kB + parser

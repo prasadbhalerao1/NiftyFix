@@ -1,3 +1,4 @@
+import type { ComponentChildren } from 'preact';
 import { useRef } from 'preact/hooks';
 import { clampRect, type Rect, type Size } from '@niftyfix/constraints';
 import { RangeInput } from './fields';
@@ -11,6 +12,8 @@ export interface CropBoxProps {
   crop: Rect;
   onChange(crop: Rect): void;
   hint?: string;
+  /** Drawn inside the frame instead of the rule-of-thirds grid, e.g. head-position guides. */
+  overlay?: ComponentChildren;
 }
 
 /** Largest crop width for the aspect inside the image. */
@@ -41,6 +44,7 @@ export function CropBox({
   crop,
   onChange,
   hint = 'Drag the frame to position your face. Use the handle or this slider to zoom.',
+  overlay,
 }: CropBoxProps) {
   const frame = useRef<HTMLButtonElement>(null);
   const shape = aspect ?? crop.width / crop.height;
@@ -147,14 +151,20 @@ export function CropBox({
           onPointerDown={(event) => startDrag(event, 'move')}
           onKeyDown={onKeyDown}
         >
-          <span
-            aria-hidden="true"
-            class="pointer-events-none absolute inset-0 grid grid-cols-3 grid-rows-3"
-          >
-            {Array.from({ length: 9 }, (_, i) => (
-              <span key={i} class="border border-white/30" />
-            ))}
-          </span>
+          {overlay ? (
+            <span aria-hidden="true" class="pointer-events-none absolute inset-0">
+              {overlay}
+            </span>
+          ) : (
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-0 grid grid-cols-3 grid-rows-3"
+            >
+              {Array.from({ length: 9 }, (_, i) => (
+                <span key={i} class="border border-white/30" />
+              ))}
+            </span>
+          )}
           <span
             aria-hidden="true"
             data-testid="crop-handle"

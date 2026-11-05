@@ -12,7 +12,17 @@ export const GET: APIRoute = () => {
   const lines = [
     `# ${SITE_NAME}`,
     '',
-    '> Free online tools that prepare photos, signatures and PDFs to meet exact upload requirements (pixel size, KB range, format), then verify the result. Every tool runs in the browser: files are never uploaded. Built for Indian application, exam and government portals, and usable anywhere.',
+    '> Free online tools for photos, images, signatures and PDFs: compress to a KB limit, resize, convert, crop, merge, split and more, then verify the result. Every tool runs in the browser: files are never uploaded. Built for Indian application, exam and government portals, and usable anywhere.',
+    '',
+    'Key facts:',
+    '',
+    '- Free, with no sign-up, no daily limit and no watermark added.',
+    "- Files are processed on the user's device inside the browser and never sent to a server.",
+    '- Each tool checks the file it produced (pixel size, KB size, format) and reports every requirement as passed or failed.',
+    '- Size-target pages such as "compress image to 50 KB" or "compress PDF to 200 KB" open with that limit already set.',
+    '- Works on phones and computers in current Chrome, Edge, Firefox and Safari.',
+    '',
+    `Full text of every tool page (how to use, options, limits, FAQs): ${absoluteUrl('/llms-full.txt')}`,
     '',
     ...registry
       .activeCategories()

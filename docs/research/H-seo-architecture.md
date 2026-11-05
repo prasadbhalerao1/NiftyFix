@@ -56,7 +56,7 @@ Order is designed so the tool is above the fold on mobile.
 | `BreadcrumbList` JSON-LD | every tool/category page | matches visible breadcrumb |
 | `WebApplication` JSON-LD | tool pages | `name`, `applicationCategory`, `operatingSystem: "Any (web browser)"`, `offers.price: 0`. **Rich result requires `aggregateRating` or `review`** — we will **not** fabricate ratings; add only once we collect genuine on-site ratings that follow review-snippet guidelines |
 | `HowTo` | — | not used (deprecated in Search) |
-| `FAQPage` | — | not used (no SERP feature since May 2026) |
+| `FAQPage` | tool pages | added 5 Nov 2026, mirroring the visible questions exactly. No Google SERP feature since May 2026; kept because AI assistants and answer engines parse it |
 
 ## 5. Indexing controls
 - `sitemap.xml` generated from the registry: only `status: 'live'` tools, live categories, qualifying variants; `lastmod` = content or manifest version change date (not build date).

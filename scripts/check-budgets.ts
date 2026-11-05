@@ -65,9 +65,12 @@ if (!existsSync(SITE) || !existsSync(FRAME)) {
 // Site: JavaScript referenced by each page, and no processing code anywhere.
 for (const page of htmlFiles(SITE)) {
   const html = readFileSync(page, 'utf8');
-  const scripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map((m) =>
-    join(SITE, m[1] ?? ''),
-  );
+  const scripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/g)]
+    .map((m) => m[1] ?? '')
+    .filter(
+      (src) => !src.startsWith('https://') && !src.startsWith('http://') && !src.startsWith('//'),
+    )
+    .map((src) => join(SITE, src));
   const total = scripts.reduce((sum, script) => sum + gz(script), 0);
   measure(`site ${relative(SITE, page).replaceAll('\\', '/')} JS`, total, BUDGETS.sitePageJs);
   for (const script of scripts) {

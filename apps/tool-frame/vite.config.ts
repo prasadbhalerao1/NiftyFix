@@ -11,6 +11,12 @@ import { dirname, join, resolve } from 'node:path';
 import preact from '@preact/preset-vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
+import {
+  CORE_FILES,
+  LANGUAGE_DATA,
+  OCR_ASSET_PATHS,
+  OCR_LANGUAGE_IDS,
+} from '../../packages/engines/ocr/src/assets.ts';
 import { frameHeaders, renderHeadersFile } from './src/security/headers.ts';
 
 const DEV_SITE_ORIGIN = 'http://localhost:4321';
@@ -30,48 +36,84 @@ function headersFile(siteOrigin: string): Plugin {
 }
 
 /**
- * Serve pdf.js assets (standard fonts, CMaps, image decoders, ICC profile)
- * from the frame's own origin under /pdfjs/, as the frame CSP allows nothing
- * else. Copied into the build; served from node_modules in dev. The scripting
- * engine (quickjs) is left out: PDF JavaScript is never executed.
+ * Serve vendor files (engines, fonts, language data) from the frame's own
+ * origin, as the frame CSP allows nothing else: copied into the build, and
+ * served straight from node_modules in dev. `files` maps URL paths to files.
  */
-function pdfjsAssets(): Plugin {
-  const require = createRequire(
-    resolve(import.meta.dirname, '../../packages/engines/pdf/package.json'),
-  );
-  const root = dirname(require.resolve('pdfjs-dist/package.json'));
-  const dirs = ['cmaps', 'standard_fonts', 'wasm', 'iccs'];
-  const include = (name: string): boolean => !name.startsWith('quickjs');
+function staticAssets(name: string, files: () => Map<string, string>): Plugin {
   return {
-    name: 'niftyfix-pdfjs-assets',
+    name: `niftyfix-${name}-assets`,
     configureServer(server) {
-      server.middlewares.use('/pdfjs', (request, response, next) => {
-        const [dir, file] = (request.url ?? '').replace(/^\//, '').split('?')[0]?.split('/') ?? [];
-        if (!dir || !file || !dirs.includes(dir) || !include(file) || file.includes('..'))
-          return next();
-        const path = join(root, dir, file);
-        if (!existsSync(path)) return next();
-        if (file.endsWith('.wasm')) response.setHeader('Content-Type', 'application/wasm');
+      const map = files();
+      server.middlewares.use((request, response, next) => {
+        const path = map.get((request.url ?? '').replace(/^\//, '').split('?')[0] ?? '');
+        if (!path || !existsSync(path)) return next();
+        if (path.endsWith('.wasm')) response.setHeader('Content-Type', 'application/wasm');
+        if (path.endsWith('.js')) response.setHeader('Content-Type', 'text/javascript');
         response.end(readFileSync(path));
       });
     },
     writeBundle(options) {
-      for (const dir of dirs) {
-        const target = resolve(options.dir ?? 'dist', 'pdfjs', dir);
-        mkdirSync(target, { recursive: true });
-        for (const file of readdirSync(join(root, dir))) {
-          if (include(file)) copyFileSync(join(root, dir, file), join(target, file));
-        }
+      for (const [url, file] of files()) {
+        const target = resolve(options.dir ?? 'dist', url);
+        mkdirSync(dirname(target), { recursive: true });
+        copyFileSync(file, target);
       }
     },
   };
+}
+
+/**
+ * pdf.js assets (standard fonts, CMaps, image decoders, ICC profile) under
+ * /pdfjs/. The scripting engine (quickjs) is left out: PDF JavaScript is
+ * never executed.
+ */
+function pdfjsFiles(): Map<string, string> {
+  const require = createRequire(
+    resolve(import.meta.dirname, '../../packages/engines/pdf/package.json'),
+  );
+  const root = dirname(require.resolve('pdfjs-dist/package.json'));
+  const files = new Map<string, string>();
+  for (const dir of ['cmaps', 'standard_fonts', 'wasm', 'iccs'])
+    for (const file of readdirSync(join(root, dir)))
+      if (!file.startsWith('quickjs')) files.set(`pdfjs/${dir}/${file}`, join(root, dir, file));
+  return files;
+}
+
+/** The OCR engine (tesseract.js worker and WebAssembly builds) and language data. */
+function ocrFiles(): Map<string, string> {
+  const require = createRequire(
+    resolve(import.meta.dirname, '../../packages/engines/ocr/package.json'),
+  );
+  const tesseract = dirname(require.resolve('tesseract.js/package.json'));
+  const core = dirname(
+    createRequire(join(tesseract, 'package.json')).resolve('tesseract.js-core/package.json'),
+  );
+  const files = new Map<string, string>([
+    [OCR_ASSET_PATHS.worker, join(tesseract, 'dist', 'worker.min.js')],
+  ]);
+  for (const file of CORE_FILES) files.set(`${OCR_ASSET_PATHS.core}${file}`, join(core, file));
+  for (const language of OCR_LANGUAGE_IDS) {
+    const data = dirname(require.resolve(`@tesseract.js-data/${language}/package.json`));
+    files.set(
+      `${OCR_ASSET_PATHS.lang}${language}.traineddata.gz`,
+      join(data, LANGUAGE_DATA, `${language}.traineddata.gz`),
+    );
+  }
+  return files;
 }
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'PUBLIC_');
   const siteOrigin = env.PUBLIC_SITE_ORIGIN ?? DEV_SITE_ORIGIN;
   return {
-    plugins: [preact(), tailwindcss(), headersFile(siteOrigin), pdfjsAssets()],
+    plugins: [
+      preact(),
+      tailwindcss(),
+      headersFile(siteOrigin),
+      staticAssets('pdfjs', pdfjsFiles),
+      staticAssets('ocr', ocrFiles),
+    ],
     envPrefix: 'PUBLIC_',
     define: { 'import.meta.env.PUBLIC_SITE_ORIGIN': JSON.stringify(siteOrigin) },
     // `manifest` maps each tool's source files to emitted chunks for per-tool budget checks.

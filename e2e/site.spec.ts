@@ -46,6 +46,8 @@ test.describe('site', () => {
     await page.goto('/');
     const demo = page.locator('[data-demo]').first();
     const results = demo.locator('.check-result');
+    // On a phone the demo sits under the hero text and plays only once 35% of it is visible.
+    await demo.scrollIntoViewIfNeeded();
     await expect(demo).toHaveClass(/checks-done/, { timeout: 5_000 });
     await expect(results.first()).toBeVisible();
     await expect(demo.locator('[data-count-from]')).toHaveText('196 KB', { timeout: 5_000 });

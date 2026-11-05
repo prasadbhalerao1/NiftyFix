@@ -1,7 +1,7 @@
 /**
  * What people call each tool in Hindi and Marathi, and how they type it in
- * Latin letters (Hinglish, Marathi in English). Shown on the tool page, added
- * to its structured data, and matched by the site search.
+ * Latin letters (Hinglish, Marathi in English). Added to the tool page's
+ * structured data (not shown, to keep pages clean) and matched by the site search.
  */
 export interface LocalNames {
   hi: string;

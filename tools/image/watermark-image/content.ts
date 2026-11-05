@@ -4,7 +4,7 @@ export default defineContent({
   intro:
     'A watermark says who a picture belongs to, or limits what a copy can be used for. Photographers add a small credit in a corner; people sharing an ID or certificate add "For verification only" across it so the copy cannot be reused elsewhere. This tool adds text in a corner, in the centre, or repeated across the whole image, at the size and strength you choose.',
   howTo: [
-    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF).',
+    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Type the text and pick where it goes.',
     'Adjust the colour, size and opacity.',
     'Select "Add watermark", check the report, then download.',

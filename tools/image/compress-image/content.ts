@@ -22,7 +22,7 @@ export default defineContent({
   intro:
     'Photos from a phone are often 3 to 8 MB, while forms, email and chat apps ask for far less. This tool re-encodes your image at a lower quality, and only when a size limit cannot be met that way does it make the image smaller in pixels too. It then measures the file it produced. If your image was already as small as it can sensibly be, you get your original back rather than a bigger file.',
   howTo: [
-    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF).',
+    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Pick a level (Recommended suits most photos) or choose Target size and enter the limit.',
     'Select "Compress image", check the report, then download.',
   ],

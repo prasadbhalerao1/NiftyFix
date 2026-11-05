@@ -4,7 +4,7 @@ export default defineContent({
   intro:
     'A photo can look upright on your phone and still arrive sideways on a form or a computer, because phones often store the rotation as a separate tag that some software ignores. This tool turns the pixels themselves, so the image is the right way up everywhere. You can also mirror a selfie or flip an image top to bottom, and see the result before you save.',
   howTo: [
-    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF).',
+    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Use Left or Right to turn it in 90° steps, and tick a flip if you need one. The preview shows the result.',
     'Select "Save image", check the report, then download.',
   ],

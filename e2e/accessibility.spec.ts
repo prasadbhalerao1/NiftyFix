@@ -158,6 +158,21 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await scanFrame(page, 'remove exif metadata list');
   });
 
+  test('batch results have no serious violations', async ({ page }) => {
+    await page.goto('/image/compress-image-to-100kb/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await frame
+      .getByTestId('file-input')
+      .setInputFiles([
+        fixture('images/portrait-1200x1600.jpg'),
+        fixture('malicious/pdf-disguised.jpg'),
+        fixture('images/transparent-800x800.png'),
+      ]);
+    await frame.getByTestId('prepare').click();
+    await expect(frame.getByTestId('batch-summary')).toBeVisible({ timeout: 60_000 });
+    await scanFrame(page, 'batch results');
+  });
+
   test('Resize Image settings have no serious violations', async ({ page }) => {
     await page.goto('/image/resize-image/');
     const frame = page.frameLocator('iframe[data-tool-frame]');

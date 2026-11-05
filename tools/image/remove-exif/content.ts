@@ -4,7 +4,7 @@ export default defineContent({
   intro:
     'Photos from phones and cameras carry hidden details: often the exact place the photo was taken, the date and time, and the phone or camera model, sometimes with its serial number. Anyone you send the file to can read them. This tool shows what your photo contains, then removes it. The picture itself is copied byte for byte, so there is no loss of quality.',
   howTo: [
-    'Choose a photo (JPG, PNG or WebP). The details it contains are listed straight away.',
+    'Choose a photo (JPG, PNG or WebP); the details it contains are listed straight away. You can also choose up to 50 photos and clean them all at once.',
     'Select "Remove metadata".',
     'Check the report: location, camera and other details should all show "none". Then download.',
   ],

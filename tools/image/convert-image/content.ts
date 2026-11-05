@@ -4,7 +4,7 @@ export default defineContent({
   intro:
     'Some forms accept only JPG, some apps want PNG, and many websites save images as WebP or AVIF that older software cannot open. This tool converts between them in your browser: choose an image, pick JPG, PNG or WebP, and download a file that is checked to really be in that format, not just renamed.',
   howTo: [
-    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF).',
+    'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Pick the format you need: JPG, PNG or WebP.',
     'For JPG and WebP, adjust the quality if you like (92% is the default).',
     'Select "Convert", check the report, then download.',

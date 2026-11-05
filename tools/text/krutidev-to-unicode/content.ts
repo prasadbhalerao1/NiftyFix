@@ -56,6 +56,16 @@ export default defineContent({
       question: 'Is my text sent anywhere?',
       answer: 'No. The conversion runs in your browser; nothing you paste leaves your device.',
     },
+    {
+      question: 'कृतिदेव (Kruti Dev) को यूनिकोड में कैसे बदलें?',
+      answer:
+        'कृतिदेव में टाइप किया हुआ टेक्स्ट ऊपर वाले बॉक्स में पेस्ट करें (वह "Hkkjr" जैसा दिखता है)। दाईं ओर यूनिकोड हिंदी (भारत) तुरंत मिल जाएगी, जिसे आप WhatsApp, ईमेल या वेबसाइट पर कहीं भी इस्तेमाल कर सकते हैं।',
+    },
+    {
+      question: 'मेरा हिंदी टेक्स्ट "Hkkjr" जैसे अक्षरों में क्यों दिखता है?',
+      answer:
+        'क्योंकि वह कृतिदेव 010 फॉन्ट में टाइप किया गया है, जो हिंदी को अंग्रेज़ी कीज़ पर बनाता है। फॉन्ट न होने पर या कॉपी करने पर अंग्रेज़ी अक्षर दिखते हैं। यूनिकोड में बदलने के बाद यह हर फ़ोन और कंप्यूटर पर सही दिखेगा।',
+    },
   ],
   variants: [
     {
@@ -73,6 +83,11 @@ export default defineContent({
           question: 'Why does the Kruti Dev output look like English letters?',
           answer:
             'That is how Kruti Dev stores Hindi. Paste it into Word or your typing software and set the font to Kruti Dev 010, and it shows as Hindi.',
+        },
+        {
+          question: 'यूनिकोड (मंगल) हिंदी को कृतिदेव में कैसे बदलें?',
+          answer:
+            'यूनिकोड हिंदी पेस्ट करें, कृतिदेव टेक्स्ट कॉपी करें और Word या टाइपिंग सॉफ्टवेयर में पेस्ट करके फॉन्ट Kruti Dev 010 चुनें। अंग्रेज़ी शब्द और ₹ जैसे चिह्न, जो कृतिदेव में नहीं बनते, अलग से बताए जाते हैं।',
         },
       ],
     },

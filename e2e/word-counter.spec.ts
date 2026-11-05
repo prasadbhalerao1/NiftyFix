@@ -16,3 +16,12 @@ test.describe('Word Counter', () => {
     await expect(frame.getByTestId('words')).toHaveText('0');
   });
 });
+
+test('Word Counter tracks your own limit and repeated words', async ({ page }) => {
+  await page.goto('/text/word-counter/');
+  const frame = page.frameLocator('iframe[data-tool-frame]');
+  await frame.getByTestId('target').fill('5');
+  await frame.getByTestId('text-input').fill('great project, great team, great results today');
+  await expect(frame.getByTestId('target-status')).toHaveText('2 words over the limit');
+  await expect(frame.getByTestId('repeated')).toContainText('great');
+});

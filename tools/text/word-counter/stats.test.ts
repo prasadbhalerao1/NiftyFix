@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { textStats } from './stats';
+import { repeatedWords, textStats } from './stats';
 
 describe('textStats', () => {
   it('counts words, characters, sentences, paragraphs and lines', () => {
@@ -33,5 +33,19 @@ describe('textStats', () => {
       lines: 0,
       readingMinutes: 0,
     });
+  });
+});
+
+describe('repeatedWords', () => {
+  it('lists repeated words, most frequent first, without common words', () => {
+    const text = 'The project was a great project. A great team made the project great; the end.';
+    expect(repeatedWords(text)).toEqual([
+      { word: 'great', count: 3 },
+      { word: 'project', count: 3 },
+    ]);
+  });
+
+  it('works for Hindi', () => {
+    expect(repeatedWords('भारत महान है। भारत सुंदर है।')).toEqual([{ word: 'भारत', count: 2 }]);
   });
 });

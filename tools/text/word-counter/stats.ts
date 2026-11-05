@@ -78,3 +78,27 @@ export const LIMITS = [
   { label: 'Meta description (search result)', max: 160, unit: 'characters' },
   { label: 'SMS message', max: 160, unit: 'characters' },
 ] as const;
+
+/** Very common words left out of "most repeated", in English and Hindi. */
+const COMMON = new Set(
+  (
+    'a an and are as at be but by for from has have he her his i if in is it its me my not of on or our ' +
+    'she so that the their them they this to was we were what which who will with you your ' +
+    'है हैं के की का को में से और पर भी यह वह एक था थी थे तो ही ने कि लिए हो'
+  ).split(' '),
+);
+
+/** Words used more than once, most frequent first (ignoring case and very common words). */
+export function repeatedWords(text: string, limit = 8): { word: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const raw of text.toLocaleLowerCase().split(/[^\p{L}\p{M}\p{N}']+/u)) {
+    const word = raw.replace(/^'+|'+$/gu, '');
+    if (word.length < 2 || COMMON.has(word) || /^\p{N}+$/u.test(word)) continue;
+    counts.set(word, (counts.get(word) ?? 0) + 1);
+  }
+  return [...counts]
+    .filter(([, count]) => count > 1)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([word, count]) => ({ word, count }));
+}

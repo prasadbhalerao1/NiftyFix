@@ -5,8 +5,8 @@ export default defineContent({
     'Essays, applications, captions and form answers often have a word or character limit. Paste or type your text and every count updates instantly: words, characters with and without spaces, sentences, paragraphs, lines, and how long it takes to read or say aloud. Hindi, Marathi and other scripts are counted the way a reader sees them.',
   howTo: [
     'Type or paste your text into the box.',
-    'Read the counts as they update; the limit bars show how close you are to common limits.',
-    'Edit until you are within the limit you need.',
+    'Set your own limit, such as 250 words for an exam answer or a statement of purpose, and watch how many words are left.',
+    'Use Most repeated words to spot words you have overused, then edit until you are within the limit.',
   ],
   options: [
     {
@@ -18,6 +18,16 @@ export default defineContent({
       name: 'Reading and speaking time',
       description:
         'Based on typical speeds of 200 words a minute for silent reading and 130 for speaking aloud, rounded up to the next minute.',
+    },
+    {
+      name: 'Your limit',
+      description:
+        'Enter the word or character limit you have to meet (an answer, an essay, a form field) and see how many are left, or how far over you are.',
+    },
+    {
+      name: 'Most repeated words',
+      description:
+        'Words you used more than once, most frequent first, leaving out common words such as "the" and "है". Useful for cutting repetition when you need to trim.',
     },
     {
       name: 'Common limits',

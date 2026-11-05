@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'preact/hooks';
-import { Button, Panel, StatTile, type ToolUiProps } from '@niftyfix/ui';
-import { LIMITS, textStats } from './stats';
+import {
+  Button,
+  NumberInput,
+  Panel,
+  SegmentedControl,
+  StatTile,
+  type ToolUiProps,
+} from '@niftyfix/ui';
+import { LIMITS, repeatedWords, textStats } from './stats';
 
 const number = (n: number): string => n.toLocaleString('en-IN');
 const minutes = (n: number): string => (n === 0 ? '0 min' : n === 1 ? 'under 1 min' : `${n} min`);
@@ -8,6 +15,12 @@ const minutes = (n: number): string => (n === 0 ? '0 min' : n === 1 ? 'under 1 m
 export default function WordCounter(_props: ToolUiProps) {
   const [text, setText] = useState('');
   const stats = useMemo(() => textStats(text), [text]);
+  const repeated = useMemo(() => repeatedWords(text), [text]);
+  // Your own limit: an exam answer, an essay, a form field.
+  const [target, setTarget] = useState<number | null>(250);
+  const [targetUnit, setTargetUnit] = useState<'words' | 'characters'>('words');
+  const used = targetUnit === 'words' ? stats.words : stats.characters;
+  const left = target !== null && target > 0 ? target - used : null;
 
   return (
     <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -47,6 +60,60 @@ export default function WordCounter(_props: ToolUiProps) {
             <StatTile label="Speaking time" value={minutes(stats.speakingMinutes)} />
           </div>
         </Panel>
+        <Panel title="Your limit">
+          <div class="grid grid-cols-[1fr_auto] items-end gap-3">
+            <NumberInput
+              label="Limit"
+              value={target}
+              min={1}
+              onChange={setTarget}
+              testId="target"
+            />
+            <SegmentedControl<'words' | 'characters'>
+              label="Count"
+              value={targetUnit}
+              options={[
+                { value: 'words', label: 'Words' },
+                { value: 'characters', label: 'Characters' },
+              ]}
+              onChange={setTargetUnit}
+            />
+          </div>
+          {left !== null && target !== null ? (
+            <div class="mt-3">
+              <p
+                class={`text-sm font-medium ${left < 0 ? 'text-red-700 dark:text-red-400' : 'text-stone-700 dark:text-stone-300'}`}
+                data-testid="target-status"
+              >
+                <span key={left} class="nf-tick">
+                  {left >= 0
+                    ? `${number(left)} ${targetUnit} left`
+                    : `${number(-left)} ${targetUnit} over the limit`}
+                </span>
+              </p>
+              <div class="mt-1.5 h-2 overflow-hidden rounded-full bg-stone-200 dark:bg-stone-800">
+                <div
+                  class={`h-full origin-left rounded-full transition-transform duration-200 ${left < 0 ? 'bg-red-600' : 'bg-brand-600'}`}
+                  style={{ transform: `scaleX(${Math.min(1, used / target)})` }}
+                />
+              </div>
+            </div>
+          ) : null}
+        </Panel>
+        {repeated.length > 0 ? (
+          <Panel title="Most repeated words">
+            <ul class="flex flex-wrap gap-2" data-testid="repeated">
+              {repeated.map(({ word, count }) => (
+                <li
+                  key={word}
+                  class="nf-enter rounded-full border border-stone-300 px-2.5 py-1 text-sm dark:border-stone-700"
+                >
+                  {word} <span class="text-stone-600 dark:text-stone-400">×{count}</span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        ) : null}
         <Panel title="Common limits">
           <ul class="flex flex-col gap-3">
             {LIMITS.map((limit) => {

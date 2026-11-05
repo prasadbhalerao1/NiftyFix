@@ -143,6 +143,21 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await scanFrame(page, 'compress image result');
   });
 
+  test('Remove EXIF metadata list has no serious violations', async ({ page }) => {
+    const { withGpsExif } = await import('../packages/engines/image/test/samples');
+    const { readFileSync } = await import('node:fs');
+    await page.goto('/image/remove-exif/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    const input = withGpsExif(
+      new Uint8Array(readFileSync(fixture('images/portrait-1200x1600.jpg'))),
+    );
+    await frame
+      .getByTestId('file-input')
+      .setInputFiles({ name: 'trip.jpg', mimeType: 'image/jpeg', buffer: Buffer.from(input) });
+    await expect(frame.getByTestId('metadata')).toContainText('includes location');
+    await scanFrame(page, 'remove exif metadata list');
+  });
+
   test('Resize Image settings have no serious violations', async ({ page }) => {
     await page.goto('/image/resize-image/');
     const frame = page.frameLocator('iframe[data-tool-frame]');

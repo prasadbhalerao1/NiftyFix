@@ -137,7 +137,6 @@ export const PLANNED_TOOLS: readonly PlannedTool[] = [
     ['make-square', 'Make Square / Add Border'],
     ['placeholder-image', 'Placeholder Image Generator'],
     ['image-to-ascii', 'Image to ASCII Art'],
-    ['exif-viewer', 'EXIF and Metadata Viewer'],
     ['remove-exif', 'Remove EXIF and GPS Data'],
     ['image-color-picker', 'Image Colour Picker and Palette Extractor'],
     ['image-histogram', 'Image Histogram and Channels'],

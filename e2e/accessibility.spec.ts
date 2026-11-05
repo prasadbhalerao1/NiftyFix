@@ -51,6 +51,8 @@ async function scanFrame(page: Page, label: string): Promise<void> {
 test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
   for (const theme of ['dark', 'light'] as const) {
     test(`site pages have no serious violations (${theme})`, async ({ page }) => {
+      // Seven full pages, each settled before the audit: longer than one tool test.
+      test.slow();
       if (theme === 'light')
         await page.addInitScript(() => localStorage.setItem('niftyfix-theme', 'light'));
       for (const path of [
@@ -58,6 +60,8 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
         '/forms/',
         TOOL_PATH,
         '/forms/signature-resizer/',
+        '/image/',
+        '/image/compress-image/',
         '/privacy-verification/',
       ]) {
         await page.goto(path);
@@ -126,6 +130,17 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await rotate.getByTestId('page-ranges').fill('9-1');
     await expect(rotate.getByText('runs backwards')).toBeVisible();
     await scanFrame(page, 'rotate with a page-range error');
+  });
+
+  test('Compress Image settings and result have no serious violations', async ({ page }) => {
+    await page.goto('/image/compress-image-to-50kb/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await frame.getByTestId('file-input').setInputFiles(fixture('images/portrait-1200x1600.jpg'));
+    await expect(frame.getByTestId('target-size')).toBeVisible();
+    await scanFrame(page, 'compress image settings');
+    await frame.getByTestId('prepare').click();
+    await expect(frame.getByTestId('result')).toBeVisible({ timeout: 30_000 });
+    await scanFrame(page, 'compress image result');
   });
 
   test('Organize PDF page grid has no serious violations', async ({ page }) => {

@@ -138,6 +138,22 @@ export function fitInto(
   return output;
 }
 
+/**
+ * Whether any pixel is see-through. Checked on a small copy (at most 256 px a side):
+ * scaling averages alpha, so even a thin transparent edge still shows up.
+ */
+export function hasTransparency(source: ImageBitmap): boolean {
+  const scale = Math.min(1, 256 / Math.max(source.width, source.height));
+  const width = Math.max(1, Math.round(source.width * scale));
+  const height = Math.max(1, Math.round(source.height * scale));
+  const canvas = createCanvas(width, height);
+  const ctx = context2d(canvas);
+  ctx.drawImage(source, 0, 0, width, height);
+  const { data } = ctx.getImageData(0, 0, width, height);
+  for (let i = 3; i < data.length; i += 4) if ((data[i] ?? 255) < 255) return true;
+  return false;
+}
+
 /** Read a canvas into a pure RGBA buffer (see enhance.ts). */
 export function readPixels(canvas: Canvas): Pixels {
   const image = context2d(canvas).getImageData(0, 0, canvas.width, canvas.height);

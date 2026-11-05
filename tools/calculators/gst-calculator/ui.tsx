@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks';
 import { NumberInput, Panel, SegmentedControl, StatTile, type ToolUiProps } from '@niftyfix/ui';
 import { gst, GST_RATES, inr, type GstMode, type Supply } from './gst';
+import { InvoiceCalculator } from './invoice-ui';
 
 type RateChoice = `${(typeof GST_RATES)[number]}` | 'custom';
 
@@ -11,6 +12,46 @@ export default function GstCalculator({ preset }: ToolUiProps) {
   // The reverse GST page opens on "remove GST from a price".
   const [mode, setMode] = useState<GstMode>(preset === 'remove' ? 'remove' : 'add');
   const [supply, setSupply] = useState<Supply>('intra');
+  // The invoice page opens on several items at different rates.
+  const [view, setView] = useState<'single' | 'invoice'>(
+    preset === 'invoice' ? 'invoice' : 'single',
+  );
+  const supplyControl = (
+    <SegmentedControl<Supply>
+      label="Supply"
+      value={supply}
+      options={[
+        { value: 'intra', label: 'Within a state' },
+        { value: 'inter', label: 'Between states' },
+      ]}
+      onChange={setSupply}
+    />
+  );
+  const viewControl = (
+    <SegmentedControl<'single' | 'invoice'>
+      label="Calculate for"
+      value={view}
+      options={[
+        { value: 'single', label: 'One price' },
+        { value: 'invoice', label: 'Invoice with several items' },
+      ]}
+      onChange={setView}
+    />
+  );
+
+  if (view === 'invoice') {
+    return (
+      <div class="flex flex-col gap-4">
+        <Panel>
+          <div class="grid gap-4 sm:grid-cols-2">
+            {viewControl}
+            {supplyControl}
+          </div>
+        </Panel>
+        <InvoiceCalculator supply={supply} />
+      </div>
+    );
+  }
 
   const rate = choice === 'custom' ? custom : Number(choice);
   const amountError = amount === null || amount < 0 ? 'Enter an amount.' : undefined;
@@ -25,6 +66,7 @@ export default function GstCalculator({ preset }: ToolUiProps) {
     <div class="grid gap-4 lg:grid-cols-[22rem_minmax(0,1fr)]">
       <Panel title="Price and rate">
         <div class="flex flex-col gap-4">
+          {viewControl}
           <SegmentedControl<GstMode>
             label="Calculate"
             value={mode}
@@ -65,15 +107,7 @@ export default function GstCalculator({ preset }: ToolUiProps) {
               testId="custom-rate"
             />
           ) : null}
-          <SegmentedControl<Supply>
-            label="Supply"
-            value={supply}
-            options={[
-              { value: 'intra', label: 'Within a state' },
-              { value: 'inter', label: 'Between states' },
-            ]}
-            onChange={setSupply}
-          />
+          {supplyControl}
         </div>
       </Panel>
 

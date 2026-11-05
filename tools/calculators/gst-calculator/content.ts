@@ -8,6 +8,7 @@ export default defineContent({
     'Enter the price and pick the rate: 5%, 18%, 40%, or Other for any rate.',
     'Choose whether the sale is within a state or between states.',
     'Read the price before GST, the GST amount, the price including GST, and the split.',
+    'For a bill with several items, choose Invoice with several items and add each item with its own rate.',
   ],
   options: [
     {
@@ -18,6 +19,11 @@ export default defineContent({
       name: 'Remove GST',
       description:
         'For a price that already includes GST: price before GST = total × 100 ÷ (100 + rate), and GST is the difference.',
+    },
+    {
+      name: 'Invoice with several items',
+      description:
+        'Add items with quantity, price before GST and rate (0%, 5%, 18% or 40%). Tax is worked out per line to the paisa and summed by rate, with the total rounded to the nearest rupee and the round-off shown separately.',
     },
     {
       name: 'Within a state or between states',
@@ -48,6 +54,24 @@ export default defineContent({
     },
   ],
   variants: [
+    {
+      slug: 'gst-invoice-calculator',
+      preset: 'invoice',
+      label: 'Invoice',
+      h1: 'GST invoice calculator for several items',
+      seoTitle: 'GST invoice calculator: several items, round off | NiftyFix',
+      seoDescription:
+        'Work out GST for an invoice with several items at different rates: rate-wise taxable value, CGST, SGST or IGST, round off and total. Free.',
+      intro:
+        'A real invoice mixes items at different GST rates. Add each item with its quantity, price and rate; the tool works out tax line by line, sums it by rate as invoices and GST returns group it, and rounds the total to the nearest rupee with a separate round-off line.',
+      faqs: [
+        {
+          question: 'Why is there a round-off line?',
+          answer:
+            'Invoice totals are usually rounded to the nearest rupee. Showing the difference (up to 50 paise either way) as its own line keeps the taxable value and tax exact, so the figures match your returns.',
+        },
+      ],
+    },
     {
       slug: 'reverse-gst-calculator',
       preset: 'remove',

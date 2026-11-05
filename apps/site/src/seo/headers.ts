@@ -6,12 +6,13 @@
 export function siteHeaders(frameOrigin: string): Record<string, string> {
   const csp = [
     "default-src 'self'",
-    // Google Tag Manager / Analytics on the outer page only (the tool frame stays closed).
-    "script-src 'self' https://www.googletagmanager.com",
+    // Google Tag Manager / Analytics and Cloudflare Web Analytics on the outer page only
+    // (the tool frame stays closed).
+    "script-src 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com",
     "style-src 'self'",
     "img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com",
     "font-src 'self'",
-    "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com",
+    "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com",
     // blob: is needed because Firefox checks a download link clicked inside the
     // tool frame (a navigation to the frame's own blob: URL) against this directive.
     `frame-src ${frameOrigin} blob:`,

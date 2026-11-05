@@ -221,3 +221,30 @@ export async function webpOrPng(canvas: Canvas): Promise<EncodableFormat> {
     throw error;
   }
 }
+
+export type QuarterTurn = 0 | 90 | 180 | 270;
+
+/** Rotate clockwise by quarter turns and mirror, losslessly in pixels (no resampling). */
+export function rotateFlip(
+  source: ImageBitmap | Canvas,
+  turn: QuarterTurn,
+  flipHorizontal: boolean,
+  flipVertical: boolean,
+  background: string | null,
+): Canvas {
+  const sideways = turn === 90 || turn === 270;
+  const width = sideways ? source.height : source.width;
+  const height = sideways ? source.width : source.height;
+  const output = createCanvas(width, height);
+  const ctx = context2d(output);
+  if (background !== null) {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, width, height);
+  }
+  // Mirror after rotating, so "flip horizontally" means left-right as the result is seen.
+  ctx.translate(width / 2, height / 2);
+  ctx.scale(flipHorizontal ? -1 : 1, flipVertical ? -1 : 1);
+  ctx.rotate((turn * Math.PI) / 180);
+  ctx.drawImage(source, -source.width / 2, -source.height / 2);
+  return output;
+}

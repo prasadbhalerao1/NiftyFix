@@ -4,6 +4,8 @@ import {
   encodeCanvas,
   hasTransparency,
   renderCropped,
+  sameFormatAs,
+  webpOrPng,
   type Canvas,
   type EncodableFormat,
 } from '@niftyfix/engine-image/browser';
@@ -14,9 +16,7 @@ import {
   FILE_FORMATS,
   formatBytes,
   formatBytesExact,
-  isToolError,
   ToolError,
-  type FileFormatId,
   type OutputFact,
   type ProcessingContext,
 } from '@niftyfix/tool-sdk';
@@ -29,33 +29,6 @@ const MIN_SIDE = 64;
 const throwIfCancelled = (context: ProcessingContext): void => {
   if (context.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
 };
-
-/** JPEG and WebP stay as they are; anything else becomes JPEG, or WebP when it has transparency. */
-function chooseFormat(
-  requested: CompressImageOptions['format'],
-  input: FileFormatId,
-  transparent: () => boolean,
-): EncodableFormat {
-  if (requested !== 'auto') return requested;
-  if (input === 'jpeg' || input === 'webp') return input;
-  return transparent() ? 'webp' : 'jpeg';
-}
-
-/** Browsers without a WebP encoder (older Safari) keep transparency with PNG instead. */
-async function usableFormat(
-  format: EncodableFormat,
-  requested: CompressImageOptions['format'],
-  canvas: Canvas,
-): Promise<EncodableFormat> {
-  if (format !== 'webp' || requested !== 'auto') return format;
-  try {
-    await encodeCanvas(canvas, 'webp', 0.5);
-    return 'webp';
-  } catch (error) {
-    if (isToolError(error) && error.code === 'ENCODER_UNAVAILABLE') return 'png';
-    throw error;
-  }
-}
 
 export default defineProcessor({
   options: CompressImageOptions,
@@ -72,7 +45,10 @@ export default defineProcessor({
       const longSide = Math.max(source.width, source.height);
       const level = options.mode === 'level' ? LEVELS[options.level] : null;
       const range: ByteRange = options.mode === 'target' ? { maxBytes: options.maxBytes } : {};
-      let format = chooseFormat(options.format, header.format, () => hasTransparency(bitmap));
+      let format: EncodableFormat =
+        options.format === 'auto'
+          ? sameFormatAs(header.format, () => hasTransparency(bitmap), true)
+          : options.format;
 
       const render = (scale: number): { canvas: Canvas; width: number; height: number } => {
         const width = Math.max(1, Math.round(source.width * scale));
@@ -85,7 +61,7 @@ export default defineProcessor({
       context.progress(0.1, 'Compressing');
       let scale = Math.min(1, (level?.maxSide ?? longSide) / longSide);
       let frame = render(scale);
-      format = await usableFormat(format, options.format, frame.canvas);
+      if (options.format === 'auto' && format === 'webp') format = await webpOrPng(frame.canvas);
 
       // A target that the lowest allowed quality still misses makes the image smaller.
       // One quick encode per step estimates how much: file size grows with pixel count.

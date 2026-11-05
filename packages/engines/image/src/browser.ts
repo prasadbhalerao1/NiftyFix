@@ -3,7 +3,7 @@
  * on browsers whose workers lack OffscreenCanvas (Safari before 16.4/17), on
  * the tool frame's main thread with a regular <canvas>.
  */
-import { ToolError, FILE_FORMATS } from '@niftyfix/tool-sdk';
+import { FILE_FORMATS, isToolError, ToolError, type FileFormatId } from '@niftyfix/tool-sdk';
 import type { Pixels } from './enhance';
 
 export type EncodableFormat = 'jpeg' | 'png' | 'webp';
@@ -113,7 +113,7 @@ export function renderCropped(
  * distortion, centred on `background` (null = transparent).
  */
 export function fitInto(
-  source: Canvas,
+  source: ImageBitmap | Canvas,
   width: number,
   height: number,
   background: string | null,
@@ -193,4 +193,31 @@ export async function encodeCanvas(
     );
   }
   return blob;
+}
+
+/**
+ * The output format for "same as the original": JPEG and WebP stay as they are.
+ * With `smaller`, PNG and other formats become JPEG, or WebP when transparent (Compress);
+ * without it, PNG stays PNG and other formats become JPEG or, when transparent, PNG.
+ */
+export function sameFormatAs(
+  input: FileFormatId,
+  transparent: () => boolean,
+  smaller: boolean,
+): EncodableFormat {
+  if (input === 'jpeg' || input === 'webp') return input;
+  if (input === 'png' && !smaller) return 'png';
+  if (!transparent()) return 'jpeg';
+  return smaller ? 'webp' : 'png';
+}
+
+/** WebP when this browser can encode it (older Safari cannot), otherwise lossless PNG. */
+export async function webpOrPng(canvas: Canvas): Promise<EncodableFormat> {
+  try {
+    await encodeCanvas(canvas, 'webp', 0.5);
+    return 'webp';
+  } catch (error) {
+    if (isToolError(error) && error.code === 'ENCODER_UNAVAILABLE') return 'png';
+    throw error;
+  }
 }

@@ -68,3 +68,17 @@ export async function loadImageSource(
     throw error;
   }
 }
+
+/** The size an image is shown at (EXIF rotation applied), or null if the browser cannot decode it. */
+export async function imageDisplaySize(
+  file: Blob,
+): Promise<{ width: number; height: number } | null> {
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+    const size = { width: bitmap.width, height: bitmap.height };
+    bitmap.close();
+    return size;
+  } catch {
+    return null;
+  }
+}

@@ -30,6 +30,8 @@ export interface SingleFileToolProps extends ToolUiProps {
   optionsKey?: string;
   /** Optional live preview of the chosen file, shown under the file name. */
   preview?: (file: File) => ComponentChildren;
+  /** Told when a valid file is chosen (or cleared), for settings that depend on it. */
+  onFileChange?: (file: File | null) => void;
 }
 
 /**
@@ -55,6 +57,7 @@ export function SingleFileTool({
   optionsKey: customKey,
   children,
   preview,
+  onFileChange,
 }: SingleFileToolProps) {
   const urls = useRef(new ObjectUrlRegistry());
   const [file, setFile] = useState<File | null>(null);
@@ -81,6 +84,7 @@ export function SingleFileTool({
       await validateFile(next, manifest.input, device);
       job.reset();
       setFile(next);
+      onFileChange?.(next);
       report('file_selected');
       preload();
     } catch (error) {
@@ -122,6 +126,7 @@ export function SingleFileTool({
               onClick={() => {
                 job.reset();
                 setFile(null);
+                onFileChange?.(null);
               }}
             >
               Choose another file

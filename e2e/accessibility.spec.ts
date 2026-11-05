@@ -143,6 +143,15 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await scanFrame(page, 'compress image result');
   });
 
+  test('Resize Image settings have no serious violations', async ({ page }) => {
+    await page.goto('/image/resize-image/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await frame.getByTestId('file-input').setInputFiles(fixture('images/portrait-1200x1600.jpg'));
+    await frame.getByTestId('keep-proportions').uncheck();
+    await expect(frame.getByTestId('fit')).toBeVisible();
+    await scanFrame(page, 'resize image settings');
+  });
+
   test('Organize PDF page grid has no serious violations', async ({ page }) => {
     const { makePdf } = await import('./pdf-helpers');
     await page.goto('/pdf/organize-pdf/');

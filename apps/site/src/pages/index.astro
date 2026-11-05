@@ -9,6 +9,7 @@ import PortraitArt from '../components/previews/PortraitArt.astro';
 import SizePreview from '../components/previews/SizePreview.astro';
 import Window from '../components/previews/Window.astro';
 import { absoluteUrl, registry, SITE_NAME } from '../data/registry';
+import { OPERATOR } from '../data/site';
 import { categoryPath, toolPath, variantPath, type CatalogueItem } from '@niftyfix/registry';
 import { CATEGORIES, CATEGORY_IDS, type ToolManifest } from '@niftyfix/tool-sdk';
 
@@ -80,6 +81,12 @@ const jsonLd = [
     name: SITE_NAME,
     url: absoluteUrl('/'),
     logo: absoluteUrl('/icon-512.png'),
+    sameAs: [OPERATOR.github, OPERATOR.linkedin],
+    founder: {
+      '@type': 'Person',
+      name: OPERATOR.name,
+      sameAs: [OPERATOR.github, OPERATOR.linkedin],
+    },
   },
 ];
 ---

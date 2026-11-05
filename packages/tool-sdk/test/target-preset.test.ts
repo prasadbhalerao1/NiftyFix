@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseTargetPreset } from './preset';
+import { parseTargetPreset } from '../src/bytes';
 
 describe('parseTargetPreset', () => {
   it('reads KB and MB targets', () => {

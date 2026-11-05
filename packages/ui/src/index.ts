@@ -15,3 +15,4 @@ export * from './FileQueue';
 export * from './PageSelection';
 export * from './SingleFileTool';
 export * from './PdfPageGrid';
+export * from './TargetSize';

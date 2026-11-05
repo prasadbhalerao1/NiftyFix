@@ -36,3 +36,24 @@ export function describeByteRange(range: { minBytes?: number; maxBytes?: number 
 export function formatBytesExact(bytes: number): string {
   return `${formatBytes(bytes)} (${bytes.toLocaleString('en-US')} bytes)`;
 }
+
+/** A size limit chosen by an intent page ("compress to 200 KB"): preset ids such as "target-200kb" or "target-1mb". */
+export interface TargetPreset {
+  amount: number;
+  unit: 'KB' | 'MB';
+}
+
+const TARGET_PRESET = /^target-(\d{1,4})(kb|mb)$/;
+
+export function parseTargetPreset(preset: string | undefined): TargetPreset | null {
+  const match = preset === undefined ? null : TARGET_PRESET.exec(preset);
+  if (!match) return null;
+  const amount = Number(match[1]);
+  const unit = match[2] === 'mb' ? 'MB' : 'KB';
+  // Below 10 KB nothing can be promised; the form would reject it anyway.
+  return amount * (unit === 'MB' ? 1000 : 1) >= 10 ? { amount, unit } : null;
+}
+
+/** Upload limits are stated in decimal units (1 MB = 1,000,000 bytes); staying below that also meets 1 MiB. */
+export const targetToBytes = (amount: number, unit: TargetPreset['unit']): number =>
+  Math.floor(amount * (unit === 'MB' ? 1_000_000 : 1000));

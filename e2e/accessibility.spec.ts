@@ -37,7 +37,15 @@ async function scanFrame(page: Page, label: string): Promise<void> {
   await page
     .frameLocator('iframe[data-tool-frame]')
     .locator('body')
-    .evaluate(() => Promise.all(document.getAnimations().map((animation) => animation.finished)));
+    .evaluate(() =>
+      Promise.all(
+        document
+          .getAnimations()
+          // Endless ones (spinners, loading shimmer) never finish; cancelled ones reject.
+          .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+          .map((animation) => animation.finished.catch(() => undefined)),
+      ),
+    );
   const results = await new AxeBuilder({ page })
     .include('iframe[data-tool-frame]')
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])

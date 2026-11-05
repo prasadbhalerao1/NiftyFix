@@ -234,16 +234,13 @@ test.describe('Form Photo Resizer: end to end', () => {
     await chooseFile(frame, 'images/portrait-1200x1600.jpg');
     await frame.getByTestId('prepare').click();
     await expect(frame.getByTestId('result')).toBeVisible({ timeout: 30_000 });
-    const events = await page.evaluate(
-      () => (window as unknown as { events: { name: string }[] }).events,
-    );
-    expect(events.map((event) => event.name)).toEqual([
-      'tool_ready',
-      'file_selected',
-      'tool_start',
-      'tool_success',
-    ]);
-    expect(JSON.stringify(events)).not.toContain('portrait');
+    const events = (): Promise<{ name: string }[]> =>
+      page.evaluate(() => (window as unknown as { events: { name: string }[] }).events);
+    // Messages cross from the frame asynchronously: the last one may land just after the result shows.
+    await expect
+      .poll(async () => (await events()).map((event) => event.name))
+      .toEqual(['tool_ready', 'file_selected', 'tool_start', 'tool_success']);
+    expect(JSON.stringify(await events())).not.toContain('portrait');
   });
 });
 

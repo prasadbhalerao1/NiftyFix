@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useLayoutEffect, useState } from 'preact/hooks';
 import {
   CheckboxInput,
   imageDisplaySize,
@@ -28,9 +28,10 @@ export default function ResizeImage(props: ToolUiProps) {
   const onFileChange = async (file: File | null): Promise<void> => {
     setSource(file ? await imageDisplaySize(file) : null);
   };
-  // A new file starts from its own size, in the current unit. An effect, because the unit
-  // may change while the image is still loading.
-  useEffect(() => {
+  // A new file starts from its own size, in the current unit. A layout effect runs
+  // before the browser handles the next tap, so a unit chosen as the image loads is
+  // never overwritten by a stale one.
+  useLayoutEffect(() => {
     if (source && unit !== 'percent') {
       setWidth(fromPixels(source.width, unit, dpi ?? 300));
       setHeight(fromPixels(source.height, unit, dpi ?? 300));

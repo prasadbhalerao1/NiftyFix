@@ -45,17 +45,12 @@ export default function CropImage(props: ToolUiProps) {
     const size = file ? await imageDisplaySize(file) : null;
     setImage(file && size ? { url: URL.createObjectURL(file), size } : null);
   };
-  // Start the frame once the image is known, in the shape chosen by then
-  // (the user may pick a shape while the image is still loading).
+  // A new image or a new shape starts a fresh frame. One effect for both, so the
+  // latest shape always wins, even when it is picked as the image finishes loading.
   useEffect(
     () => setCrop(image ? startingCrop(image.size, aspectOf(shape, image.size)) : null),
-    [image],
+    [image, shape],
   );
-
-  const changeShape = (next: Shape): void => {
-    setShape(next);
-    if (image) setCrop(startingCrop(image.size, aspectOf(next, image.size)));
-  };
 
   const options: CropImageOptions | null = crop
     ? { crop: { x: crop.x, y: crop.y, width: crop.width, height: crop.height }, fileName: '' }
@@ -99,7 +94,7 @@ export default function CropImage(props: ToolUiProps) {
           { value: '9:16', label: 'Story (9:16)' },
           { value: '3.5:4.5', label: 'Passport photo (3.5 × 4.5)' },
         ]}
-        onChange={changeShape}
+        onChange={setShape}
         testId="shape"
       />
     </SingleFileTool>

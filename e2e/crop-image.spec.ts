@@ -9,7 +9,7 @@ test.describe('Crop Image', () => {
     const frame = await openPdfTool(page, '/image/crop-image/', /Choose an image/);
     await chooseFile(frame, 'images/large-4000x3000.jpg');
     await frame.getByTestId('shape').selectOption('1:1');
-    await expect(frame.getByTestId('crop-size')).toHaveText('Selection: 3000 × 3000 px');
+    await expect(frame.getByText('Crop size: 3000 × 3000 px')).toBeVisible();
     await frame.getByTestId('prepare').click();
     await expect(frame.getByTestId('result')).toBeVisible({ timeout: 45_000 });
     await expect(
@@ -30,8 +30,8 @@ test.describe('Crop Image', () => {
   test('the slider resizes the selection', async ({ page }) => {
     const frame = await openPdfTool(page, '/image/crop-image/', /Choose an image/);
     await chooseFile(frame, 'images/transparent-800x800.png');
-    await expect(frame.getByTestId('crop-size')).toHaveText('Selection: 720 × 720 px');
+    await expect(frame.getByText('Crop size: 720 × 720 px')).toBeVisible();
     await frame.getByRole('slider').first().fill('50');
-    await expect(frame.getByTestId('crop-size')).not.toHaveText('Selection: 720 × 720 px');
+    await expect(frame.getByText('Crop size: 720 × 720 px')).toBeHidden();
   });
 });

@@ -44,8 +44,13 @@ export default function CropImage(props: ToolUiProps) {
   const onFileChange = async (file: File | null): Promise<void> => {
     const size = file ? await imageDisplaySize(file) : null;
     setImage(file && size ? { url: URL.createObjectURL(file), size } : null);
-    setCrop(size ? startingCrop(size, aspectOf(shape, size)) : null);
   };
+  // Start the frame once the image is known, in the shape chosen by then
+  // (the user may pick a shape while the image is still loading).
+  useEffect(
+    () => setCrop(image ? startingCrop(image.size, aspectOf(shape, image.size)) : null),
+    [image],
+  );
 
   const changeShape = (next: Shape): void => {
     setShape(next);
@@ -97,11 +102,6 @@ export default function CropImage(props: ToolUiProps) {
         onChange={changeShape}
         testId="shape"
       />
-      {crop ? (
-        <p class="text-sm text-stone-600 dark:text-stone-400" data-testid="crop-size">
-          Selection: {Math.round(crop.width)} × {Math.round(crop.height)} px
-        </p>
-      ) : null}
     </SingleFileTool>
   );
 }

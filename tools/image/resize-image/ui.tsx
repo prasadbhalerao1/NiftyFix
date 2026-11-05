@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import {
   CheckboxInput,
   imageDisplaySize,
@@ -25,15 +25,17 @@ export default function ResizeImage(props: ToolUiProps) {
   const [fit, setFit] = useState<Fit>('cover');
   const [format, setFormat] = useState<Format>('auto');
 
-  // A new file starts from its own size, in the current unit.
   const onFileChange = async (file: File | null): Promise<void> => {
-    const size = file ? await imageDisplaySize(file) : null;
-    setSource(size);
-    if (size && unit !== 'percent') {
-      setWidth(fromPixels(size.width, unit, dpi ?? 300));
-      setHeight(fromPixels(size.height, unit, dpi ?? 300));
-    }
+    setSource(file ? await imageDisplaySize(file) : null);
   };
+  // A new file starts from its own size, in the current unit. An effect, because the unit
+  // may change while the image is still loading.
+  useEffect(() => {
+    if (source && unit !== 'percent') {
+      setWidth(fromPixels(source.width, unit, dpi ?? 300));
+      setHeight(fromPixels(source.height, unit, dpi ?? 300));
+    }
+  }, [source]);
 
   const changeUnit = (next: Unit): void => {
     if (source && next !== 'percent') {

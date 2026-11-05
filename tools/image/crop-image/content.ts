@@ -16,9 +16,9 @@ export default defineContent({
         'Free lets you set any width and height. The other shapes lock the frame: Square (1:1), Landscape (4:3), Portrait (3:4), Wide (16:9), Story (9:16) and Passport photo (3.5 × 4.5).',
     },
     {
-      name: 'Selection',
+      name: 'Crop size',
       description:
-        'The size of the frame in pixels, which is exactly the size of the cropped image.',
+        'Shown under the image: the size of the frame in pixels, which is exactly the size of the cropped image.',
     },
   ],
   example: {

@@ -1,4 +1,5 @@
 ---
+import { localTerms } from '../data/local-names';
 import { toolPath } from '@niftyfix/registry';
 import { FILE_FORMATS, type FileFormatId, type ToolManifest } from '@niftyfix/tool-sdk';
 import { toolIcon } from '../data/icons';
@@ -32,7 +33,14 @@ const produces = list(manifest.output.formats);
     dense ? 'py-2.5' : 'py-4',
   ]}
   data-tool-card
-  data-terms={[manifest.name, manifest.tagline, ...manifest.searchAliases].join(' ').toLowerCase()}
+  data-terms={[
+    manifest.name,
+    manifest.tagline,
+    ...manifest.searchAliases,
+    ...localTerms(manifest.id),
+  ]
+    .join(' ')
+    .toLowerCase()}
 >
   <svg
     aria-hidden="true"

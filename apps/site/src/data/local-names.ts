@@ -1,0 +1,192 @@
+/**
+ * What people call each tool in Hindi and Marathi, and how they type it in
+ * Latin letters (Hinglish, Marathi in English). Shown on the tool page, added
+ * to its structured data, and matched by the site search.
+ */
+export interface LocalNames {
+  hi: string;
+  mr: string;
+  /** Hinglish and Marathi typed in English letters. */
+  latin: readonly string[];
+}
+
+export const LOCAL_NAMES: Record<string, LocalNames> = {
+  'calculators.emi-calculator': {
+    hi: 'ईएमआई कैलकुलेटर, लोन की किस्त निकालें',
+    mr: 'ईएमआय कॅल्क्युलेटर, कर्जाचा हप्ता काढा',
+    latin: [
+      'loan ki kist kaise nikale',
+      'emi kitni banegi',
+      'home loan emi nikalo',
+      'karjacha hapta',
+    ],
+  },
+  'calculators.gst-calculator': {
+    hi: 'जीएसटी कैलकुलेटर, जीएसटी जोड़ें या हटाएं',
+    mr: 'जीएसटी कॅल्क्युलेटर, जीएसटी जोडा किंवा काढा',
+    latin: ['gst kaise nikale', 'gst jodna', 'gst hatana', 'gst kiti lagel'],
+  },
+  'forms.passport-photo-maker': {
+    hi: 'पासपोर्ट साइज़ फोटो बनाएं',
+    mr: 'पासपोर्ट साईज फोटो बनवा',
+    latin: ['passport size photo kaise banaye', 'passport photo banao', 'passport photo banva'],
+  },
+  'forms.photo-resizer': {
+    hi: 'फॉर्म के लिए फोटो का साइज़ और KB कम करें',
+    mr: 'फॉर्मसाठी फोटोचा साईज आणि KB कमी करा',
+    latin: ['photo ka size kam kare', 'photo 50kb me kaise kare', 'photo chi size kami kara'],
+  },
+  'forms.photo-sheet-maker': {
+    hi: 'एक पेज पर कई पासपोर्ट फोटो प्रिंट करें',
+    mr: 'एका पानावर अनेक पासपोर्ट फोटो प्रिंट करा',
+    latin: ['ek page par 8 photo', 'passport photo print sheet', 'photo sheet banao'],
+  },
+  'forms.signature-resizer': {
+    hi: 'फॉर्म के लिए सिग्नेचर का साइज़ कम करें',
+    mr: 'फॉर्मसाठी सहीचा साईज कमी करा',
+    latin: ['signature ka size kam kare', 'signature 20kb me', 'sahi chi size kami kara'],
+  },
+  'image.compress-image': {
+    hi: 'फोटो का साइज़ कम करें (KB कम करें)',
+    mr: 'फोटोचा साईज कमी करा (KB कमी करा)',
+    latin: ['photo ka size kaise kam kare', 'image kb kam kare', 'photo chi size kami kara'],
+  },
+  'image.convert-image': {
+    hi: 'फोटो का फॉर्मेट बदलें (JPG, PNG, WebP)',
+    mr: 'फोटोचा फॉरमॅट बदला (JPG, PNG, WebP)',
+    latin: ['png ko jpg kaise kare', 'photo format badle', 'jpg madhe badla'],
+  },
+  'image.crop-image': {
+    hi: 'फोटो क्रॉप करें, काटें',
+    mr: 'फोटो क्रॉप करा, कापा',
+    latin: ['photo crop kaise kare', 'photo katna', 'photo kapa'],
+  },
+  'image.remove-exif': {
+    hi: 'फोटो से लोकेशन और जानकारी हटाएं',
+    mr: 'फोटोमधून लोकेशन आणि माहिती काढा',
+    latin: ['photo se location hataye', 'photo ki details hatao', 'photo madhun location kadha'],
+  },
+  'image.resize-image': {
+    hi: 'फोटो की लंबाई-चौड़ाई बदलें',
+    mr: 'फोटोची लांबी-रुंदी बदला',
+    latin: ['photo resize kaise kare', 'photo chhota bada kare', 'photo resize kara'],
+  },
+  'image.rotate-image': {
+    hi: 'फोटो घुमाएं या सीधा करें',
+    mr: 'फोटो फिरवा किंवा सरळ करा',
+    latin: ['photo ulta ho gaya', 'photo ghumaye', 'photo phirva'],
+  },
+  'image.watermark-image': {
+    hi: 'फोटो पर वॉटरमार्क या नाम लगाएं',
+    mr: 'फोटोवर वॉटरमार्क किंवा नाव लावा',
+    latin: ['photo par naam likhe', 'watermark kaise lagaye', 'photo var naav lava'],
+  },
+  'ocr.image-to-text': {
+    hi: 'फोटो से टेक्स्ट निकालें (हिंदी, मराठी, अंग्रेज़ी)',
+    mr: 'फोटोमधून मजकूर काढा (मराठी, हिंदी, इंग्रजी)',
+    latin: ['photo se text nikale', 'image se hindi text', 'photo madhun text kadha'],
+  },
+  'pdf.add-page-numbers': {
+    hi: 'पीडीएफ में पेज नंबर डालें',
+    mr: 'पीडीएफमध्ये पान क्रमांक टाका',
+    latin: ['pdf me page number kaise dale', 'pdf la page number taka'],
+  },
+  'pdf.compress-pdf': {
+    hi: 'पीडीएफ का साइज़ कम करें',
+    mr: 'पीडीएफचा साईज कमी करा',
+    latin: ['pdf ka size kaise kam kare', 'pdf 200kb me kaise kare', 'pdf chi size kami kara'],
+  },
+  'pdf.crop-pdf': {
+    hi: 'पीडीएफ पेज क्रॉप करें',
+    mr: 'पीडीएफ पान क्रॉप करा',
+    latin: ['pdf crop kaise kare', 'pdf kinare katna'],
+  },
+  'pdf.extract-pdf-pages': {
+    hi: 'पीडीएफ से कुछ पेज अलग निकालें',
+    mr: 'पीडीएफमधून काही पाने वेगळी काढा',
+    latin: ['pdf se page nikale', 'pdf madhun pane kadha'],
+  },
+  'pdf.fill-pdf-form': {
+    hi: 'पीडीएफ फॉर्म भरें',
+    mr: 'पीडीएफ फॉर्म भरा',
+    latin: ['pdf form kaise bhare', 'pdf form bhara'],
+  },
+  'pdf.flatten-pdf': {
+    hi: 'पीडीएफ फॉर्म को लॉक करें (फ्लैटन)',
+    mr: 'पीडीएफ फॉर्म लॉक करा (फ्लॅटन)',
+    latin: ['pdf flatten kaise kare', 'pdf edit na ho'],
+  },
+  'pdf.image-to-pdf': {
+    hi: 'फोटो को पीडीएफ में बदलें',
+    mr: 'फोटोची पीडीएफ बनवा',
+    latin: ['photo ko pdf kaise banaye', 'jpg se pdf', 'photo chi pdf banva'],
+  },
+  'pdf.merge-pdf': {
+    hi: 'कई पीडीएफ को एक में जोड़ें',
+    mr: 'अनेक पीडीएफ एकत्र जोडा',
+    latin: ['pdf jodna', 'do pdf ek kaise kare', 'pdf ekatra kara'],
+  },
+  'pdf.organize-pdf': {
+    hi: 'पीडीएफ के पेज आगे-पीछे करें या हटाएं',
+    mr: 'पीडीएफची पाने मागे-पुढे करा किंवा काढा',
+    latin: ['pdf page delete kaise kare', 'pdf page order badle'],
+  },
+  'pdf.pdf-metadata': {
+    hi: 'पीडीएफ की जानकारी (लेखक, टाइटल) बदलें',
+    mr: 'पीडीएफची माहिती (लेखक, शीर्षक) बदला',
+    latin: ['pdf author name badle', 'pdf title change'],
+  },
+  'pdf.pdf-to-image': {
+    hi: 'पीडीएफ को फोटो (JPG) में बदलें',
+    mr: 'पीडीएफचे फोटो (JPG) बनवा',
+    latin: ['pdf ko jpg kaise kare', 'pdf se photo', 'pdf che photo banva'],
+  },
+  'pdf.pdf-to-text': {
+    hi: 'पीडीएफ से टेक्स्ट कॉपी करें',
+    mr: 'पीडीएफमधून मजकूर कॉपी करा',
+    latin: ['pdf se text nikale', 'pdf madhun text kadha'],
+  },
+  'pdf.rotate-pdf': {
+    hi: 'पीडीएफ पेज घुमाएं',
+    mr: 'पीडीएफ पान फिरवा',
+    latin: ['pdf ulta hai seedha kare', 'pdf rotate kaise kare', 'pdf phirva'],
+  },
+  'pdf.sign-pdf': {
+    hi: 'पीडीएफ पर सिग्नेचर करें',
+    mr: 'पीडीएफवर सही करा',
+    latin: ['pdf par sign kaise kare', 'pdf var sahi kara'],
+  },
+  'pdf.split-pdf': {
+    hi: 'पीडीएफ को अलग-अलग फाइलों में बांटें',
+    mr: 'पीडीएफ वेगवेगळ्या फाईलमध्ये विभागा',
+    latin: ['pdf alag kaise kare', 'pdf todna', 'pdf vegli kara'],
+  },
+  'pdf.watermark-pdf': {
+    hi: 'पीडीएफ पर वॉटरमार्क लगाएं',
+    mr: 'पीडीएफवर वॉटरमार्क लावा',
+    latin: ['pdf par watermark kaise lagaye', 'pdf var watermark lava'],
+  },
+  'text.case-converter': {
+    hi: 'अंग्रेज़ी टेक्स्ट को कैपिटल या छोटे अक्षरों में बदलें',
+    mr: 'इंग्रजी मजकूर कॅपिटल किंवा लहान अक्षरात बदला',
+    latin: ['capital letter kaise kare', 'small letter me badle'],
+  },
+  'text.krutidev-to-unicode': {
+    hi: 'कृतिदेव से यूनिकोड और यूनिकोड से कृतिदेव कन्वर्टर',
+    mr: 'कृतिदेव ते युनिकोड आणि युनिकोड ते कृतिदेव कन्व्हर्टर',
+    latin: ['krutidev se unicode', 'unicode se krutidev', 'krutidev te unicode'],
+  },
+  'text.word-counter': {
+    hi: 'शब्द गिनें (वर्ड काउंटर), हिंदी और अंग्रेज़ी',
+    mr: 'शब्द मोजा (वर्ड काउंटर), मराठी आणि इंग्रजी',
+    latin: ['shabd ginti', 'kitne shabd hai', 'shabd moja'],
+  },
+};
+
+export const localNames = (id: string): LocalNames | undefined => LOCAL_NAMES[id];
+
+/** Every local name and phrase, for the site search. */
+export const localTerms = (id: string): string[] => {
+  const names = LOCAL_NAMES[id];
+  return names ? [names.hi, names.mr, ...names.latin] : [];
+};

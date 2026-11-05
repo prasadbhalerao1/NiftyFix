@@ -4,6 +4,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ToolList from '../../components/ToolList.astro';
 import ToolFrame from '../../components/ToolFrame.astro';
 import { absoluteUrl, FRAME_ORIGIN, registry, SITE_NAME } from '../../data/registry';
+import { localNames } from '../../data/local-names';
 import { categoryPath, toolPath, variantPath, type ToolEntry } from '@niftyfix/registry';
 import { CATEGORIES, FILE_FORMATS, type ToolVariant } from '@niftyfix/tool-sdk';
 
@@ -50,6 +51,8 @@ const crumbs = [
   ...(variant ? [{ name: variant.label, path }] : []),
 ];
 
+// Hindi and Marathi names, for people who search in those languages.
+const local = localNames(manifest.id);
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -65,6 +68,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: variant ? variant.h1 : manifest.name,
+    ...(local ? { alternateName: [local.hi, local.mr] } : {}),
     url: absoluteUrl(path),
     description: page.seoDescription,
     applicationCategory: 'UtilitiesApplication',
@@ -118,6 +122,11 @@ const jsonLd = [
   <p class="mt-3 max-w-[68ch] text-lg text-stone-700 dark:text-stone-300">
     {variant ? variant.intro : manifest.tagline}
   </p>
+  {local ? (
+    <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">
+      <span lang="hi">{local.hi}</span> · <span lang="mr">{local.mr}</span>
+    </p>
+  ) : null}
   <p class="eyebrow mt-4 flex items-center gap-2">
     <span aria-hidden="true" class="size-2 rounded-full bg-emerald-500"></span>
     {manifest.input.kind === 'files'

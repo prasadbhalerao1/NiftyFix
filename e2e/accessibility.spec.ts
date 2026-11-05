@@ -173,6 +173,14 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
     await scanFrame(page, 'batch results');
   });
 
+  test('Passport Photo Maker has no serious violations', async ({ page }) => {
+    await page.goto('/forms/us-passport-photo-2x2/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await frame.getByTestId('file-input').setInputFiles(fixture('images/portrait-1200x1600.jpg'));
+    await expect(frame.getByTestId('head-guide')).toBeVisible();
+    await scanFrame(page, 'passport photo settings');
+  });
+
   test('Resize Image settings have no serious violations', async ({ page }) => {
     await page.goto('/image/resize-image/');
     const frame = page.frameLocator('iframe[data-tool-frame]');

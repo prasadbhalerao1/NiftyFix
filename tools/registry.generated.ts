@@ -63,8 +63,10 @@ import content29 from './pdf/watermark-pdf/content';
 import manifest29 from './pdf/watermark-pdf/manifest';
 import content30 from './text/case-converter/content';
 import manifest30 from './text/case-converter/manifest';
-import content31 from './text/word-counter/content';
-import manifest31 from './text/word-counter/manifest';
+import content31 from './text/krutidev-to-unicode/content';
+import manifest31 from './text/krutidev-to-unicode/manifest';
+import content32 from './text/word-counter/content';
+import manifest32 from './text/word-counter/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'calculators/emi-calculator', manifest: manifest0, content: content0 },
@@ -98,5 +100,6 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/split-pdf', manifest: manifest28, content: content28 },
   { dir: 'pdf/watermark-pdf', manifest: manifest29, content: content29 },
   { dir: 'text/case-converter', manifest: manifest30, content: content30 },
-  { dir: 'text/word-counter', manifest: manifest31, content: content31 },
+  { dir: 'text/krutidev-to-unicode', manifest: manifest31, content: content31 },
+  { dir: 'text/word-counter', manifest: manifest32, content: content32 },
 ];

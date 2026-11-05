@@ -1,0 +1,21 @@
+import { expect, test } from '@playwright/test';
+
+test.describe('EMI Calculator', () => {
+  test('updates the EMI as the loan changes', async ({ page }) => {
+    await page.goto('/calculators/emi-calculator/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await frame.getByTestId('principal').fill('1000000');
+    await frame.getByTestId('rate').fill('10');
+    await frame.getByTestId('tenure').fill('10');
+    await expect(frame.getByTestId('emi')).toHaveText('₹13,215');
+    await expect(frame.getByTestId('total-interest')).toHaveText('₹5,85,809');
+    await expect(frame.getByTestId('schedule').locator('tbody tr')).toHaveCount(10);
+  });
+
+  test('the car loan page starts from car loan figures', async ({ page }) => {
+    await page.goto('/calculators/car-loan-emi-calculator/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await expect(frame.getByTestId('principal')).toHaveValue('800000');
+    await expect(frame.getByTestId('tenure')).toHaveValue('5');
+  });
+});

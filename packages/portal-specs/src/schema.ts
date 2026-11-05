@@ -25,7 +25,20 @@ export const PortalSpecSchema = v.pipe(
           /** DPI used to convert cm → px when the source does not state pixels. Must be justified in `notes`. */
           assumedDpi: positiveInt,
         }),
+        /** A square whose side may be anywhere in a range, e.g. "350 to 1000 pixels, height equal to width". */
+        v.object({
+          kind: v.literal('square-px-range'),
+          minSide: positiveInt,
+          maxSide: positiveInt,
+        }),
       ]),
+    ),
+    /** Head height from chin to top of head, when the source states it (printed photos). */
+    headHeightMm: v.optional(
+      v.object({
+        min: v.pipe(v.number(), v.minValue(1)),
+        max: v.pipe(v.number(), v.minValue(1)),
+      }),
     ),
     minBytes: v.optional(positiveInt),
     maxBytes: v.optional(positiveInt),
@@ -51,6 +64,13 @@ export const PortalSpecSchema = v.pipe(
     (spec) =>
       spec.minBytes === undefined || spec.maxBytes === undefined || spec.minBytes <= spec.maxBytes,
     'minBytes must not exceed maxBytes',
+  ),
+  v.check(
+    (spec) =>
+      (spec.headHeightMm === undefined || spec.headHeightMm.min <= spec.headHeightMm.max) &&
+      (spec.dimensions?.kind !== 'square-px-range' ||
+        spec.dimensions.minSide <= spec.dimensions.maxSide),
+    'ranges must not be inverted',
   ),
 );
 

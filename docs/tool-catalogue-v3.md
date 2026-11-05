@@ -5,6 +5,8 @@
 **Planning horizon:** No fixed tool-count target. Count distinct user workflows; consolidate variants and aliases into shared tools.  
 **Initial market:** India-first acquisition, English-first product, globally accessible.
 
+> **Consolidated 6 Nov 2026.** The live list is `packages/registry/src/planned.ts` (308 planned tools plus the built ones). Overlapping entries were merged into one tool per user job: for example, the "maker" templates (meme, avatar, collage, flyer, business card, thumbnail, slides) live inside Design Studio; Speech to Text is Transcribe Audio and Video; handwriting is a future AI mode inside Image to Text, not a separate tool. Merged names stay reachable as search-intent pages of the tool that absorbed them. Where this document and `planned.ts` differ, `planned.ts` wins.
+
 > This is a draft product-scope catalogue, not a commitment to ship 100 tools. The original inventory contains entries that need consolidation (format aliases, presets and overlapping workflows). The current beta is Form Photo Resizer; Signature Resizer is next planned. All other items are planned unless explicitly marked otherwise.
 
 ---

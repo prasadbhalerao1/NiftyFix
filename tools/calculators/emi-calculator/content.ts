@@ -2,18 +2,30 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Before taking a loan, it helps to know the monthly EMI and how much of what you repay is interest. Enter the loan amount, the interest rate and the tenure; the EMI, total interest and total payment update as you type, with a year-by-year table of how each year splits between principal and interest.',
+    'Know your EMI, and then the two decisions that change what a loan really costs. Should a part-prepayment cut your tenure or your EMI? And when a floating rate rises, should you accept a longer loan or a higher EMI? Enter the loan once and see the EMI, total interest, both decisions side by side in rupees and months, and a year-by-year breakdown.',
   howTo: [
     'Enter the loan amount in rupees.',
     'Enter the yearly interest rate your bank quotes, for example 8.5.',
     'Enter the tenure in years or months.',
-    'Read your EMI, total interest and total payment, and the year-by-year breakdown.',
+    'Read your EMI, total interest and total payment.',
+    'Under Prepay and save, enter a prepayment to compare reducing the tenure with reducing the EMI.',
+    'Under If your rate changes, enter a new rate to see the cost of a longer loan against a higher EMI.',
   ],
   options: [
     {
       name: 'How EMI is calculated',
       description:
         'The standard reducing-balance formula banks use: EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is the loan amount, r the monthly rate (yearly rate ÷ 12 ÷ 100) and n the number of months.',
+    },
+    {
+      name: 'Prepay and save',
+      description:
+        'A one-time prepayment at the end of a year, and an optional extra amount every year. The table shows when the loan ends, the EMI and the interest saved if the bank reduces your tenure, or reduces your EMI instead.',
+    },
+    {
+      name: 'If your rate changes',
+      description:
+        'For floating-rate loans. Many banks keep the EMI the same when rates rise and make the loan longer. The table compares that with paying a higher EMI and finishing on time, and warns when the old EMI would no longer cover the interest at all.',
     },
     {
       name: 'Year by year',
@@ -34,9 +46,14 @@ export default defineContent({
   ],
   faqs: [
     {
-      question: 'Does paying more each month save interest?',
+      question: 'Should a prepayment reduce my tenure or my EMI?',
       answer:
-        'Yes. Interest is charged on the outstanding balance, so prepaying principal early reduces the interest on every later month. Check your loan terms for prepayment charges first.',
+        'Reducing the tenure saves more interest, because the full EMI keeps paying the loan down. Reducing the EMI eases your monthly budget instead. Enter your prepayment under Prepay and save to see the difference in rupees. RBI does not allow prepayment charges on floating-rate home loans taken by individuals; check your terms for other loans.',
+    },
+    {
+      question: 'My bank increased my tenure after a rate hike. What does that cost?',
+      answer:
+        'Enter your loan and the new rate under If your rate changes. It shows how much longer the loan runs and how much extra interest you pay, compared with raising the EMI. You can ask your bank to raise the EMI instead.',
     },
     {
       question: 'Is my data saved anywhere?',

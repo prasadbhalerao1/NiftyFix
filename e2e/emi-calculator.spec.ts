@@ -19,3 +19,17 @@ test.describe('EMI Calculator', () => {
     await expect(frame.getByTestId('tenure')).toHaveValue('5');
   });
 });
+
+test.describe('EMI Calculator planners', () => {
+  test('compares reducing tenure with reducing EMI, and a rate rise', async ({ page }) => {
+    await page.goto('/calculators/home-loan-emi-calculator/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    const prepay = frame.getByTestId('prepay-table');
+    await expect(prepay).toContainText('Reduce tenure');
+    await expect(prepay).toContainText('Interest saved');
+    await frame.getByTestId('new-rate').fill('9.5');
+    await expect(frame.getByTestId('rate-table')).toContainText('Keep EMI, longer loan');
+    await frame.getByTestId('new-rate').fill('14');
+    await expect(frame.getByTestId('never-ends')).toBeVisible();
+  });
+});

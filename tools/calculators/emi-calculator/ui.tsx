@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import { NumberInput, Panel, SegmentedControl, StatTile, type ToolUiProps } from '@niftyfix/ui';
 import { emi, rupees, yearlySchedule } from './emi';
+import { PrepaymentPlanner, RateChangePlanner } from './planners';
 
 type TenureUnit = 'years' | 'months';
 
@@ -119,6 +120,13 @@ export default function EmiCalculator({ preset }: ToolUiProps) {
             </p>
           )}
         </Panel>
+
+        {loan ? (
+          <>
+            <PrepaymentPlanner loan={loan} />
+            <RateChangePlanner loan={loan} />
+          </>
+        ) : null}
 
         {schedule.length > 0 ? (
           <Panel title="Year by year">

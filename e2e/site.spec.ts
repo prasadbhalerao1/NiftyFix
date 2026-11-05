@@ -111,8 +111,9 @@ test.describe('site', () => {
     const main = page.getByRole('main');
     await expect(main.getByRole('link', { name: /Form Photo Resizer/ })).toBeVisible();
     await expect(main.getByRole('link', { name: /Signature Resizer/ })).toBeVisible();
+    await expect(main.getByRole('link', { name: /Passport and Visa Photo Maker/ })).toBeVisible();
     await expect(
-      page.locator('[data-planned]', { hasText: 'Passport and Visa Photo Maker' }),
+      page.locator('[data-planned]', { hasText: 'Application Document Preparation' }),
     ).toBeVisible();
     // A hub with no finished tool yet is not offered to search engines.
     await page.goto('/utilities/');

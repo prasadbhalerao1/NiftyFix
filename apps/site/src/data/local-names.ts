@@ -56,6 +56,16 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'फोटोचा फॉरमॅट बदला (JPG, PNG, WebP)',
     latin: ['png ko jpg kaise kare', 'photo format badle', 'jpg madhe badla'],
   },
+  'image.combine-images': {
+    hi: 'फोटो जोड़ें, दो फोटो एक में',
+    mr: 'फोटो जोडा, दोन फोटो एकत्र करा',
+    latin: [
+      'do photo ek me kaise kare',
+      'photo jodna',
+      'aadhar card aage peeche ek page',
+      'photo jodne wala',
+    ],
+  },
   'image.crop-image': {
     hi: 'फोटो क्रॉप करें, काटें',
     mr: 'फोटो क्रॉप करा, कापा',

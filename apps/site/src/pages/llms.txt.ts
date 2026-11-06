@@ -49,6 +49,7 @@ export const GET: APIRoute = () => {
     '## About',
     '',
     `- [All tools](${absoluteUrl('/tools/')}): the full catalogue, including planned tools`,
+    `- [Photo and signature size for exam forms (UPSC, SSC, NEET, IBPS), from official notices](${absoluteUrl('/exam-photo-signature-size/')})`,
     `- [How to verify our privacy](${absoluteUrl('/privacy-verification/')})`,
     `- [About](${absoluteUrl('/about/')})`,
     `- [Privacy policy](${absoluteUrl('/privacy/')})`,

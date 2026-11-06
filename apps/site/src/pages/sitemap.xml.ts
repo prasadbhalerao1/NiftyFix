@@ -10,6 +10,7 @@ const PAGES: readonly [path: string, file: string][] = [
   ['/privacy/', 'privacy.astro'],
   ['/terms/', 'terms.astro'],
   ['/security/', 'security.astro'],
+  ['/exam-photo-signature-size/', 'exam-photo-signature-size.astro'],
   ['/privacy-verification/', 'privacy-verification.astro'],
   ['/licenses/', 'licenses.astro'],
 ];

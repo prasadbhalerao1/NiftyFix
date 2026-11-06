@@ -1,0 +1,120 @@
+---
+import Prose from '../layouts/Prose.astro';
+import { variantPath } from '@niftyfix/registry';
+import { PORTAL_SPECS, type PortalSpec } from '@niftyfix/portal-specs';
+import { registry } from '../data/registry';
+
+/**
+ * Photo and signature sizes for exam forms, built only from verified records
+ * (official notice, with the date we read it). A new exam record appears here
+ * and in the resizers' exam picker without editing this page.
+ */
+const examSpecs = PORTAL_SPECS.filter((spec) => spec.applicationName.includes(' application: '));
+
+// Each exam's intent page, found by the preset that opens it ("spec-<id>").
+const pageFor = new Map(
+  registry
+    .variantPages()
+    .filter(({ variant }) => variant.preset?.startsWith('spec-'))
+    .map(({ entry, variant }) => [
+      (variant.preset ?? '').slice('spec-'.length),
+      { path: variantPath(entry.manifest, variant), label: variant.h1 },
+    ]),
+);
+
+const exams = new Map<string, PortalSpec[]>();
+for (const spec of examSpecs) {
+  const exam = (spec.applicationName.split(' application: ')[0] ?? '').replace(/ online$/, '');
+  exams.set(exam, [...(exams.get(exam) ?? []), spec]);
+}
+
+const upload = (spec: PortalSpec): string =>
+  spec.applicationName.split(' application: ')[1] ?? spec.documentType;
+const kb = (bytes: number | undefined): string | null =>
+  bytes === undefined ? null : `${bytes / 1000} KB`;
+const size = (spec: PortalSpec): string => {
+  const parts: string[] = [];
+  const range = [kb(spec.minBytes), kb(spec.maxBytes)].filter(Boolean).join(' to ');
+  if (range) parts.push(range);
+  if (spec.dimensions?.kind === 'exact-px')
+    parts.push(`${spec.dimensions.width} x ${spec.dimensions.height} px`);
+  if (spec.dpi) parts.push(`${spec.dpi} DPI`);
+  parts.push(spec.formats.map((format) => format.toUpperCase()).join(' or '));
+  return parts.join(', ');
+};
+const date = (iso: string): string =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+const host = (url: string): string => new URL(url).hostname.replace(/^www\./, '');
+---
+
+<Prose
+  title="Photo and signature size for exam forms"
+  description="Official photo, signature, thumb and declaration sizes for UPSC, SSC, NEET and IBPS forms, each from the exam's own notice, with tools that fill them in."
+  path="/exam-photo-signature-size/"
+  lede="Every number here comes from the exam's own notice or instructions, linked below, not from other websites. Many sites still show old sizes; where an exam now takes a live photo, we say so."
+>
+  <h2>Before you upload</h2>
+  <ul>
+    <li>
+      <strong>Live photos are now common.</strong> UPSC, NEET and IBPS ask for an uploaded photo and
+      a live photo taken with your webcam or phone while you apply. SSC CGL 2026 takes only a live
+      photo: there is no photo to upload.
+    </li>
+    <li>
+      <strong>Fit inside the range, not just under the maximum.</strong> A file below the minimum KB
+      is rejected too.
+    </li>
+    <li>
+      <strong>Check your own notice.</strong> Sizes change between exams and years; the date we read
+      each notice is shown.
+    </li>
+  </ul>
+
+  {[...exams].map(([exam, specs]) => {
+    const source = specs[0]?.source;
+    return (
+      <section>
+        <h2>{exam}</h2>
+        <ul>
+          {specs.map((spec) => {
+            const page = pageFor.get(spec.id);
+            return (
+              <li>
+                <strong>{upload(spec)[0]?.toUpperCase() + upload(spec).slice(1)}:</strong>{' '}
+                {size(spec)}.{spec.background ? ` ${spec.background}.` : ''}{' '}
+                {spec.otherRequirements.join('. ')}
+                {spec.otherRequirements.length > 0 ? '.' : ''}
+                {spec.notes ? ` ${spec.notes}` : ''}{' '}
+                {page ? <a href={page.path}>Make it to this size</a> : null}
+              </li>
+            );
+          })}
+        </ul>
+        {source ? (
+          <p class="text-sm">
+            Source: <a href={source.url}>{source.title}</a> ({host(source.url)}), read on{' '}
+            {date(specs[0]?.verifiedAt ?? '')}.
+          </p>
+        ) : null}
+      </section>
+    );
+  })}
+
+  <h2>Exam not listed?</h2>
+  <p>
+    Use the <a href="/forms/photo-resizer/">Form Photo Resizer</a> and the
+    <a href="/forms/signature-resizer/">Signature Resizer</a> with the numbers from your notice:
+    enter the pixel size and KB range, and the tool checks every requirement before you download. We
+    add an exam only after reading its official notice, so railway (RRB) and state exams will
+    follow.
+  </p>
+  <p>
+    Your photo never leaves your device: the tools run in your browser.{' '}
+    <a href="/privacy-verification/">See how to check that yourself</a>.
+  </p>
+</Prose>

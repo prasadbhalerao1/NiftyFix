@@ -76,6 +76,7 @@ test.describe('accessibility (axe, WCAG 2.2 AA)', () => {
         '/image/',
         '/image/compress-image/',
         '/privacy-verification/',
+        '/exam-photo-signature-size/',
       ]) {
         await page.goto(path);
         await settle(page);

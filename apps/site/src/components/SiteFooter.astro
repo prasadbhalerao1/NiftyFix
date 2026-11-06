@@ -24,6 +24,7 @@ const columns = [
     title: 'Browse',
     links: [
       { name: 'All tools', path: '/tools/' },
+      { name: 'Exam photo and signature sizes', path: '/exam-photo-signature-size/' },
       ...registry
         .activeCategories()
         .map((id) => ({ name: `${CATEGORIES[id].name} tools`, path: categoryPath(id) })),

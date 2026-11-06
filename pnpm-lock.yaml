@@ -74,6 +74,9 @@ importers:
       '@niftyfix/analytics-schema':
         specifier: workspace:*
         version: link:../../packages/analytics-schema
+      '@niftyfix/portal-specs':
+        specifier: workspace:*
+        version: link:../../packages/portal-specs
       '@niftyfix/registry':
         specifier: workspace:*
         version: link:../../packages/registry

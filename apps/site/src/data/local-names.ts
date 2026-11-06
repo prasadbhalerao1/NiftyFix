@@ -56,6 +56,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'फोटोचा फॉरमॅट बदला (JPG, PNG, WebP)',
     latin: ['png ko jpg kaise kare', 'photo format badle', 'jpg madhe badla'],
   },
+  'pdf.pages-per-sheet': {
+    hi: 'एक पेज पर कई PDF पेज, बुकलेट',
+    mr: 'एका पानावर अनेक PDF पाने, पुस्तिका',
+    latin: ['ek page par 4 page print', 'notes print kam paper me', 'pdf booklet kaise banaye'],
+  },
   'image.combine-images': {
     hi: 'फोटो जोड़ें, दो फोटो एक में',
     mr: 'फोटो जोडा, दोन फोटो एकत्र करा',

@@ -381,3 +381,88 @@ export function flattenForm(doc: PDFDocument): number {
   if (count > 0) form.flatten();
   return count;
 }
+
+/** Where one source page goes on a sheet: a box in points, origin bottom left. */
+export interface SheetSlot {
+  /** Source page index, or null for a blank slot. */
+  page: number | null;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Draw source pages onto new sheets (pages per sheet, booklets). Pages are
+ * embedded as vector content, so text stays sharp and selectable; each is
+ * shown upright as the reader sees it (its /Rotate is applied), scaled to fit
+ * its slot and centred. Links and form fields do not carry over.
+ */
+export async function placePagesOnSheets(
+  source: PDFDocument,
+  sheets: readonly { width: number; height: number; slots: readonly SheetSlot[] }[],
+  options: { frame: boolean },
+  signal?: AbortSignal,
+): Promise<PDFDocument> {
+  const out = await createPdf();
+  const used = [...new Set(sheets.flatMap((sheet) => sheet.slots.map((slot) => slot.page)))]
+    .filter((page): page is number => page !== null)
+    .sort((a, b) => a - b);
+  const pages = used.map((index) => source.getPage(index));
+  const embedded = await out.embedPages(
+    pages,
+    pages.map((page) => {
+      const box = page.getCropBox();
+      return { left: box.x, bottom: box.y, right: box.x + box.width, top: box.y + box.height };
+    }),
+  );
+  const byIndex = new Map(used.map((index, i) => [index, i] as const));
+
+  for (const sheet of sheets) {
+    signal?.throwIfAborted();
+    const target = out.addPage([sheet.width, sheet.height]);
+    for (const slot of sheet.slots) {
+      if (slot.page === null) continue;
+      const i = byIndex.get(slot.page);
+      const page = i === undefined ? undefined : embedded[i];
+      const sourcePage = i === undefined ? undefined : pages[i];
+      if (!page || !sourcePage) continue;
+      const rotation = ((sourcePage.getRotation().angle % 360) + 360) % 360;
+      const sideways = rotation % 180 !== 0;
+      const shownWidth = sideways ? page.height : page.width;
+      const shownHeight = sideways ? page.width : page.height;
+      const scale = Math.min(slot.width / shownWidth, slot.height / shownHeight);
+      const w = page.width * scale;
+      const h = page.height * scale;
+      // Bottom-left of the displayed page, centred in the slot.
+      const left = slot.x + (slot.width - shownWidth * scale) / 2;
+      const bottom = slot.y + (slot.height - shownHeight * scale) / 2;
+      // drawPage rotates anticlockwise about its origin; /Rotate is clockwise.
+      const origin =
+        rotation === 90
+          ? { x: left, y: bottom + w }
+          : rotation === 180
+            ? { x: left + w, y: bottom + h }
+            : rotation === 270
+              ? { x: left + h, y: bottom }
+              : { x: left, y: bottom };
+      target.drawPage(page, {
+        ...origin,
+        xScale: scale,
+        yScale: scale,
+        rotate: degrees(-rotation),
+      });
+      if (options.frame) {
+        target.drawRectangle({
+          x: left,
+          y: bottom,
+          width: shownWidth * scale,
+          height: shownHeight * scale,
+          borderColor: rgb(0.7, 0.7, 0.7),
+          borderWidth: 0.5,
+        });
+      }
+    }
+  }
+  return out;
+}

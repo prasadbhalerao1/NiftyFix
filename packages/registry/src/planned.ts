@@ -76,7 +76,7 @@ export const PLANNED_TOOLS: readonly PlannedTool[] = [
     ['pdf-fonts', 'PDF Font Inspector'],
     ['grayscale-pdf', 'Grayscale and Colour-Adjust PDF'],
     ['linearize-pdf', 'Optimise PDF for Web'],
-    ['pdf-print-layout', 'PDF Booklet, Poster and N-up Maker'],
+    ['pages-per-sheet', 'Pages per Sheet and Booklet'],
     ['chat-with-pdf', 'Chat with, Summarise and Translate PDF', 'ai'],
     ['pdf-for-ai', 'Prepare PDF for AI / RAG'],
   ]),

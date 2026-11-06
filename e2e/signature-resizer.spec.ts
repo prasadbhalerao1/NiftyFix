@@ -235,6 +235,18 @@ test.describe('Signature Resizer: controls and honesty', () => {
     });
   }
 
+  test('RRB page reaches its 30 KB minimum without padding', async ({ page }) => {
+    await page.goto('/forms/rrb-signature-size/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await choose(frame, 'signatures/white-black.jpg');
+    await expect(frame.getByTestId('width')).toHaveValue('1050');
+    await expect(frame.getByTestId('min-kb')).toHaveValue('30');
+    const { bytes } = await prepareAndDownload(page, frame);
+    expect(readImageHeader(bytes)).toMatchObject({ width: 1050, height: 600 });
+    expect(bytes.length).toBeGreaterThanOrEqual(30 * 1024);
+    expect(bytes.length).toBeLessThanOrEqual(49_000);
+  });
+
   test('handles a large 12-megapixel photo', async ({ page }) => {
     const frame = await open(page);
     await choose(frame, 'images/large-4000x3000.jpg');

@@ -40,6 +40,12 @@ export const PortalSpecSchema = v.pipe(
         max: v.pipe(v.number(), v.minValue(1)),
       }),
     ),
+    /**
+     * Our pixel size when the source states none (or only a minimum) but the KB
+     * range cannot be reached at the tool's default size. Not a portal rule:
+     * explain it in `notes`.
+     */
+    workingPx: v.optional(v.object({ width: positiveInt, height: positiveInt })),
     minBytes: v.optional(positiveInt),
     maxBytes: v.optional(positiveInt),
     /** How the source defines KB, when it says. Otherwise the tool uses its safe convention. */

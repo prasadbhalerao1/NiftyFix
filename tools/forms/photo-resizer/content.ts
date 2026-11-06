@@ -183,6 +183,29 @@ export default defineContent({
       ],
     },
     {
+      slug: 'ctet-photo-size',
+      preset: 'spec-ctet-2026-photo',
+      label: 'CTET photo',
+      h1: 'CTET photo and signature size: 10 to 100 KB, 3.5 x 4.5 cm',
+      seoTitle: 'CTET photo size and signature size (KB, cm) | NiftyFix',
+      seoDescription:
+        'CTET upload sizes from the official bulletin: photo 10 to 100 KB, 3.5 x 4.5 cm; signature 3 to 30 KB, 3.5 x 1.5 cm; both JPG. Resize free.',
+      intro:
+        'The CTET September 2026 Information Bulletin asks for your latest photograph as a JPG between 10 KB and 100 KB, 3.5 cm wide by 4.5 cm high, and your signature as a JPG between 3 KB and 30 KB, 3.5 cm by 1.5 cm. The photo KB range is filled in below; it is matched with you at the exam centre, so use a recent one. For the signature, choose CTET in the Signature Resizer. Source: the CTET September 2026 Information Bulletin linked from ctet.nic.in. Check the next bulletin when CBSE publishes it.',
+      faqs: [
+        {
+          question: 'How many pixels is 3.5 x 4.5 cm for CTET?',
+          answer:
+            'The bulletin states only centimetres, not pixels. At 200 DPI, 3.5 x 4.5 cm is about 276 x 354 pixels; any sharp photo with that 7:9 shape that fits 10 to 100 KB meets the stated rules.',
+        },
+        {
+          question: 'What is the CTET signature size?',
+          answer:
+            'A JPG between 3 KB and 30 KB, 3.5 cm long by 1.5 cm high, according to the CTET September 2026 bulletin.',
+        },
+      ],
+    },
+    {
       slug: 'sbi-clerk-po-photo-size',
       preset: 'spec-sbi-2026-photo',
       label: 'SBI Clerk and PO photo',

@@ -74,6 +74,29 @@ export default defineContent({
   ],
   variants: [
     {
+      slug: 'rrb-signature-size',
+      preset: 'spec-rrb-2026-signature',
+      label: 'RRB signature',
+      h1: 'RRB NTPC signature size: 30 to 49 KB (and no photo upload)',
+      seoTitle: 'RRB NTPC signature size 2026: 30 to 49 KB, 140x60 px | NiftyFix',
+      seoDescription:
+        'RRB NTPC and Station Master 2026 ask for a JPG signature of 30 to 49 KB, at least 140 x 60 px, black ink, 100 DPI. The photo is taken live. Free.',
+      intro:
+        'The RRB CEN No. 07/2026 (NTPC Under Graduate) notice asks for a signature in black ink on white paper, in running handwriting (not capital or block letters), scanned at 100 DPI or more, as a JPG between 30 KB and 49 KB and at least 140 x 60 pixels. Note the minimum: a small 15 KB signature that works for other exams is too small here. The KB range and DPI are filled in below, with 1050 x 600 pixels: RRB sets no maximum size, and at the usual small size a clean signature stays near 14 KB, below the minimum. There is no photo to upload: the application captures a live photo against a plain white background, so wear plain dark clothes and no cap, mask or glasses. Station Master (CEN No. 08/2026) uses the same rules. Source: CEN No. 07/2026 on rrbapply.gov.in.',
+      faqs: [
+        {
+          question: 'Why is my RRB signature rejected for being too small?',
+          answer:
+            'RRB asks for at least 30 KB, which is higher than most exams, and a small, clean signature image is often only 10 to 15 KB. Choose RRB here: the tool sets 1050 x 600 pixels, which is above the 140 x 60 minimum and keeps the file between 30 KB and 49 KB. Never pad a file to make it bigger.',
+        },
+        {
+          question: 'What is the RRB photo size?',
+          answer:
+            'For NTPC and Station Master 2026 you do not upload a photo. The application captures a live photo with your webcam or phone camera, on a plain white background, with your head filling at least half of the picture.',
+        },
+      ],
+    },
+    {
       slug: 'ssc-signature-size',
       preset: 'spec-ssc-cgl-2026-signature',
       label: 'SSC signature',

@@ -42,9 +42,10 @@ export function specPresetSettings(preset: string | undefined): SpecSettings | n
   const spec = PORTAL_SPECS.find((candidate) => candidate.id === preset.slice('spec-'.length));
   if (!spec) return null;
   const settings: SpecSettings = {};
-  if (spec.dimensions?.kind === 'exact-px') {
-    settings.width = spec.dimensions.width;
-    settings.height = spec.dimensions.height;
+  const pixels = spec.dimensions?.kind === 'exact-px' ? spec.dimensions : spec.workingPx;
+  if (pixels) {
+    settings.width = pixels.width;
+    settings.height = pixels.height;
   }
   if (spec.minBytes !== undefined) settings.minKb = spec.minBytes / 1000;
   if (spec.maxBytes !== undefined) settings.maxKb = spec.maxBytes / 1000;

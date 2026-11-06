@@ -71,6 +71,16 @@ describe('specPresetSettings', () => {
     expect(specPresetSettings('spec-ibps-po-2026-left-thumb')).toMatchObject({ dpi: 200 });
   });
 
+  it('uses the working size when the notice states no exact pixels', () => {
+    expect(specPresetSettings('spec-rrb-2026-signature')).toEqual({
+      width: 1050,
+      height: 600,
+      minKb: 30,
+      maxKb: 49,
+      dpi: 100,
+    });
+  });
+
   it('ignores other presets and unknown specs', () => {
     expect(specPresetSettings('max-20kb')).toBeNull();
     expect(specPresetSettings('spec-no-such-exam')).toBeNull();

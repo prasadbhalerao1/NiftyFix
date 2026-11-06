@@ -78,6 +78,47 @@ export default defineContent({
   ],
   variants: [
     {
+      slug: 'upsc-photo-size',
+      preset: 'spec-upsc-2026-photo',
+      label: 'UPSC photo',
+      h1: 'UPSC photo size: JPG, 20 to 200 KB, face 3/4 of the photo',
+      seoTitle: 'UPSC photo size 2026: 20 to 200 KB, 3/4 face rule | NiftyFix',
+      seoDescription:
+        'Make your UPSC application photo: colour JPG of 20 to 200 KB, plain white background, face covering 3/4 of the photo, as UPSC instructs. Free, private.',
+      intro:
+        'UPSC asks for a recent colour photo as a JPG between 20 KB and 200 KB, on a plain white background, saved with the file name "photo". The rule that rejects most photos is face coverage: your face must fill at least 75% (3/4) of the picture, looking straight at the camera with both ears visible. Crop tight around your face below; the KB range is already filled in. You also capture a live photo, which UPSC matches with this one, so use a recent photo. Source: the UPSC instructions for uploading the photo and signature on upsconline.nic.in.',
+      faqs: [
+        {
+          question: 'Why was my UPSC photo rejected for face coverage?',
+          answer:
+            'UPSC needs the face to cover at least 3/4 of the photo. A normal passport photo with shoulders and space around the head is often too loose; crop closer so your face fills most of the frame, keeping both ears in.',
+        },
+      ],
+    },
+    {
+      slug: 'neet-photo-size',
+      preset: 'spec-neet-ug-2026-photo',
+      label: 'NEET photo',
+      h1: 'NEET UG photo and signature size: 10 to 200 KB',
+      seoTitle: 'NEET UG 2026 photo size and signature size (KB) | NiftyFix',
+      seoDescription:
+        'NEET UG 2026 upload sizes from the NTA bulletin: photo 10 to 200 KB, signature 10 to 100 KB, JPG; documents as PDF 50 to 300 KB. Resize free.',
+      intro:
+        'The NEET (UG) 2026 Information Bulletin asks for a recent passport size photo, colour or black and white, JPG, between 10 KB and 200 KB, on a white background with your face (without mask) filling 80% of the picture and both ears visible. It gives no pixel size, so keep the photo sharp and only fit the KB range, which is filled in below. The signature is a JPG of 10 KB to 100 KB. Certificates are PDFs of 50 KB to 300 KB. You also capture a live photo with your camera while filling the form. Source: the NEET (UG) 2026 Information Bulletin linked from neet.nta.nic.in.',
+      faqs: [
+        {
+          question: 'What size is the NEET fingers and thumb impression?',
+          answer:
+            'The 2026 bulletin is not consistent: it says 10 KB to 200 KB in one place and 50 KB to 300 KB in another (both JPG). A file between 50 KB and 200 KB satisfies both.',
+        },
+        {
+          question: 'Is the NEET signature 4 to 30 KB?',
+          answer:
+            'Not in the 2026 bulletin. It says the signature should be a JPG between 10 KB and 100 KB. Older figures still appear on many websites.',
+        },
+      ],
+    },
+    {
       slug: 'ibps-po-photo-size',
       preset: 'spec-ibps-po-2026-photo',
       label: 'IBPS PO photo',

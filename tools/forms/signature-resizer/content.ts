@@ -74,6 +74,35 @@ export default defineContent({
   ],
   variants: [
     {
+      slug: 'ssc-signature-size',
+      preset: 'spec-ssc-cgl-2026-signature',
+      label: 'SSC signature',
+      h1: 'SSC signature size: JPEG, 10 to 20 KB (and why there is no photo upload)',
+      seoTitle: 'SSC CGL 2026 signature size: 10 to 20 KB, live photo | NiftyFix',
+      seoDescription:
+        'SSC CGL 2026 asks for a JPEG signature of 10 to 20 KB, about 6 x 2 cm. There is no photo upload: the photo is taken live. Make your signature free.',
+      intro:
+        'The SSC CGL 2026 notice asks for a scanned signature as a JPEG between 10 KB and 20 KB, about 6.0 cm wide by 2.0 cm high; blurred or tiny signatures are rejected. That KB range is filled in below. There is no photo to upload: the application takes your photo live through the camera, and applications that capture an old photo are rejected. Sit facing the camera without a cap, mask or glasses, and look the same on exam day. Source: the SSC notice of the Combined Graduate Level Examination, 2026 on ssc.gov.in.',
+      faqs: [
+        {
+          question: 'What is the SSC photo size in KB?',
+          answer:
+            'For CGL 2026 there is none to meet: you do not upload a photo. The application captures it live with your camera. Sizes such as 20 to 50 KB on other websites are from the old upload process.',
+        },
+      ],
+    },
+    {
+      slug: 'upsc-signature-size',
+      preset: 'spec-upsc-2026-signature',
+      label: 'UPSC triple signature',
+      h1: 'UPSC triple signature: size, format and how to make it',
+      seoTitle: 'UPSC triple signature size: 20 to 100 KB, JPG | NiftyFix',
+      seoDescription:
+        'Make the UPSC triple signature: sign three times one below the other in black ink, one JPG of 20 to 100 KB, 350 to 500 pixels. Free and private.',
+      intro:
+        'UPSC asks for a triple signature: sign three times, one below the other, in black ink on plain white paper with clear gaps between them, and scan all three as one image. Save it as a JPG named "signature", between 20 KB and 100 KB, with image dimensions of 350 to 500 pixels. Photograph your sheet below; the KB range is already filled in, and the tool cleans the paper to white. Source: the UPSC instructions for uploading the photo and signature on upsconline.nic.in.',
+    },
+    {
       slug: 'ibps-po-signature-size',
       preset: 'spec-ibps-po-2026-signature',
       label: 'IBPS PO signature',

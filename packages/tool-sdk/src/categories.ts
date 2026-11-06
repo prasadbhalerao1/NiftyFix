@@ -23,7 +23,8 @@ export const CATEGORIES = {
   image: {
     name: 'Image',
     h1: 'Image tools',
-    description: 'Compress, resize, convert, crop, edit, watermark and inspect images.',
+    description:
+      'Compress, resize, convert, crop, rotate and watermark images, or remove EXIF and GPS data. Free, in your browser, with no upload.',
   },
   video: {
     name: 'Video',
@@ -48,7 +49,8 @@ export const CATEGORIES = {
   text: {
     name: 'Text',
     h1: 'Text tools',
-    description: 'Count, compare, clean up and transform text.',
+    description:
+      'Count words and characters, change text case, and convert Krutidev to Unicode Hindi and back. Free, in your browser, with no upload.',
   },
   data: {
     name: 'Data',

@@ -287,3 +287,18 @@ test('IBPS PO photo page opens with the notice sizes filled in', async ({ page }
   await expect(frame.getByTestId('min-kb')).toHaveValue('20');
   await expect(frame.getByTestId('max-kb')).toHaveValue('50');
 });
+
+test('choosing an exam fills its official sizes, which stay editable', async ({ page }) => {
+  await page.goto('/forms/ibps-po-photo-size/');
+  const frame = page.frameLocator('iframe[data-tool-frame]');
+  await chooseFile(frame, 'images/portrait-1200x1600.jpg');
+  await expect(frame.getByTestId('exam-picker')).toHaveValue('ibps-po-2026-photo');
+  await frame.getByTestId('exam-picker').selectOption('upsc-2026-photo');
+  // UPSC states no pixel size, so IBPS's 200 x 230 is cleared.
+  await expect(frame.getByTestId('width')).toHaveValue('');
+  await expect(frame.getByTestId('min-kb')).toHaveValue('20');
+  await expect(frame.getByTestId('max-kb')).toHaveValue('200');
+  await expect(frame.getByText('upsconline.nic.in')).toBeVisible();
+  await frame.getByTestId('max-kb').fill('150');
+  await expect(frame.getByTestId('max-kb')).toHaveValue('150');
+});

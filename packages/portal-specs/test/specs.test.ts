@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { PORTAL_SPECS, SIZE_TEMPLATES, specPresetSettings, validatePortalSpecs } from '../src';
+import {
+  examChoices,
+  PORTAL_SPECS,
+  SIZE_TEMPLATES,
+  specPresetSettings,
+  validatePortalSpecs,
+} from '../src';
 
 const valid = {
   id: 'example-photo',
@@ -69,5 +75,16 @@ describe('specPresetSettings', () => {
     expect(specPresetSettings('max-20kb')).toBeNull();
     expect(specPresetSettings('spec-no-such-exam')).toBeNull();
     expect(specPresetSettings(undefined)).toBeNull();
+  });
+});
+
+describe('examChoices', () => {
+  it('lists verified exams for each upload type with a short label', () => {
+    const photos = examChoices('photo');
+    expect(photos.map((choice) => choice.label)).toEqual(
+      expect.arrayContaining(['IBPS PO/MT-XVI (2026)', 'NEET (UG) 2026', 'UPSC']),
+    );
+    expect(photos.find((choice) => choice.id === 'ibps-po-2026-photo')?.sourceHost).toBe('ibps.in');
+    expect(examChoices('signature').map((choice) => choice.id)).toContain('ssc-cgl-2026-signature');
   });
 });

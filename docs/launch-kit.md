@@ -126,6 +126,46 @@ Look for posts like "photo size error in form" and reply:
 
 ---
 
+### Exam answers for Reddit (one per subreddit, only where the question is asked)
+
+Google ranks Reddit threads highly for exam questions, so a correct, complete
+answer keeps bringing students for months. Search the subreddit for the question
+first and answer the existing thread instead of starting a new one.
+
+**r/UPSC: "photo rejected" or "triple signature"**
+
+> UPSC's own upload instructions (upsconline.nic.in, Instructions and FAQs > Photo &
+> Signature) say: photo as a colour JPG of 20 to 200 KB, plain white background, and
+> your face must cover at least 3/4 of the photo; that rule rejects most photos, so
+> crop tighter than a normal passport photo. The signature is a triple signature: sign
+> three times one below the other in black ink, one JPG of 20 to 100 KB. You also
+> take a live photo, which is matched with the uploaded one. I put the official
+> numbers in a free tool that fills them in for you:
+> https://niftyfix.in/forms/upsc-photo-size/
+
+**r/NEET: "photo or signature size"**
+
+> From the NEET UG 2026 bulletin: photo JPG 10 to 200 KB (colour or black and white,
+> face 80% of the photo, white background), signature JPG 10 to 100 KB (not 4 to 30 KB
+> as some sites say), certificates as PDF 50 to 300 KB. The bulletin gives two
+> different ranges for the fingerprint image (10 to 200 KB and 50 to 300 KB), so keep
+> it between 50 and 200 KB to satisfy both. Details: https://niftyfix.in/forms/neet-photo-size/
+
+**r/SSC: "SSC photo size"**
+
+> For CGL 2026 there is no photo upload at all: the form captures your photo live with
+> the camera, and using an old photo gets the application rejected (no cap, mask or
+> glasses). Only the signature is uploaded: JPEG, 10 to 20 KB, about 6 x 2 cm.
+> https://niftyfix.in/forms/ssc-signature-size/
+
+**r/bankingexams or r/IBPS: "IBPS PO upload sizes"**
+
+> From the official CRP PO/MT-XVI notice (Annexure III): photo 200 x 230 px, 20 to 50
+> KB; signature 140 x 60 px, 10 to 20 KB, black ink, not in capitals; left thumb
+> 240 x 240 px at 200 DPI, 20 to 50 KB; handwritten declaration 800 x 400 px at 200
+> DPI, 50 to 100 KB. Plus a live photo during registration.
+> https://niftyfix.in/forms/ibps-po-photo-size/
+
 ## 5. Quora answer templates
 
 Search Quora for each question and answer it fully; the link is a bonus, not the answer.

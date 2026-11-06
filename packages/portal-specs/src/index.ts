@@ -51,3 +51,29 @@ export function specPresetSettings(preset: string | undefined): SpecSettings | n
   if (spec.dpi !== undefined) settings.dpi = spec.dpi;
   return settings;
 }
+
+/** An exam or form a resizer can be set to, from the verified records. */
+export interface ExamChoice {
+  /** Portal spec id; the matching preset is `spec-${id}`. */
+  id: string;
+  /** e.g. "IBPS PO/MT-XVI (2026)" */
+  label: string;
+  /** What else the notice asks for, shown under the picker. */
+  requirements: readonly string[];
+  /** Host of the official source, e.g. "ibps.in". */
+  sourceHost: string;
+}
+
+/** Verified exams and forms that state a KB range for this kind of upload. */
+export function examChoices(documentType: 'photo' | 'signature'): ExamChoice[] {
+  return PORTAL_SPECS.filter(
+    (spec) => spec.documentType === documentType && spec.maxBytes !== undefined,
+  ).map((spec) => ({
+    id: spec.id,
+    label: (spec.applicationName.split(':')[0] ?? spec.applicationName)
+      .replace(/ online application$| application$/, '')
+      .trim(),
+    requirements: spec.otherRequirements,
+    sourceHost: new URL(spec.source.url).hostname.replace(/^www\./, ''),
+  }));
+}

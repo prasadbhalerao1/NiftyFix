@@ -1,4 +1,4 @@
-import { specPresetSettings } from '@niftyfix/portal-specs';
+import { examChoices, specPresetSettings } from '@niftyfix/portal-specs';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { expandToAspect, type Rect, type Size } from '@niftyfix/constraints';
 import { DEFAULT_ENHANCE, NO_ENHANCE, type EnhanceSettings } from '@niftyfix/engine-image';
@@ -17,6 +17,8 @@ import {
   ErrorView,
   ImageResultPanel,
   loadImageSource,
+  ExamPicker,
+  OWN_SIZES,
   OutputSpecForm,
   Panel,
   ProcessingPanel,
@@ -41,6 +43,8 @@ const ACCEPT =
 const percent = (value: number): string => `${Math.round(value * 100)}%`;
 const signedPercent = (value: number): string =>
   `${value > 0 ? '+' : ''}${Math.round(value * 100)}%`;
+
+const EXAMS = examChoices('signature');
 
 export default function SignatureResizer({ manifest, device, run, report, preset }: ToolUiProps) {
   const urls = useRef(new ObjectUrlRegistry());
@@ -89,6 +93,23 @@ export default function SignatureResizer({ manifest, device, run, report, preset
   const update = (patch: Partial<SignatureSettings>): void => {
     setSettings((current) => ({ ...current, ...patch }));
     if (phase.kind === 'done' || phase.kind === 'failed') job.reset();
+  };
+  // The exam whose official sizes are filled in; exam pages open on theirs.
+  const [exam, setExam] = useState(() =>
+    preset?.startsWith('spec-') ? preset.slice('spec-'.length) : OWN_SIZES,
+  );
+  const chooseExam = (id: string): void => {
+    setExam(id);
+    const sizes = specPresetSettings(`spec-${id}`);
+    if (!sizes) return;
+    // Clear what the notice does not state, so another exam's numbers do not linger.
+    update({
+      width: sizes.width ?? null,
+      height: sizes.height ?? null,
+      minKb: sizes.minKb ?? null,
+      maxKb: sizes.maxKb ?? null,
+      dpi: sizes.dpi ?? null,
+    });
   };
   const updateEnhance = (patch: Partial<EnhanceSettings>): void =>
     update({ enhance: { ...settings.enhance, ...patch } });
@@ -345,6 +366,8 @@ export default function SignatureResizer({ manifest, device, run, report, preset
               ? 'The whole signature is scaled into the box with white margins.'
               : 'The crop frame takes the output shape and fills it edge to edge.'}
           </p>
+
+          <ExamPicker choices={EXAMS} value={exam} onChange={chooseExam} />
 
           <OutputSpecForm
             value={settings}

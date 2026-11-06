@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { centredCropForAspect, type Rect, type Size } from '@niftyfix/constraints';
-import { SIZE_TEMPLATES, specPresetSettings } from '@niftyfix/portal-specs';
+import { SIZE_TEMPLATES, examChoices, specPresetSettings } from '@niftyfix/portal-specs';
 import { downloadBlob, ObjectUrlRegistry } from '@niftyfix/runtime';
 import {
   fileInput,
@@ -16,6 +16,8 @@ import {
   ErrorView,
   ImageResultPanel,
   loadImageSource,
+  ExamPicker,
+  OWN_SIZES,
   OutputSpecForm,
   Panel,
   ProcessingPanel,
@@ -27,6 +29,8 @@ import { DEFAULT_SETTINGS, toOptions, validateSettings, type PhotoSettings } fro
 
 const ACCEPT =
   '.jpg,.jpeg,.png,.webp,.avif,.bmp,.gif,image/jpeg,image/png,image/webp,image/avif,image/bmp,image/gif';
+
+const EXAMS = examChoices('photo');
 
 export default function PhotoResizer({ manifest, device, run, report, preset }: ToolUiProps) {
   const urls = useRef(new ObjectUrlRegistry());
@@ -59,6 +63,23 @@ export default function PhotoResizer({ manifest, device, run, report, preset }: 
   const update = (patch: Partial<PhotoSettings>): void => {
     setSettings((current) => ({ ...current, ...patch }));
     if (phase.kind === 'done' || phase.kind === 'failed') job.reset();
+  };
+  // The exam whose official sizes are filled in; exam pages open on theirs.
+  const [exam, setExam] = useState(() =>
+    preset?.startsWith('spec-') ? preset.slice('spec-'.length) : OWN_SIZES,
+  );
+  const chooseExam = (id: string): void => {
+    setExam(id);
+    const sizes = specPresetSettings(`spec-${id}`);
+    if (!sizes) return;
+    // Clear what the notice does not state, so another exam's numbers do not linger.
+    update({
+      width: sizes.width ?? null,
+      height: sizes.height ?? null,
+      minKb: sizes.minKb ?? null,
+      maxKb: sizes.maxKb ?? null,
+      dpi: sizes.dpi ?? null,
+    });
   };
 
   const choose = async (files: File[]): Promise<void> => {
@@ -173,6 +194,8 @@ export default function PhotoResizer({ manifest, device, run, report, preset }: 
             start();
           }}
         >
+          <ExamPicker choices={EXAMS} value={exam} onChange={chooseExam} />
+
           <div>
             <p class="mb-2 text-sm font-medium">Common sizes</p>
             <div class="flex flex-wrap gap-2" role="group" aria-label="Common sizes">

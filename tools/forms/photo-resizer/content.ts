@@ -78,6 +78,29 @@ export default defineContent({
   ],
   variants: [
     {
+      slug: 'ibps-po-photo-size',
+      preset: 'spec-ibps-po-2026-photo',
+      label: 'IBPS PO photo',
+      h1: 'IBPS PO photo size: 200 x 230 px, 20 to 50 KB',
+      seoTitle: 'IBPS PO 2026 photo size: 200x230 px, 20 to 50 KB | NiftyFix',
+      seoDescription:
+        'Resize your photo for the IBPS PO/MT-XVI form: 200 x 230 pixels, 20 to 50 KB, JPG, as the official notice states. Thumb and declaration sizes too. Free.',
+      intro:
+        'The IBPS PO/MT-XVI notice asks for a recent colour passport-style photo, 200 x 230 pixels (preferred), 20 KB to 50 KB, JPG, on a light, preferably white, background. These numbers are filled in below. You will also take a live photo with your webcam or phone during registration, so look the same in both. The same notice sets the left thumb impression at 240 x 240 px, 20 to 50 KB, and the handwritten declaration at 800 x 400 px, 50 to 100 KB, both at 200 DPI. Source: the official IBPS CRP PO/MT-XVI notification (30 June 2026, Annexure III) on ibps.in.',
+      faqs: [
+        {
+          question: 'Do I still upload a photo if IBPS takes a live photo?',
+          answer:
+            'Yes. The notice asks for both: an uploaded photo (200 x 230 px, 20 to 50 KB) and a live photo captured through your webcam or phone while you register.',
+        },
+        {
+          question: 'Can I make the thumb impression and declaration here?',
+          answer:
+            'Yes. Scan or photograph them on white paper, then set 240 x 240 px and 20 to 50 KB for the thumb, or 800 x 400 px and 50 to 100 KB for the declaration, with 200 DPI.',
+        },
+      ],
+    },
+    {
       slug: 'resize-photo-to-20kb',
       preset: 'max-20kb',
       label: 'Under 20 KB',

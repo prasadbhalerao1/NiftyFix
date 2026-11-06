@@ -1,3 +1,4 @@
+import { specPresetSettings } from '@niftyfix/portal-specs';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { expandToAspect, type Rect, type Size } from '@niftyfix/constraints';
 import { DEFAULT_ENHANCE, NO_ENHANCE, type EnhanceSettings } from '@niftyfix/engine-image';
@@ -48,6 +49,8 @@ export default function SignatureResizer({ manifest, device, run, report, preset
   const [settings, setSettings] = useState<SignatureSettings>(() => ({
     ...DEFAULT_SETTINGS,
     ...parseKbPreset(preset),
+    // Exam pages ("IBPS PO photo size") open with that notice's pixels and KB.
+    ...specPresetSettings(preset),
   }));
   const [crop, setCrop] = useState<Rect | null>(null);
   const [autoCropped, setAutoCropped] = useState<boolean | null>(null);

@@ -276,3 +276,13 @@ test.describe('Form Photo Resizer: mobile layout', () => {
     await expect(frame.getByTestId('error-view')).toBeInViewport({ timeout: 30_000 });
   });
 });
+
+test('IBPS PO photo page opens with the notice sizes filled in', async ({ page }) => {
+  await page.goto('/forms/ibps-po-photo-size/');
+  await expect(page.getByText('ibps.in').first()).toBeVisible();
+  const frame = page.frameLocator('iframe[data-tool-frame]');
+  await expect(frame.getByTestId('width')).toHaveValue('200');
+  await expect(frame.getByTestId('height')).toHaveValue('230');
+  await expect(frame.getByTestId('min-kb')).toHaveValue('20');
+  await expect(frame.getByTestId('max-kb')).toHaveValue('50');
+});

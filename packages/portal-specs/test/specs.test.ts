@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { PORTAL_SPECS, SIZE_TEMPLATES, validatePortalSpecs } from '../src';
+import { PORTAL_SPECS, SIZE_TEMPLATES, specPresetSettings, validatePortalSpecs } from '../src';
 
 const valid = {
   id: 'example-photo',
@@ -51,5 +51,23 @@ describe('portal spec validation', () => {
       width: Math.round((3.5 / 2.54) * 300),
       height: Math.round((4.5 / 2.54) * 300),
     });
+  });
+});
+
+describe('specPresetSettings', () => {
+  it('fills pixels, KB and DPI from a portal spec', () => {
+    expect(specPresetSettings('spec-ibps-po-2026-photo')).toEqual({
+      width: 200,
+      height: 230,
+      minKb: 20,
+      maxKb: 50,
+    });
+    expect(specPresetSettings('spec-ibps-po-2026-left-thumb')).toMatchObject({ dpi: 200 });
+  });
+
+  it('ignores other presets and unknown specs', () => {
+    expect(specPresetSettings('max-20kb')).toBeNull();
+    expect(specPresetSettings('spec-no-such-exam')).toBeNull();
+    expect(specPresetSettings(undefined)).toBeNull();
   });
 });

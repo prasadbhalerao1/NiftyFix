@@ -6,8 +6,8 @@ import type { PortalSpec, SizeTemplate } from './schema';
  * Add records only from an official https source, with the date it was read.
  * Third-party summaries conflict (see docs/IMPLEMENTATION_STATUS.md), so a
  * requirement the source does not state is listed in `unspecified`, never
- * guessed. Exam portals (SSC, UPSC) are not here: several moved to live photo
- * capture in 2025 and 2026.
+ * guessed. Exam records are added one notice at a time; several exams (SSC among
+ * them) moved to live photo capture in 2025 and 2026, so check each notice.
  */
 export const PORTAL_SPECS: readonly PortalSpec[] = [
   {
@@ -109,6 +109,107 @@ export const PORTAL_SPECS: readonly PortalSpec[] = [
     verifiedBy: 'NiftyFix, from the official page',
     version: 1,
     notes: '600 DPI is our print resolution, not a stated requirement.',
+  },
+  {
+    id: 'ibps-po-2026-photo',
+    portalName: 'IBPS (Institute of Banking Personnel Selection)',
+    applicationName: 'IBPS PO/MT-XVI (2026) application: photograph',
+    documentType: 'photo',
+    dimensions: { kind: 'exact-px', width: 200, height: 230 },
+    minBytes: 20_000,
+    maxBytes: 50_000,
+    byteConvention: 'not-stated',
+    formats: ['jpeg'],
+    background: 'Light-coloured, preferably white',
+    otherRequirements: [
+      'Recent passport style colour photograph (4.5 cm x 3.5 cm)',
+      '200 x 230 pixels is stated as preferred',
+      'No caps, hats or dark glasses; religious headwear allowed if the face is not covered',
+      'A live photo is also captured through a webcam or mobile phone during registration',
+    ],
+    unspecified: [],
+    source: {
+      url: 'https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI_Final_V1_30.06.2026.pdf',
+      title: 'IBPS CRP PO/MT-XVI detailed notification, Annexure III',
+      noticeReference: 'CRP PO/MT-XVI, 30 June 2026',
+    },
+    verifiedAt: '2026-11-06',
+    verifiedBy: 'NiftyFix, from the official PDF',
+    version: 1,
+  },
+  {
+    id: 'ibps-po-2026-signature',
+    portalName: 'IBPS (Institute of Banking Personnel Selection)',
+    applicationName: 'IBPS PO/MT-XVI (2026) application: signature',
+    documentType: 'signature',
+    dimensions: { kind: 'exact-px', width: 140, height: 60 },
+    minBytes: 10_000,
+    maxBytes: 20_000,
+    byteConvention: 'not-stated',
+    formats: ['jpeg'],
+    background: 'White paper, black ink pen',
+    otherRequirements: ['140 x 60 pixels is stated as preferred', 'Not in capital letters'],
+    unspecified: [],
+    source: {
+      url: 'https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI_Final_V1_30.06.2026.pdf',
+      title: 'IBPS CRP PO/MT-XVI detailed notification, Annexure III',
+      noticeReference: 'CRP PO/MT-XVI, 30 June 2026',
+    },
+    verifiedAt: '2026-11-06',
+    verifiedBy: 'NiftyFix, from the official PDF',
+    version: 1,
+  },
+  {
+    id: 'ibps-po-2026-left-thumb',
+    portalName: 'IBPS (Institute of Banking Personnel Selection)',
+    applicationName: 'IBPS PO/MT-XVI (2026) application: left thumb impression',
+    documentType: 'document',
+    dimensions: { kind: 'exact-px', width: 240, height: 240 },
+    minBytes: 20_000,
+    maxBytes: 50_000,
+    byteConvention: 'not-stated',
+    formats: ['jpeg'],
+    dpi: 200,
+    background: 'White paper, black or blue ink',
+    otherRequirements: [
+      '240 x 240 pixels at 200 DPI (3 cm x 3 cm) is stated as preferred',
+      'Right thumb if the left thumb is missing',
+    ],
+    unspecified: [],
+    source: {
+      url: 'https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI_Final_V1_30.06.2026.pdf',
+      title: 'IBPS CRP PO/MT-XVI detailed notification, Annexure III',
+      noticeReference: 'CRP PO/MT-XVI, 30 June 2026',
+    },
+    verifiedAt: '2026-11-06',
+    verifiedBy: 'NiftyFix, from the official PDF',
+    version: 1,
+  },
+  {
+    id: 'ibps-po-2026-declaration',
+    portalName: 'IBPS (Institute of Banking Personnel Selection)',
+    applicationName: 'IBPS PO/MT-XVI (2026) application: handwritten declaration',
+    documentType: 'document',
+    dimensions: { kind: 'exact-px', width: 800, height: 400 },
+    minBytes: 50_000,
+    maxBytes: 100_000,
+    byteConvention: 'not-stated',
+    formats: ['jpeg'],
+    dpi: 200,
+    background: 'White paper, black ink',
+    otherRequirements: [
+      '800 x 400 pixels at 200 DPI (10 cm x 5 cm) is stated as preferred',
+      "In English, in the candidate's own handwriting, not in capital letters",
+    ],
+    unspecified: [],
+    source: {
+      url: 'https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI_Final_V1_30.06.2026.pdf',
+      title: 'IBPS CRP PO/MT-XVI detailed notification, Annexure III',
+      noticeReference: 'CRP PO/MT-XVI, 30 June 2026',
+    },
+    verifiedAt: '2026-11-06',
+    verifiedBy: 'NiftyFix, from the official PDF',
+    version: 1,
   },
 ];
 

@@ -23,3 +23,31 @@ export function validatePortalSpecs(specs: readonly unknown[]): string[] {
   });
   return problems;
 }
+
+/** Output settings a resizer can start from: a portal's stated pixels, KB range and DPI. */
+export interface SpecSettings {
+  width?: number;
+  height?: number;
+  minKb?: number;
+  maxKb?: number;
+  dpi?: number;
+}
+
+/**
+ * Settings for an intent page preset "spec-<portal spec id>", e.g. "spec-ibps-po-2026-photo".
+ * Returns null for any other preset.
+ */
+export function specPresetSettings(preset: string | undefined): SpecSettings | null {
+  if (!preset?.startsWith('spec-')) return null;
+  const spec = PORTAL_SPECS.find((candidate) => candidate.id === preset.slice('spec-'.length));
+  if (!spec) return null;
+  const settings: SpecSettings = {};
+  if (spec.dimensions?.kind === 'exact-px') {
+    settings.width = spec.dimensions.width;
+    settings.height = spec.dimensions.height;
+  }
+  if (spec.minBytes !== undefined) settings.minKb = spec.minBytes / 1000;
+  if (spec.maxBytes !== undefined) settings.maxKb = spec.maxBytes / 1000;
+  if (spec.dpi !== undefined) settings.dpi = spec.dpi;
+  return settings;
+}

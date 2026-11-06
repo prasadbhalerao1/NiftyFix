@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { centredCropForAspect, type Rect, type Size } from '@niftyfix/constraints';
-import { SIZE_TEMPLATES } from '@niftyfix/portal-specs';
+import { SIZE_TEMPLATES, specPresetSettings } from '@niftyfix/portal-specs';
 import { downloadBlob, ObjectUrlRegistry } from '@niftyfix/runtime';
 import {
   fileInput,
@@ -35,6 +35,8 @@ export default function PhotoResizer({ manifest, device, run, report, preset }: 
   const [settings, setSettings] = useState<PhotoSettings>(() => ({
     ...DEFAULT_SETTINGS,
     ...parseKbPreset(preset),
+    // Exam pages ("IBPS PO photo size") open with that notice's pixels and KB.
+    ...specPresetSettings(preset),
   }));
   const [crop, setCrop] = useState<Rect | null>(null);
   const [inputError, setInputError] = useState<SerializedToolError | null>(null);

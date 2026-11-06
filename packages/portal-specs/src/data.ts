@@ -326,6 +326,52 @@ export const PORTAL_SPECS: readonly PortalSpec[] = [
     verifiedBy: 'NiftyFix, from the official PDF',
     version: 1,
   },
+  {
+    id: 'mpsc-photo',
+    portalName: 'MPSC (Maharashtra Public Service Commission)',
+    applicationName: 'MPSC online application: photograph',
+    documentType: 'photo',
+    maxBytes: 50_000,
+    byteConvention: 'not-stated',
+    formats: ['jpeg'],
+    otherRequirements: [
+      'Recent colour passport size photo, full face, facing the camera, no shadows or red eyes',
+      'Size 3.5 cm wide by 4.5 cm high',
+      'File name of 10 characters at most',
+      'No watermark, stamp or scanning app name on the image',
+    ],
+    unspecified: ['Minimum file size', 'Pixel dimensions (only centimetres are stated)'],
+    source: {
+      url: 'https://mpsconline.gov.in/Guidelines/Instructions_for_Filling_the_Application_Form.pdf',
+      title: 'MPSC Online Application System: Instructions for filling the application form',
+    },
+    verifiedAt: '2026-11-06',
+    verifiedBy: 'NiftyFix, from the official PDF',
+    version: 1,
+  },
+  {
+    id: 'mpsc-signature',
+    portalName: 'MPSC (Maharashtra Public Service Commission)',
+    applicationName: 'MPSC online application: signature',
+    documentType: 'signature',
+    maxBytes: 50_000,
+    byteConvention: 'not-stated',
+    formats: ['jpeg'],
+    otherRequirements: [
+      'Signed by the applicant only',
+      'Size 3.5 cm wide by 1.5 cm high',
+      'File name of 10 characters at most',
+      'No watermark or scanning app name on the image',
+    ],
+    unspecified: ['Minimum file size', 'Pixel dimensions (only centimetres are stated)'],
+    source: {
+      url: 'https://mpsconline.gov.in/Guidelines/Instructions_for_Filling_the_Application_Form.pdf',
+      title: 'MPSC Online Application System: Instructions for filling the application form',
+    },
+    verifiedAt: '2026-11-06',
+    verifiedBy: 'NiftyFix, from the official PDF',
+    version: 1,
+  },
 ];
 
 /** Pixel sizes derived from physical sizes; labelled as generic, not as any portal's rule. */

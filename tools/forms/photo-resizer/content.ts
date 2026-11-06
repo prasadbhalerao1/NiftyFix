@@ -78,6 +78,24 @@ export default defineContent({
   ],
   variants: [
     {
+      slug: 'mpsc-photo-size',
+      preset: 'spec-mpsc-photo',
+      label: 'MPSC photo',
+      h1: 'MPSC photo and signature size: under 50 KB, 10-character file name',
+      seoTitle: 'MPSC photo and signature size: max 50 KB, JPG | NiftyFix',
+      seoDescription:
+        'MPSC online form sizes from mpsconline.gov.in: photo 3.5 x 4.5 cm, signature 3.5 x 1.5 cm, each a JPG under 50 KB with a file name of 10 characters. Free.',
+      intro:
+        'The MPSC Online Application System asks for a recent colour passport size photo, 3.5 cm wide by 4.5 cm high, and a signature 3.5 cm wide by 1.5 cm high, each as a JPG of at most 50 KB. The rule that catches many applicants is the file name: at most 10 characters, so rename a phone file such as IMG_20260611_123456.jpg to something like photo.jpg (set the file name below). The image must not carry a watermark, stamp or scanning app name. The 50 KB limit is filled in; for the signature, choose MPSC in the Signature Resizer. Source: Instructions for filling the application form, mpsconline.gov.in.',
+      faqs: [
+        {
+          question: 'Why does MPSC reject my photo file?',
+          answer:
+            'Check three things: the file is a JPG, it is 50 KB or less, and its name has at most 10 characters. Phone photo names are usually longer, so rename the file before uploading.',
+        },
+      ],
+    },
+    {
       slug: 'upsc-photo-size',
       preset: 'spec-upsc-2026-photo',
       label: 'UPSC photo',

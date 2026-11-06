@@ -294,8 +294,9 @@ test('choosing an exam fills its official sizes, which stay editable', async ({ 
   await chooseFile(frame, 'images/portrait-1200x1600.jpg');
   await expect(frame.getByTestId('exam-picker')).toHaveValue('ibps-po-2026-photo');
   await frame.getByTestId('exam-picker').selectOption('upsc-2026-photo');
-  // UPSC states no pixel size, so IBPS's 200 x 230 is cleared.
-  await expect(frame.getByTestId('width')).toHaveValue('');
+  // UPSC states no pixel size, so IBPS's 200 x 230 goes back to the default, not blank.
+  await expect(frame.getByTestId('width')).toHaveValue('413');
+  await expect(frame.getByTestId('height')).toHaveValue('531');
   await expect(frame.getByTestId('min-kb')).toHaveValue('20');
   await expect(frame.getByTestId('max-kb')).toHaveValue('200');
   await expect(frame.getByText('upsconline.nic.in')).toBeVisible();

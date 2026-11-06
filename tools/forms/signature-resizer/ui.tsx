@@ -102,10 +102,11 @@ export default function SignatureResizer({ manifest, device, run, report, preset
     setExam(id);
     const sizes = specPresetSettings(`spec-${id}`);
     if (!sizes) return;
-    // Clear what the notice does not state, so another exam's numbers do not linger.
+    // Reset what the notice does not state, so another exam's numbers do not linger;
+    // pixels fall back to the tool's default rather than an empty, invalid field.
     update({
-      width: sizes.width ?? null,
-      height: sizes.height ?? null,
+      width: sizes.width ?? DEFAULT_SETTINGS.width,
+      height: sizes.height ?? DEFAULT_SETTINGS.height,
       minKb: sizes.minKb ?? null,
       maxKb: sizes.maxKb ?? null,
       dpi: sizes.dpi ?? null,

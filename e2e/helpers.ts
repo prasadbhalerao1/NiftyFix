@@ -44,11 +44,21 @@ export function recordRequests(page: Page): {
 }
 
 /** Collect CSP violations and uncaught errors from the page and its frames. */
+/**
+ * WebKit logs this for its own built-in <select> control under `style-src 'self'`,
+ * even on a page with nothing else (checked with a bare <select>). Chromium runs
+ * the same pages under the same policy, so a real inline style still fails there.
+ */
+const WEBKIT_SELECT_NOISE =
+  "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.";
+
 export function recordProblems(page: Page): string[] {
   const problems: string[] = [];
+  const webkit = page.context().browser()?.browserType().name() === 'webkit';
   page.on('console', (message) => {
-    if (message.type() === 'error' && /Content[- ]Security[- ]Policy|CSP/i.test(message.text()))
-      problems.push(message.text());
+    if (message.type() !== 'error') return;
+    if (webkit && message.text() === WEBKIT_SELECT_NOISE) return;
+    if (/Content[- ]Security[- ]Policy|CSP/i.test(message.text())) problems.push(message.text());
   });
   page.on('pageerror', (error) => problems.push(`pageerror: ${error.message}`));
   return problems;

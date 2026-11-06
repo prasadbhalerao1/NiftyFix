@@ -498,7 +498,7 @@ export const PORTAL_SPECS: readonly PortalSpec[] = [
   {
     id: 'ssc-cgl-2026-signature',
     portalName: 'SSC (Staff Selection Commission)',
-    applicationName: 'SSC CGL 2026 application: signature',
+    applicationName: 'SSC CGL, GD Constable and Stenographer 2026 application: signature',
     documentType: 'signature',
     minBytes: 10_000,
     maxBytes: 20_000,
@@ -517,6 +517,8 @@ export const PORTAL_SPECS: readonly PortalSpec[] = [
     verifiedAt: '2026-11-06',
     verifiedBy: 'NiftyFix, from the official PDF',
     version: 1,
+    notes:
+      'The SSC Constable (GD) 2026 notice (para 8.7) and the Stenographer Grade C and D 2026 notice give the same signature size and the same live photo rule. CHSL and MTS 2026 notices were not out on the date we checked.',
   },
   {
     id: 'mpsc-photo',

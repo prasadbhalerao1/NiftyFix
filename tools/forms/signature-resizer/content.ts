@@ -78,16 +78,16 @@ export default defineContent({
       preset: 'spec-ssc-cgl-2026-signature',
       label: 'SSC signature',
       h1: 'SSC signature size: JPEG, 10 to 20 KB (and why there is no photo upload)',
-      seoTitle: 'SSC CGL 2026 signature size: 10 to 20 KB, live photo | NiftyFix',
+      seoTitle: 'SSC signature size 2026: 10 to 20 KB, live photo | NiftyFix',
       seoDescription:
-        'SSC CGL 2026 asks for a JPEG signature of 10 to 20 KB, about 6 x 2 cm. There is no photo upload: the photo is taken live. Make your signature free.',
+        'SSC CGL, GD Constable and Stenographer 2026 ask for a JPEG signature of 10 to 20 KB, about 6 x 2 cm. No photo upload: it is taken live. Free.',
       intro:
-        'The SSC CGL 2026 notice asks for a scanned signature as a JPEG between 10 KB and 20 KB, about 6.0 cm wide by 2.0 cm high; blurred or tiny signatures are rejected. That KB range is filled in below. There is no photo to upload: the application takes your photo live through the camera, and applications that capture an old photo are rejected. Sit facing the camera without a cap, mask or glasses, and look the same on exam day. Source: the SSC notice of the Combined Graduate Level Examination, 2026 on ssc.gov.in.',
+        'The SSC CGL 2026, Constable (GD) 2026 and Stenographer 2026 notices ask for a scanned signature as a JPEG between 10 KB and 20 KB, about 6.0 cm wide by 2.0 cm high; blurred or tiny signatures are rejected. That KB range is filled in below. There is no photo to upload: the application takes your photo live through the camera, and applications that capture an old photo are rejected. Sit facing the camera without a cap, mask or glasses, and look the same on exam day. Sources: the SSC notices of the Combined Graduate Level, Constable (GD) and Stenographer Grade C and D examinations, 2026, on ssc.gov.in.',
       faqs: [
         {
           question: 'What is the SSC photo size in KB?',
           answer:
-            'For CGL 2026 there is none to meet: you do not upload a photo. The application captures it live with your camera. Sizes such as 20 to 50 KB on other websites are from the old upload process.',
+            'For CGL, GD Constable and Stenographer 2026 there is none to meet: you do not upload a photo. The application captures it live with your camera. Sizes such as 20 to 50 KB on other websites are from the old upload process.',
         },
       ],
     },

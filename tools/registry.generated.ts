@@ -21,54 +21,56 @@ import content8 from './image/convert-image/content';
 import manifest8 from './image/convert-image/manifest';
 import content9 from './image/crop-image/content';
 import manifest9 from './image/crop-image/manifest';
-import content10 from './image/remove-exif/content';
-import manifest10 from './image/remove-exif/manifest';
-import content11 from './image/resize-image/content';
-import manifest11 from './image/resize-image/manifest';
-import content12 from './image/rotate-image/content';
-import manifest12 from './image/rotate-image/manifest';
-import content13 from './image/watermark-image/content';
-import manifest13 from './image/watermark-image/manifest';
-import content14 from './ocr/image-to-text/content';
-import manifest14 from './ocr/image-to-text/manifest';
-import content15 from './pdf/add-page-numbers/content';
-import manifest15 from './pdf/add-page-numbers/manifest';
-import content16 from './pdf/compress-pdf/content';
-import manifest16 from './pdf/compress-pdf/manifest';
-import content17 from './pdf/crop-pdf/content';
-import manifest17 from './pdf/crop-pdf/manifest';
-import content18 from './pdf/extract-pdf-pages/content';
-import manifest18 from './pdf/extract-pdf-pages/manifest';
-import content19 from './pdf/fill-pdf-form/content';
-import manifest19 from './pdf/fill-pdf-form/manifest';
-import content20 from './pdf/flatten-pdf/content';
-import manifest20 from './pdf/flatten-pdf/manifest';
-import content21 from './pdf/image-to-pdf/content';
-import manifest21 from './pdf/image-to-pdf/manifest';
-import content22 from './pdf/merge-pdf/content';
-import manifest22 from './pdf/merge-pdf/manifest';
-import content23 from './pdf/organize-pdf/content';
-import manifest23 from './pdf/organize-pdf/manifest';
-import content24 from './pdf/pdf-metadata/content';
-import manifest24 from './pdf/pdf-metadata/manifest';
-import content25 from './pdf/pdf-to-image/content';
-import manifest25 from './pdf/pdf-to-image/manifest';
-import content26 from './pdf/pdf-to-text/content';
-import manifest26 from './pdf/pdf-to-text/manifest';
-import content27 from './pdf/rotate-pdf/content';
-import manifest27 from './pdf/rotate-pdf/manifest';
-import content28 from './pdf/sign-pdf/content';
-import manifest28 from './pdf/sign-pdf/manifest';
-import content29 from './pdf/split-pdf/content';
-import manifest29 from './pdf/split-pdf/manifest';
-import content30 from './pdf/watermark-pdf/content';
-import manifest30 from './pdf/watermark-pdf/manifest';
-import content31 from './text/case-converter/content';
-import manifest31 from './text/case-converter/manifest';
-import content32 from './text/krutidev-to-unicode/content';
-import manifest32 from './text/krutidev-to-unicode/manifest';
-import content33 from './text/word-counter/content';
-import manifest33 from './text/word-counter/manifest';
+import content10 from './image/make-square/content';
+import manifest10 from './image/make-square/manifest';
+import content11 from './image/remove-exif/content';
+import manifest11 from './image/remove-exif/manifest';
+import content12 from './image/resize-image/content';
+import manifest12 from './image/resize-image/manifest';
+import content13 from './image/rotate-image/content';
+import manifest13 from './image/rotate-image/manifest';
+import content14 from './image/watermark-image/content';
+import manifest14 from './image/watermark-image/manifest';
+import content15 from './ocr/image-to-text/content';
+import manifest15 from './ocr/image-to-text/manifest';
+import content16 from './pdf/add-page-numbers/content';
+import manifest16 from './pdf/add-page-numbers/manifest';
+import content17 from './pdf/compress-pdf/content';
+import manifest17 from './pdf/compress-pdf/manifest';
+import content18 from './pdf/crop-pdf/content';
+import manifest18 from './pdf/crop-pdf/manifest';
+import content19 from './pdf/extract-pdf-pages/content';
+import manifest19 from './pdf/extract-pdf-pages/manifest';
+import content20 from './pdf/fill-pdf-form/content';
+import manifest20 from './pdf/fill-pdf-form/manifest';
+import content21 from './pdf/flatten-pdf/content';
+import manifest21 from './pdf/flatten-pdf/manifest';
+import content22 from './pdf/image-to-pdf/content';
+import manifest22 from './pdf/image-to-pdf/manifest';
+import content23 from './pdf/merge-pdf/content';
+import manifest23 from './pdf/merge-pdf/manifest';
+import content24 from './pdf/organize-pdf/content';
+import manifest24 from './pdf/organize-pdf/manifest';
+import content25 from './pdf/pdf-metadata/content';
+import manifest25 from './pdf/pdf-metadata/manifest';
+import content26 from './pdf/pdf-to-image/content';
+import manifest26 from './pdf/pdf-to-image/manifest';
+import content27 from './pdf/pdf-to-text/content';
+import manifest27 from './pdf/pdf-to-text/manifest';
+import content28 from './pdf/rotate-pdf/content';
+import manifest28 from './pdf/rotate-pdf/manifest';
+import content29 from './pdf/sign-pdf/content';
+import manifest29 from './pdf/sign-pdf/manifest';
+import content30 from './pdf/split-pdf/content';
+import manifest30 from './pdf/split-pdf/manifest';
+import content31 from './pdf/watermark-pdf/content';
+import manifest31 from './pdf/watermark-pdf/manifest';
+import content32 from './text/case-converter/content';
+import manifest32 from './text/case-converter/manifest';
+import content33 from './text/krutidev-to-unicode/content';
+import manifest33 from './text/krutidev-to-unicode/manifest';
+import content34 from './text/word-counter/content';
+import manifest34 from './text/word-counter/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'calculators/emi-calculator', manifest: manifest0, content: content0 },
@@ -81,28 +83,29 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'image/compress-image', manifest: manifest7, content: content7 },
   { dir: 'image/convert-image', manifest: manifest8, content: content8 },
   { dir: 'image/crop-image', manifest: manifest9, content: content9 },
-  { dir: 'image/remove-exif', manifest: manifest10, content: content10 },
-  { dir: 'image/resize-image', manifest: manifest11, content: content11 },
-  { dir: 'image/rotate-image', manifest: manifest12, content: content12 },
-  { dir: 'image/watermark-image', manifest: manifest13, content: content13 },
-  { dir: 'ocr/image-to-text', manifest: manifest14, content: content14 },
-  { dir: 'pdf/add-page-numbers', manifest: manifest15, content: content15 },
-  { dir: 'pdf/compress-pdf', manifest: manifest16, content: content16 },
-  { dir: 'pdf/crop-pdf', manifest: manifest17, content: content17 },
-  { dir: 'pdf/extract-pdf-pages', manifest: manifest18, content: content18 },
-  { dir: 'pdf/fill-pdf-form', manifest: manifest19, content: content19 },
-  { dir: 'pdf/flatten-pdf', manifest: manifest20, content: content20 },
-  { dir: 'pdf/image-to-pdf', manifest: manifest21, content: content21 },
-  { dir: 'pdf/merge-pdf', manifest: manifest22, content: content22 },
-  { dir: 'pdf/organize-pdf', manifest: manifest23, content: content23 },
-  { dir: 'pdf/pdf-metadata', manifest: manifest24, content: content24 },
-  { dir: 'pdf/pdf-to-image', manifest: manifest25, content: content25 },
-  { dir: 'pdf/pdf-to-text', manifest: manifest26, content: content26 },
-  { dir: 'pdf/rotate-pdf', manifest: manifest27, content: content27 },
-  { dir: 'pdf/sign-pdf', manifest: manifest28, content: content28 },
-  { dir: 'pdf/split-pdf', manifest: manifest29, content: content29 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest30, content: content30 },
-  { dir: 'text/case-converter', manifest: manifest31, content: content31 },
-  { dir: 'text/krutidev-to-unicode', manifest: manifest32, content: content32 },
-  { dir: 'text/word-counter', manifest: manifest33, content: content33 },
+  { dir: 'image/make-square', manifest: manifest10, content: content10 },
+  { dir: 'image/remove-exif', manifest: manifest11, content: content11 },
+  { dir: 'image/resize-image', manifest: manifest12, content: content12 },
+  { dir: 'image/rotate-image', manifest: manifest13, content: content13 },
+  { dir: 'image/watermark-image', manifest: manifest14, content: content14 },
+  { dir: 'ocr/image-to-text', manifest: manifest15, content: content15 },
+  { dir: 'pdf/add-page-numbers', manifest: manifest16, content: content16 },
+  { dir: 'pdf/compress-pdf', manifest: manifest17, content: content17 },
+  { dir: 'pdf/crop-pdf', manifest: manifest18, content: content18 },
+  { dir: 'pdf/extract-pdf-pages', manifest: manifest19, content: content19 },
+  { dir: 'pdf/fill-pdf-form', manifest: manifest20, content: content20 },
+  { dir: 'pdf/flatten-pdf', manifest: manifest21, content: content21 },
+  { dir: 'pdf/image-to-pdf', manifest: manifest22, content: content22 },
+  { dir: 'pdf/merge-pdf', manifest: manifest23, content: content23 },
+  { dir: 'pdf/organize-pdf', manifest: manifest24, content: content24 },
+  { dir: 'pdf/pdf-metadata', manifest: manifest25, content: content25 },
+  { dir: 'pdf/pdf-to-image', manifest: manifest26, content: content26 },
+  { dir: 'pdf/pdf-to-text', manifest: manifest27, content: content27 },
+  { dir: 'pdf/rotate-pdf', manifest: manifest28, content: content28 },
+  { dir: 'pdf/sign-pdf', manifest: manifest29, content: content29 },
+  { dir: 'pdf/split-pdf', manifest: manifest30, content: content30 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest31, content: content31 },
+  { dir: 'text/case-converter', manifest: manifest32, content: content32 },
+  { dir: 'text/krutidev-to-unicode', manifest: manifest33, content: content33 },
+  { dir: 'text/word-counter', manifest: manifest34, content: content34 },
 ];

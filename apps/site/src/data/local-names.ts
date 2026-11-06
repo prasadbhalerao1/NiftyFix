@@ -66,6 +66,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
       'photo jodne wala',
     ],
   },
+  'image.make-square': {
+    hi: 'फोटो चौकोर करें, बॉर्डर लगाएं',
+    mr: 'फोटो चौकोनी करा, बॉर्डर लावा',
+    latin: ['dp without crop', 'photo square kaise kare', 'photo me border lagana'],
+  },
   'image.crop-image': {
     hi: 'फोटो क्रॉप करें, काटें',
     mr: 'फोटो क्रॉप करा, कापा',

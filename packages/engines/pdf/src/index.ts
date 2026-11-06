@@ -5,3 +5,4 @@ export * from './verify';
 export * from './job';
 export * from './forms';
 export * from './compress';
+export * from './images';

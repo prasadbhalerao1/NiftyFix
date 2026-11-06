@@ -137,6 +137,75 @@ export default defineContent({
       ],
     },
     {
+      slug: 'jee-main-photo-size',
+      preset: 'spec-jee-main-2027-photo',
+      label: 'JEE Main photo',
+      h1: 'JEE Main 2027 photo and signature size: 10 to 200 KB',
+      seoTitle: 'JEE Main 2027 photo size and signature size (KB) | NiftyFix',
+      seoDescription:
+        'JEE Main 2027 upload sizes from the NTA bulletin: photo 10 to 200 KB, signature 10 to 100 KB, JPG; Class 10 marks sheet as PDF 50 to 300 KB. Free.',
+      intro:
+        'The JEE (Main) 2027 Information Bulletin asks for a recent passport size colour photo, JPG, between 10 KB and 200 KB, on a white background with your face (without mask) filling 80% of the picture and both ears visible. It gives no pixel size, so keep the photo sharp and only fit the KB range, which is filled in below. The signature is a clearly legible JPG of 10 KB to 100 KB. The Class 10 certificate or marks sheet is a PDF of 50 KB to 300 KB. You also capture a live photo with your webcam, or by scanning a QR code with your phone, while filling the form. Source: the JEE (Main) 2027 Information Bulletin linked from jeemain.nta.nic.in.',
+      faqs: [
+        {
+          question: 'Can the JEE Main photo be black and white?',
+          answer:
+            'The 2027 bulletin asks for a photograph in colour, against a white background, with 80% face visibility including ears and without a mask.',
+        },
+        {
+          question: 'How do I make my Class 10 marks sheet 50 to 300 KB?',
+          answer:
+            'Scan or photograph it, turn it into a PDF with JPG to PDF, then use Compress PDF if it is over 300 KB. If it is under 50 KB, scan at a higher resolution.',
+        },
+      ],
+    },
+    {
+      slug: 'cuet-photo-size',
+      preset: 'spec-cuet-ug-2026-photo',
+      label: 'CUET photo',
+      h1: 'CUET UG photo and signature size: 10 to 200 KB',
+      seoTitle: 'CUET UG photo size and signature size (KB) | NiftyFix',
+      seoDescription:
+        'CUET UG upload sizes from the NTA bulletin: photo 10 to 200 KB, signature 10 to 50 KB, both JPG, white background for the photo. Resize free.',
+      intro:
+        'The CUET (UG) 2026 Information Bulletin asks for a recent passport size colour photo, JPG, between 10 KB and 200 KB, on a white background with your face (without mask) filling 80% of the picture and both ears visible. It gives no pixel size, so keep the photo sharp and only fit the KB range, which is filled in below. The signature is a JPG of only 10 KB to 50 KB, half the NEET and JEE Main limit, so choose CUET in the Signature Resizer as well. You also capture a live photo with your camera while filling the form. Source: the CUET (UG) 2026 Information Bulletin linked from cuet.nta.nic.in. Check the 2027 bulletin when NTA publishes it.',
+      faqs: [
+        {
+          question: 'What is the CUET signature size?',
+          answer:
+            'The CUET (UG) 2026 bulletin says the signature should be a clearly legible JPG between 10 KB and 50 KB. That is lower than NEET and JEE Main, which allow up to 100 KB.',
+        },
+        {
+          question: 'Is the CUET photo size the same as NEET?',
+          answer:
+            'Yes for the photo: 10 KB to 200 KB, JPG, white background, 80% face with ears visible. The signature limit is different (50 KB for CUET, 100 KB for NEET).',
+        },
+      ],
+    },
+    {
+      slug: 'sbi-clerk-po-photo-size',
+      preset: 'spec-sbi-2026-photo',
+      label: 'SBI Clerk and PO photo',
+      h1: 'SBI Clerk and PO photo size: 200 x 230 px, 20 to 50 KB',
+      seoTitle: 'SBI Clerk and PO photo size: 200x230 px, 20 to 50 KB | NiftyFix',
+      seoDescription:
+        'Photo and signature sizes for SBI Clerk (Junior Associates) and SBI PO forms, from the 2026 SBI notices: photo 200 x 230 px, 20 to 50 KB. Free.',
+      intro:
+        'The SBI Junior Associates (Clerk) 2026 advertisement and the SBI PO 2026 advertisement give the same sizes: a recent passport style colour photo, 200 x 230 pixels (preferred), 20 KB to 50 KB, JPG, on a light, preferably white, background. These numbers are filled in below. The signature, in black ink on white paper, is 140 x 60 pixels, 10 KB to 20 KB. The left thumb impression is 240 x 240 px, 20 to 50 KB, and the handwritten declaration 800 x 400 px, 50 to 100 KB, both at 200 DPI. You also take a live photo with your webcam or phone. Source: SBI advertisement CRPD/CR/2026-27/17 and the SBI PO 2026 detailed advertisement, on sbi.bank.in.',
+      faqs: [
+        {
+          question: 'Is the SBI photo size the same as IBPS?',
+          answer:
+            'Yes, in the 2026 notices: both SBI and IBPS PO ask for 200 x 230 px, 20 to 50 KB for the photo and 140 x 60 px, 10 to 20 KB for the signature.',
+        },
+        {
+          question: 'Can I wear a cap or glasses in the SBI photo?',
+          answer:
+            'Caps, hats and dark glasses are not accepted. Religious headwear is allowed if it does not cover your face. With glasses, make sure there are no reflections and your eyes are clearly visible.',
+        },
+      ],
+    },
+    {
       slug: 'ibps-po-photo-size',
       preset: 'spec-ibps-po-2026-photo',
       label: 'IBPS PO photo',

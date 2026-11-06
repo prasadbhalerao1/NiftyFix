@@ -105,13 +105,13 @@ export default defineContent({
     {
       slug: 'ibps-po-signature-size',
       preset: 'spec-ibps-po-2026-signature',
-      label: 'IBPS PO signature',
-      h1: 'IBPS PO signature size: 140 x 60 px, 10 to 20 KB',
-      seoTitle: 'IBPS PO 2026 signature size: 140x60 px, 10 to 20 KB | NiftyFix',
+      label: 'IBPS PO and Clerk signature',
+      h1: 'IBPS PO and Clerk signature size: 140 x 60 px, 10 to 20 KB',
+      seoTitle: 'IBPS PO and Clerk signature size: 140x60 px, 10-20 KB | NiftyFix',
       seoDescription:
-        'Make your signature for the IBPS PO/MT-XVI form: black ink on white, 140 x 60 pixels, 10 to 20 KB, JPG, as the official notice states. Free and private.',
+        'Make your signature for the IBPS PO/MT-XVI or Clerk (CSA-XVI) form: black ink on white, 140 x 60 pixels, 10 to 20 KB, JPG. Free and private.',
       intro:
-        'The IBPS PO/MT-XVI notice asks you to sign on white paper with a black ink pen, not in capital letters, and upload it as a JPG of 140 x 60 pixels (preferred) between 10 KB and 20 KB. These numbers are filled in below: take a photo of your signature, and the tool cleans the background and fits the size. Source: the official IBPS CRP PO/MT-XVI notification (30 June 2026, Annexure III) on ibps.in.',
+        'The IBPS PO/MT-XVI and Clerk (CSA-XVI) notices ask you to sign on white paper with a black ink pen and upload it as a JPG of 140 x 60 pixels (preferred) between 10 KB and 20 KB; the PO notice adds that it must not be in capital letters. These numbers are filled in below: take a photo of your signature, and the tool cleans the background and fits the size. Sources: the official IBPS CRP PO/MT-XVI notification (30 June 2026, Annexure III) and the CRP CSA-XVI notification (1 August 2026) on ibps.in.',
     },
     {
       slug: 'signature-resize-10-to-20kb',

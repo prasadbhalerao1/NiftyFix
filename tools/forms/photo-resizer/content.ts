@@ -208,14 +208,19 @@ export default defineContent({
     {
       slug: 'ibps-po-photo-size',
       preset: 'spec-ibps-po-2026-photo',
-      label: 'IBPS PO photo',
-      h1: 'IBPS PO photo size: 200 x 230 px, 20 to 50 KB',
-      seoTitle: 'IBPS PO 2026 photo size: 200x230 px, 20 to 50 KB | NiftyFix',
+      label: 'IBPS PO and Clerk photo',
+      h1: 'IBPS PO and Clerk photo size: 200 x 230 px, 20 to 50 KB',
+      seoTitle: 'IBPS PO and Clerk photo size: 200x230 px, 20-50 KB | NiftyFix',
       seoDescription:
-        'Resize your photo for the IBPS PO/MT-XVI form: 200 x 230 pixels, 20 to 50 KB, JPG, as the official notice states. Thumb and declaration sizes too. Free.',
+        'Resize your photo for the IBPS PO/MT-XVI or Clerk (CSA-XVI) form: 200 x 230 pixels, 20 to 50 KB, JPG, as the official notices state. Free.',
       intro:
-        'The IBPS PO/MT-XVI notice asks for a recent colour passport-style photo, 200 x 230 pixels (preferred), 20 KB to 50 KB, JPG, on a light, preferably white, background. These numbers are filled in below. You will also take a live photo with your webcam or phone during registration, so look the same in both. The same notice sets the left thumb impression at 240 x 240 px, 20 to 50 KB, and the handwritten declaration at 800 x 400 px, 50 to 100 KB, both at 200 DPI. Source: the official IBPS CRP PO/MT-XVI notification (30 June 2026, Annexure III) on ibps.in.',
+        'The IBPS PO/MT-XVI and Clerk (CSA-XVI) notices ask for the same thing: a recent colour passport-style photo, 200 x 230 pixels (preferred), 20 KB to 50 KB, JPG, on a light, preferably white, background. These numbers are filled in below. You will also take a live photo with your webcam or phone during registration, so look the same in both. Both notices set the signature at 140 x 60 px, 10 to 20 KB, the left thumb impression at 240 x 240 px, 20 to 50 KB, and the handwritten declaration at 800 x 400 px, 50 to 100 KB, at 200 DPI. Sources: the official IBPS CRP PO/MT-XVI notification (30 June 2026, Annexure III) and the CRP CSA-XVI notification (1 August 2026) on ibps.in.',
       faqs: [
+        {
+          question: 'What documents does the IBPS Clerk form ask for?',
+          answer:
+            'The CSA-XVI notice asks for the 10th standard (SSC/SSLC) certificate as an A4 PDF of up to 500 KB, besides the photo, signature, thumb impression and declaration. JPG to PDF and Compress PDF can make it.',
+        },
         {
           question: 'Do I still upload a photo if IBPS takes a live photo?',
           answer:

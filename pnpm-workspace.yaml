@@ -7,3 +7,7 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - sharp
+
+# Dev-only (ESLint) dependency; patched for GHSA denial-of-service in minimatch < 11.0.1.
+overrides:
+  minimatch: ^11.0.1

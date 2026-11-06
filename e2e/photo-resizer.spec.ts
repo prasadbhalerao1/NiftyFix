@@ -281,6 +281,7 @@ test('IBPS PO photo page opens with the notice sizes filled in', async ({ page }
   await page.goto('/forms/ibps-po-photo-size/');
   await expect(page.getByText('ibps.in').first()).toBeVisible();
   const frame = page.frameLocator('iframe[data-tool-frame]');
+  await chooseFile(frame, 'images/portrait-1200x1600.jpg');
   await expect(frame.getByTestId('width')).toHaveValue('200');
   await expect(frame.getByTestId('height')).toHaveValue('230');
   await expect(frame.getByTestId('min-kb')).toHaveValue('20');

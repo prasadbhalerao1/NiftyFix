@@ -141,6 +141,15 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'पीडीएफ फॉर्म लॉक करा (फ्लॅटन)',
     latin: ['pdf flatten kaise kare', 'pdf edit na ho'],
   },
+  'pdf.grayscale-pdf': {
+    hi: 'पीडीएफ को ब्लैक एंड व्हाइट करें',
+    mr: 'पीडीएफ ब्लॅक अँड व्हाइट करा',
+    latin: [
+      'pdf ko black and white kaise kare',
+      'pdf black white karna',
+      'pdf black and white kara',
+    ],
+  },
   'pdf.image-to-pdf': {
     hi: 'फोटो को पीडीएफ में बदलें',
     mr: 'फोटोची पीडीएफ बनवा',

@@ -10,7 +10,8 @@
     ".": "./src/index.ts",
     "./pages": "./src/pages.ts",
     "./render": "./src/render.ts",
-    "./preview": "./src/preview.ts"
+    "./preview": "./src/preview.ts",
+    "./tone": "./src/tone.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",

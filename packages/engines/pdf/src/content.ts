@@ -40,8 +40,9 @@ export function multiply(m: Matrix, n: Matrix): Matrix {
   ];
 }
 
-type Value = number | boolean | null | { name: string } | { text: true } | Value[] | DictValue;
-interface DictValue {
+export type Value =
+  number | boolean | null | { name: string } | { text: true } | Value[] | DictValue;
+export interface DictValue {
   dict: Map<string, Value>;
 }
 
@@ -49,9 +50,20 @@ const WHITESPACE = new Set([0, 9, 10, 12, 13, 32]);
 const DELIMITERS = new Set([...'()<>[]{}/%'].map((c) => c.charCodeAt(0)));
 const NUMBER = /^[+-]?(\d+\.?\d*|\.\d+)$/;
 
-class Lexer {
+/** Reads a content stream token by token; `start` is where the last token began. */
+export class Lexer {
   i = 0;
+  start = 0;
   constructor(readonly b: Uint8Array) {}
+
+  /** The next value, or an operator as a string; undefined at the end. */
+  next(): Value | string | undefined {
+    this.skipSpace();
+    const begin = this.i;
+    const token = this.read();
+    this.start = begin;
+    return token;
+  }
 
   private skipSpace(): void {
     const { b } = this;
@@ -74,9 +86,7 @@ class Lexer {
     return String.fromCharCode(...this.b.subarray(start, this.i));
   }
 
-  /** The next value, or an operator as a string; undefined at the end. */
-  next(): Value | string | undefined {
-    this.skipSpace();
+  private read(): Value | string | undefined {
     const { b } = this;
     if (this.i >= b.length) return undefined;
     const c = b[this.i];
@@ -197,7 +207,7 @@ const INLINE_NAMES: Record<string, string> = {
 };
 
 /** Turn an inline image into an image XObject in `doc` (long key and value names, named colour spaces resolved). */
-function registerInline(
+export function registerInline(
   doc: PDFDocument,
   dict: Map<string, Value>,
   data: Uint8Array,
@@ -232,7 +242,7 @@ function registerInline(
   return { ref: doc.context.register(stream), stream };
 }
 
-function contentBytes(contents: unknown, doc: PDFDocument): Uint8Array {
+export function contentBytes(contents: unknown, doc: PDFDocument): Uint8Array {
   const resolve = (value: unknown): unknown =>
     value instanceof PDFRef ? doc.context.lookup(value) : value;
   const item = resolve(contents);

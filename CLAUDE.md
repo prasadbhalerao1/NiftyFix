@@ -10,7 +10,7 @@ Before building or reworking a tool, research and show the owner a summary first
 
 1. Competitors: every tool doing this job (global and Indian); their features, formats, limits, paywalls.
 2. Unmet wishes: Reddit, Quora, reviews, forums; what users complain about or wish for.
-3. Build the superset that runs in the browser, as modes inside one tool. Note server or AI-only wishes for later; never fake them.
+3. Build the superset that runs in the browser, as modes inside one tool. Fix browser-possible limitations instead of listing them; web-search the best technique first. Note server or AI-only wishes for later; never fake them.
 4. Keywords: free views only (Ahrefs free tools, autocomplete, People also ask, Trends, AnswerThePublic), incl. Hinglish and Marathi. One primary keyword per tool page; one `variants` page per distinct real intent. No accounts, logins or payments.
 
 SEO: title up to 65 chars led by the keyword, description 70 to 160, one H1, first paragraph answers the query, FAQs from People also ask, content in static HTML, local names in `apps/site/src/data/local-names.ts`. Audit all pages for duplicates after changes.

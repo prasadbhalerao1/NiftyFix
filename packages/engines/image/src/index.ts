@@ -5,3 +5,4 @@ export * from './exif';
 export * from './metadata';
 export * from './png';
 export * from './orient';
+export * from './jpeg';

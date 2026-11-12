@@ -8,3 +8,7 @@ export * from './compress';
 export * from './images';
 export * from './content';
 export * from './strips';
+export * from './functions';
+export * from './colour';
+export * from './grayscale';
+export * from './tone';

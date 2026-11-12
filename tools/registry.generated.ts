@@ -47,34 +47,36 @@ import content21 from './pdf/fill-pdf-form/content';
 import manifest21 from './pdf/fill-pdf-form/manifest';
 import content22 from './pdf/flatten-pdf/content';
 import manifest22 from './pdf/flatten-pdf/manifest';
-import content23 from './pdf/image-to-pdf/content';
-import manifest23 from './pdf/image-to-pdf/manifest';
-import content24 from './pdf/merge-pdf/content';
-import manifest24 from './pdf/merge-pdf/manifest';
-import content25 from './pdf/organize-pdf/content';
-import manifest25 from './pdf/organize-pdf/manifest';
-import content26 from './pdf/pages-per-sheet/content';
-import manifest26 from './pdf/pages-per-sheet/manifest';
-import content27 from './pdf/pdf-metadata/content';
-import manifest27 from './pdf/pdf-metadata/manifest';
-import content28 from './pdf/pdf-to-image/content';
-import manifest28 from './pdf/pdf-to-image/manifest';
-import content29 from './pdf/pdf-to-text/content';
-import manifest29 from './pdf/pdf-to-text/manifest';
-import content30 from './pdf/rotate-pdf/content';
-import manifest30 from './pdf/rotate-pdf/manifest';
-import content31 from './pdf/sign-pdf/content';
-import manifest31 from './pdf/sign-pdf/manifest';
-import content32 from './pdf/split-pdf/content';
-import manifest32 from './pdf/split-pdf/manifest';
-import content33 from './pdf/watermark-pdf/content';
-import manifest33 from './pdf/watermark-pdf/manifest';
-import content34 from './text/case-converter/content';
-import manifest34 from './text/case-converter/manifest';
-import content35 from './text/krutidev-to-unicode/content';
-import manifest35 from './text/krutidev-to-unicode/manifest';
-import content36 from './text/word-counter/content';
-import manifest36 from './text/word-counter/manifest';
+import content23 from './pdf/grayscale-pdf/content';
+import manifest23 from './pdf/grayscale-pdf/manifest';
+import content24 from './pdf/image-to-pdf/content';
+import manifest24 from './pdf/image-to-pdf/manifest';
+import content25 from './pdf/merge-pdf/content';
+import manifest25 from './pdf/merge-pdf/manifest';
+import content26 from './pdf/organize-pdf/content';
+import manifest26 from './pdf/organize-pdf/manifest';
+import content27 from './pdf/pages-per-sheet/content';
+import manifest27 from './pdf/pages-per-sheet/manifest';
+import content28 from './pdf/pdf-metadata/content';
+import manifest28 from './pdf/pdf-metadata/manifest';
+import content29 from './pdf/pdf-to-image/content';
+import manifest29 from './pdf/pdf-to-image/manifest';
+import content30 from './pdf/pdf-to-text/content';
+import manifest30 from './pdf/pdf-to-text/manifest';
+import content31 from './pdf/rotate-pdf/content';
+import manifest31 from './pdf/rotate-pdf/manifest';
+import content32 from './pdf/sign-pdf/content';
+import manifest32 from './pdf/sign-pdf/manifest';
+import content33 from './pdf/split-pdf/content';
+import manifest33 from './pdf/split-pdf/manifest';
+import content34 from './pdf/watermark-pdf/content';
+import manifest34 from './pdf/watermark-pdf/manifest';
+import content35 from './text/case-converter/content';
+import manifest35 from './text/case-converter/manifest';
+import content36 from './text/krutidev-to-unicode/content';
+import manifest36 from './text/krutidev-to-unicode/manifest';
+import content37 from './text/word-counter/content';
+import manifest37 from './text/word-counter/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'calculators/emi-calculator', manifest: manifest0, content: content0 },
@@ -100,18 +102,19 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/extract-pdf-pages', manifest: manifest20, content: content20 },
   { dir: 'pdf/fill-pdf-form', manifest: manifest21, content: content21 },
   { dir: 'pdf/flatten-pdf', manifest: manifest22, content: content22 },
-  { dir: 'pdf/image-to-pdf', manifest: manifest23, content: content23 },
-  { dir: 'pdf/merge-pdf', manifest: manifest24, content: content24 },
-  { dir: 'pdf/organize-pdf', manifest: manifest25, content: content25 },
-  { dir: 'pdf/pages-per-sheet', manifest: manifest26, content: content26 },
-  { dir: 'pdf/pdf-metadata', manifest: manifest27, content: content27 },
-  { dir: 'pdf/pdf-to-image', manifest: manifest28, content: content28 },
-  { dir: 'pdf/pdf-to-text', manifest: manifest29, content: content29 },
-  { dir: 'pdf/rotate-pdf', manifest: manifest30, content: content30 },
-  { dir: 'pdf/sign-pdf', manifest: manifest31, content: content31 },
-  { dir: 'pdf/split-pdf', manifest: manifest32, content: content32 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest33, content: content33 },
-  { dir: 'text/case-converter', manifest: manifest34, content: content34 },
-  { dir: 'text/krutidev-to-unicode', manifest: manifest35, content: content35 },
-  { dir: 'text/word-counter', manifest: manifest36, content: content36 },
+  { dir: 'pdf/grayscale-pdf', manifest: manifest23, content: content23 },
+  { dir: 'pdf/image-to-pdf', manifest: manifest24, content: content24 },
+  { dir: 'pdf/merge-pdf', manifest: manifest25, content: content25 },
+  { dir: 'pdf/organize-pdf', manifest: manifest26, content: content26 },
+  { dir: 'pdf/pages-per-sheet', manifest: manifest27, content: content27 },
+  { dir: 'pdf/pdf-metadata', manifest: manifest28, content: content28 },
+  { dir: 'pdf/pdf-to-image', manifest: manifest29, content: content29 },
+  { dir: 'pdf/pdf-to-text', manifest: manifest30, content: content30 },
+  { dir: 'pdf/rotate-pdf', manifest: manifest31, content: content31 },
+  { dir: 'pdf/sign-pdf', manifest: manifest32, content: content32 },
+  { dir: 'pdf/split-pdf', manifest: manifest33, content: content33 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest34, content: content34 },
+  { dir: 'text/case-converter', manifest: manifest35, content: content35 },
+  { dir: 'text/krutidev-to-unicode', manifest: manifest36, content: content36 },
+  { dir: 'text/word-counter', manifest: manifest37, content: content37 },
 ];

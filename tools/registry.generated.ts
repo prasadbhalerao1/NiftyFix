@@ -91,12 +91,16 @@ import content43 from './text/case-converter/content';
 import manifest43 from './text/case-converter/manifest';
 import content44 from './text/krutidev-to-unicode/content';
 import manifest44 from './text/krutidev-to-unicode/manifest';
-import content45 from './text/sort-lines/content';
-import manifest45 from './text/sort-lines/manifest';
-import content46 from './text/text-diff/content';
-import manifest46 from './text/text-diff/manifest';
-import content47 from './text/word-counter/content';
-import manifest47 from './text/word-counter/manifest';
+import content45 from './text/remove-line-breaks/content';
+import manifest45 from './text/remove-line-breaks/manifest';
+import content46 from './text/sort-lines/content';
+import manifest46 from './text/sort-lines/manifest';
+import content47 from './text/text-diff/content';
+import manifest47 from './text/text-diff/manifest';
+import content48 from './text/text-repeater/content';
+import manifest48 from './text/text-repeater/manifest';
+import content49 from './text/word-counter/content';
+import manifest49 from './text/word-counter/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'calculators/emi-calculator', manifest: manifest0, content: content0 },
@@ -144,7 +148,9 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'subtitles/convert-subtitles', manifest: manifest42, content: content42 },
   { dir: 'text/case-converter', manifest: manifest43, content: content43 },
   { dir: 'text/krutidev-to-unicode', manifest: manifest44, content: content44 },
-  { dir: 'text/sort-lines', manifest: manifest45, content: content45 },
-  { dir: 'text/text-diff', manifest: manifest46, content: content46 },
-  { dir: 'text/word-counter', manifest: manifest47, content: content47 },
+  { dir: 'text/remove-line-breaks', manifest: manifest45, content: content45 },
+  { dir: 'text/sort-lines', manifest: manifest46, content: content46 },
+  { dir: 'text/text-diff', manifest: manifest47, content: content47 },
+  { dir: 'text/text-repeater', manifest: manifest48, content: content48 },
+  { dir: 'text/word-counter', manifest: manifest49, content: content49 },
 ];

@@ -259,6 +259,20 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
       'yadi kramane lava',
     ],
   },
+  'text.text-repeater': {
+    hi: 'टेक्स्ट या इमोजी को कई बार दोहराएं',
+    mr: 'मजकूर किंवा इमोजी अनेक वेळा लिहा',
+    latin: ['text repeater', 'ek message 100 baar kaise bheje', 'emoji repeat kara'],
+  },
+  'text.remove-line-breaks': {
+    hi: 'टेक्स्ट से लाइन ब्रेक और फालतू स्पेस हटाएं',
+    mr: 'मजकुरातील ओळ तुटणे आणि जादा जागा काढा',
+    latin: [
+      'pdf text copy karne par line toot jati hai',
+      'extra space kaise hataye',
+      'line break kadha',
+    ],
+  },
   'text.text-diff': {
     hi: 'दो टेक्स्ट की तुलना करें, फर्क देखें',
     mr: 'दोन मजकुरांची तुलना करा',

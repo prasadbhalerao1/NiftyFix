@@ -199,7 +199,6 @@ export const PLANNED_TOOLS: readonly PlannedTool[] = [
     ['case-converter', 'Case Converter'],
     ['text-diff', 'Text Diff Checker'],
     ['find-and-replace', 'Find and Replace'],
-    ['remove-duplicate-lines', 'Remove Duplicate Lines and Words'],
     ['sort-lines', 'Sort, Shuffle, Reverse and Number Lines'],
     ['remove-line-breaks', 'Text Cleaner'],
     ['text-repeater', 'Text Repeater'],

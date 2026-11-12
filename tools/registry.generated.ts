@@ -89,10 +89,12 @@ import content42 from './text/case-converter/content';
 import manifest42 from './text/case-converter/manifest';
 import content43 from './text/krutidev-to-unicode/content';
 import manifest43 from './text/krutidev-to-unicode/manifest';
-import content44 from './text/text-diff/content';
-import manifest44 from './text/text-diff/manifest';
-import content45 from './text/word-counter/content';
-import manifest45 from './text/word-counter/manifest';
+import content44 from './text/sort-lines/content';
+import manifest44 from './text/sort-lines/manifest';
+import content45 from './text/text-diff/content';
+import manifest45 from './text/text-diff/manifest';
+import content46 from './text/word-counter/content';
+import manifest46 from './text/word-counter/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'calculators/emi-calculator', manifest: manifest0, content: content0 },
@@ -139,6 +141,7 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/watermark-pdf', manifest: manifest41, content: content41 },
   { dir: 'text/case-converter', manifest: manifest42, content: content42 },
   { dir: 'text/krutidev-to-unicode', manifest: manifest43, content: content43 },
-  { dir: 'text/text-diff', manifest: manifest44, content: content44 },
-  { dir: 'text/word-counter', manifest: manifest45, content: content45 },
+  { dir: 'text/sort-lines', manifest: manifest44, content: content44 },
+  { dir: 'text/text-diff', manifest: manifest45, content: content45 },
+  { dir: 'text/word-counter', manifest: manifest46, content: content46 },
 ];

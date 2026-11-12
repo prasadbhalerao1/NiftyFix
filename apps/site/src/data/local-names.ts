@@ -21,6 +21,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'टक्केवारी कॅल्क्युलेटर, गुणांची टक्केवारी काढा',
     latin: ['percentage kaise nikale', 'marks ka percentage', 'takkevari kashi kadhaychi'],
   },
+  'calculators.sip-calculator': {
+    hi: 'एसआईपी कैलकुलेटर, म्यूचुअल फंड रिटर्न',
+    mr: 'एसआयपी कॅल्क्युलेटर, म्युच्युअल फंड परतावा',
+    latin: ['sip calculator', 'sip me kitna paisa banega', 'sip return kiti milel'],
+  },
   'calculators.emi-calculator': {
     hi: 'ईएमआई कैलकुलेटर, लोन की किस्त निकालें',
     mr: 'ईएमआय कॅल्क्युलेटर, कर्जाचा हप्ता काढा',

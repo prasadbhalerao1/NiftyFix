@@ -4,6 +4,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 NiftyFix (https://niftyfix.in) is an India-first, free, browser-only file tools site. Files never leave the user's device. Read [CONTEXT.md](CONTEXT.md) for the full handoff (owner rules, how to add a tool, roadmap); this file is the short version.
 
+## The goal: be the most famous tools site, so every tool must be the best one
+
+Every tool must beat every competitor. Before building or reworking any tool, do this research and summarise it to the owner before you write code:
+
+1. **Competitors.** Search the web for every tool doing this job (global ones such as iLovePDF, Smallpdf, TinyPNG, PDF24, Canva, and Indian ones). List every feature, option, input and output format, limit and paywall each one has.
+2. **Unmet wishes.** Search Reddit, Quora, app store reviews, forums and "X not working" or "how to X without Y" queries for what people complain about and wish these tools did (wrong sizes for Indian forms, watermarks, upload limits, signup walls, quality loss, no Hindi or Marathi support, slow on phones).
+3. **Build the superset.** Our tool does everything the competitors do PLUS the things people wished for, as long as it runs in the browser. Where a feature truly cannot be done (needs a server, AI or a paid licence), say so and note it for later instead of faking it. One tool per job still applies: extra features are options or modes inside the tool, not new tools.
+4. **Keywords before copy.** Use free keyword tools (Ahrefs free keyword generator and keyword difficulty checker, Google autocomplete and "People also ask", Google Trends, AnswerThePublic, Semrush or Ubersuggest free views, competitors' titles and headings) to map the search queries for the job, including Hinglish and Marathi phrasing. Map one primary keyword to the tool page and each distinct, real intent to a `variants` page; never two pages for the same intent. Use only free views: never create accounts, log in or pay.
+
+SEO and AI crawlability must be perfect on every page:
+
+- Title (up to 65 characters) leads with the primary keyword; description 70 to 160 characters; one H1; unique copy that answers the query in the first paragraph.
+- FAQs answer the real "People also ask" questions; structured data, sitemap, `llms.txt`, `search.json` and Hindi, Marathi and Hinglish names in `apps/site/src/data/local-names.ts` stay complete.
+- Content is in the static HTML (not behind JS) so search engines and AI crawlers can read it; related tools are linked internally.
+- After a change, audit titles, descriptions, headings and duplicates across all built pages.
+
 ## Owner rules (enforced or non-negotiable)
 
 - No em dashes (U+2014) anywhere: code, copy, docs, commits. `pnpm check:tools` fails on one.

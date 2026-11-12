@@ -81,6 +81,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'फोटोमधून रंगाचा कोड काढा',
     latin: ['photo se color code kaise nikale', 'image ka hex code', 'photo madhun rang code'],
   },
+  'image.image-to-base64': {
+    hi: 'फोटो को Base64 में बदलें',
+    mr: 'फोटो Base64 मध्ये बदला',
+    latin: ['image to base64 kaise kare', 'base64 se image banaye', 'photo base64 madhe'],
+  },
   'image.make-square': {
     hi: 'फोटो चौकोर करें, बॉर्डर लगाएं',
     mr: 'फोटो चौकोनी करा, बॉर्डर लावा',

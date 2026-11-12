@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { Button } from './Button';
+import { copyText } from './clipboard';
 
 /** A text result to read and copy in place (OCR, extracted text), read from the result file. */
 export function TextResult({ blob, label = 'Text' }: { blob: Blob; label?: string }) {
   const [text, setText] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const area = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     let current = true;
     void blob.text().then((value) => current && setText(value));
@@ -16,13 +16,7 @@ export function TextResult({ blob, label = 'Text' }: { blob: Blob; label?: strin
 
   const copy = async (): Promise<void> => {
     if (text === null) return;
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      // Clipboard API blocked in this frame: select the text and use the older command.
-      area.current?.select();
-      document.execCommand('copy');
-    }
+    await copyText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -40,7 +34,6 @@ export function TextResult({ blob, label = 'Text' }: { blob: Blob; label?: strin
       </div>
       <textarea
         id="text-result"
-        ref={area}
         readOnly
         rows={10}
         value={text}

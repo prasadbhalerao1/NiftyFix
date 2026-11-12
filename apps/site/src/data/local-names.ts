@@ -76,6 +76,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
       'photo jodne wala',
     ],
   },
+  'image.image-color-picker': {
+    hi: 'फोटो से रंग का कोड निकालें',
+    mr: 'फोटोमधून रंगाचा कोड काढा',
+    latin: ['photo se color code kaise nikale', 'image ka hex code', 'photo madhun rang code'],
+  },
   'image.make-square': {
     hi: 'फोटो चौकोर करें, बॉर्डर लगाएं',
     mr: 'फोटो चौकोनी करा, बॉर्डर लावा',

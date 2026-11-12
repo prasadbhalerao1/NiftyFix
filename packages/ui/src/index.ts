@@ -20,3 +20,4 @@ export * from './BatchFiles';
 export * from './TextResult';
 export * from './StatTile';
 export * from './ExamPicker';
+export * from './clipboard';

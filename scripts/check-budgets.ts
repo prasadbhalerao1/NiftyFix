@@ -22,10 +22,11 @@ const BUDGETS = {
  * PDF: @cantoo/pdf-lib is ~240 kB gzip; it loads in the worker, is cached
  * across every PDF tool and is preloaded when files are chosen. Raised from
  * 260 to 270 kB (Nov 2026): JPG to PDF also bundles the shared image helpers,
- * which grew with the image tools.
+ * which grew with the image tools. Raised to 285 kB (13 Nov 2026): the shared
+ * engine chunk gained colour conversion, grayscale and unlocking (~272 kB).
  */
 const ENGINE_PROCESSOR_BUDGETS: Record<string, number> = {
-  pdf: 270 * KB,
+  pdf: 285 * KB,
 };
 /**
  * Processors that render PDF pages load pdf.js (display layer ~129 kB + parser

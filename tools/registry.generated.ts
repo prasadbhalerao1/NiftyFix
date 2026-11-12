@@ -85,16 +85,18 @@ import content40 from './pdf/unlock-pdf/content';
 import manifest40 from './pdf/unlock-pdf/manifest';
 import content41 from './pdf/watermark-pdf/content';
 import manifest41 from './pdf/watermark-pdf/manifest';
-import content42 from './text/case-converter/content';
-import manifest42 from './text/case-converter/manifest';
-import content43 from './text/krutidev-to-unicode/content';
-import manifest43 from './text/krutidev-to-unicode/manifest';
-import content44 from './text/sort-lines/content';
-import manifest44 from './text/sort-lines/manifest';
-import content45 from './text/text-diff/content';
-import manifest45 from './text/text-diff/manifest';
-import content46 from './text/word-counter/content';
-import manifest46 from './text/word-counter/manifest';
+import content42 from './subtitles/convert-subtitles/content';
+import manifest42 from './subtitles/convert-subtitles/manifest';
+import content43 from './text/case-converter/content';
+import manifest43 from './text/case-converter/manifest';
+import content44 from './text/krutidev-to-unicode/content';
+import manifest44 from './text/krutidev-to-unicode/manifest';
+import content45 from './text/sort-lines/content';
+import manifest45 from './text/sort-lines/manifest';
+import content46 from './text/text-diff/content';
+import manifest46 from './text/text-diff/manifest';
+import content47 from './text/word-counter/content';
+import manifest47 from './text/word-counter/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'calculators/emi-calculator', manifest: manifest0, content: content0 },
@@ -139,9 +141,10 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/split-pdf', manifest: manifest39, content: content39 },
   { dir: 'pdf/unlock-pdf', manifest: manifest40, content: content40 },
   { dir: 'pdf/watermark-pdf', manifest: manifest41, content: content41 },
-  { dir: 'text/case-converter', manifest: manifest42, content: content42 },
-  { dir: 'text/krutidev-to-unicode', manifest: manifest43, content: content43 },
-  { dir: 'text/sort-lines', manifest: manifest44, content: content44 },
-  { dir: 'text/text-diff', manifest: manifest45, content: content45 },
-  { dir: 'text/word-counter', manifest: manifest46, content: content46 },
+  { dir: 'subtitles/convert-subtitles', manifest: manifest42, content: content42 },
+  { dir: 'text/case-converter', manifest: manifest43, content: content43 },
+  { dir: 'text/krutidev-to-unicode', manifest: manifest44, content: content44 },
+  { dir: 'text/sort-lines', manifest: manifest45, content: content45 },
+  { dir: 'text/text-diff', manifest: manifest46, content: content46 },
+  { dir: 'text/word-counter', manifest: manifest47, content: content47 },
 ];

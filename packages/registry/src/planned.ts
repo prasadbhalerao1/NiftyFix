@@ -178,8 +178,6 @@ export const PLANNED_TOOLS: readonly PlannedTool[] = [
   ...tools('subtitles', [
     ['subtitle-editor', 'Subtitle Editor'],
     ['convert-subtitles', 'Convert Subtitles (SRT, VTT, ASS)'],
-    ['sync-subtitles', 'Shift and Synchronise Subtitles'],
-    ['fix-subtitles', 'Repair, Validate and Reformat Subtitles'],
     ['merge-subtitles', 'Merge and Split Subtitles'],
     ['transcribe', 'Transcribe Audio and Video', 'ai'],
     ['transcript-cleaner', 'Transcript Editor, Cleaner and Formatter'],

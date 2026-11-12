@@ -245,6 +245,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'कृतिदेव ते युनिकोड आणि युनिकोड ते कृतिदेव कन्व्हर्टर',
     latin: ['krutidev se unicode', 'unicode se krutidev', 'krutidev te unicode'],
   },
+  'subtitles.convert-subtitles': {
+    hi: 'सबटाइटल फाइल बदलें (SRT, VTT) और टाइमिंग ठीक करें',
+    mr: 'सबटायटल फाइल बदला (SRT, VTT) आणि वेळ जुळवा',
+    latin: ['srt ko vtt me kaise badle', 'subtitle sync kaise kare', 'subtitle time set kara'],
+  },
   'text.sort-lines': {
     hi: 'लिस्ट को क्रम से लगाएं, दोहराई लाइनें हटाएं',
     mr: 'यादी क्रमाने लावा, पुन्हा आलेल्या ओळी काढा',

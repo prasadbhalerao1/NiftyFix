@@ -15,6 +15,7 @@
     "@niftyfix/constraints": "workspace:*",
     "@niftyfix/engine-image": "workspace:*",
     "@niftyfix/engine-ocr": "workspace:*",
+    "@niftyfix/engine-text": "workspace:*",
     "@niftyfix/engine-pdf": "workspace:*",
     "@niftyfix/portal-specs": "workspace:*",
     "@niftyfix/registry": "workspace:*",

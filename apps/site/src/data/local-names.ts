@@ -245,6 +245,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'कृतिदेव ते युनिकोड आणि युनिकोड ते कृतिदेव कन्व्हर्टर',
     latin: ['krutidev se unicode', 'unicode se krutidev', 'krutidev te unicode'],
   },
+  'text.text-diff': {
+    hi: 'दो टेक्स्ट की तुलना करें, फर्क देखें',
+    mr: 'दोन मजकुरांची तुलना करा',
+    latin: ['do text compare kaise kare', 'text me farak kaise dekhe', 'text tulna kara'],
+  },
   'text.word-counter': {
     hi: 'शब्द गिनें (वर्ड काउंटर), हिंदी और अंग्रेज़ी',
     mr: 'शब्द मोजा (वर्ड काउंटर), मराठी आणि इंग्रजी',

@@ -9,7 +9,8 @@ import {
   usePdfPreview,
   type ToolUiProps,
 } from '@niftyfix/ui';
-import { diffText, pixelDiff, summarise, type Part } from './diff';
+import { diffText, summarise, type Part } from '@niftyfix/engine-text';
+import { pixelDiff } from './diff';
 
 type View = 'text' | 'visual';
 /** Pages are drawn this wide (CSS pixels) for the visual comparison. */

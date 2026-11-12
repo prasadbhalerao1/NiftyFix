@@ -126,6 +126,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'पीडीएफमधून काही पाने वेगळी काढा',
     latin: ['pdf se page nikale', 'pdf madhun pane kadha'],
   },
+  'pdf.extract-pdf-images': {
+    hi: 'पीडीएफ से फोटो और इमेज निकालें',
+    mr: 'पीडीएफमधून फोटो आणि इमेज काढा',
+    latin: ['pdf se image kaise nikale', 'pdf se photo nikalna', 'pdf madhun photo kadha'],
+  },
   'pdf.fill-pdf-form': {
     hi: 'पीडीएफ फॉर्म भरें',
     mr: 'पीडीएफ फॉर्म भरा',

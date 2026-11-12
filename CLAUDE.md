@@ -19,7 +19,7 @@ SEO: title up to 65 chars led by the keyword, description 70 to 160, one H1, fir
 
 - No em dashes (U+2014) anywhere. No blue, purple, violet, pink, navy or gradients.
 - Keep the codebase clean and consistent: same naming, file layout, structure and copy style as existing tools, put shared code in `packages/` not copies, pure logic in its own tested file, no dead code, unused files, stray scripts or TODO leftovers. Delete what a change makes obsolete.
-- Small verified commits, no Co-Authored-By trailer; leave git clean and pushed.
+- Commit verified, meaningful units of work (a tool, a fix), no Co-Authored-By trailer. Don't commit tiny edits on their own; fold them into the next real commit.
 - Deploy (`pnpm deploy:cloudflare`, then `pnpm build`) only when the owner says "deploy", after CI passes.
 - Never delete, move or reformat owner-written files without asking.
 - Portal and exam specs only from official notices. New exam pages only for big national exams; tell the owner first.

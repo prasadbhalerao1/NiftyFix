@@ -133,8 +133,11 @@ function flateToRgba(
   return rgba;
 }
 
-/** Image XObjects used on each page (including inside form XObjects), first use only. */
-function imagesByPage(doc: PDFDocument): { page: number; ref: PDFRef; stream: PDFRawStream }[] {
+/** Image XObjects used on the given pages (including inside form XObjects), first use only. */
+function imagesByPage(
+  doc: PDFDocument,
+  pages: readonly number[],
+): { page: number; ref: PDFRef; stream: PDFRawStream }[] {
   const seen = new Set<string>();
   const found: { page: number; ref: PDFRef; stream: PDFRawStream }[] = [];
   const walk = (resources: unknown, page: number, depth: number): void => {
@@ -153,17 +156,18 @@ function imagesByPage(doc: PDFDocument): { page: number; ref: PDFRef; stream: PD
         walk(object.dict.lookup(PDFName.of('Resources')), page, depth + 1);
     }
   };
-  doc.getPages().forEach((page, index) => walk(page.node.Resources(), index, 0));
+  const all = doc.getPages();
+  for (const index of pages) walk(all[index]?.node.Resources(), index, 0);
   return found;
 }
 
 export function extractImages(
   doc: PDFDocument,
-  options: { minSide: number },
+  options: { minSide: number; pages: readonly number[] },
   signal?: AbortSignal,
 ): ExtractReport {
   const report: ExtractReport = { images: [], unsupported: 0, tiny: 0 };
-  for (const { page, stream } of imagesByPage(doc)) {
+  for (const { page, stream } of imagesByPage(doc, options.pages)) {
     signal?.throwIfAborted();
     const dict = stream.dict;
     const width = num(dict.lookup(PDFName.of('Width')));

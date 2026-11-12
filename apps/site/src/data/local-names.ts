@@ -76,6 +76,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
       'photo jodne wala',
     ],
   },
+  'image.favicon-generator': {
+    hi: 'वेबसाइट का फेविकॉन (आइकन) बनाएं',
+    mr: 'वेबसाइटचा फेविकॉन (आयकॉन) बनवा',
+    latin: ['favicon kaise banaye', 'website icon kaise banaye', 'favicon banva'],
+  },
   'image.image-color-picker': {
     hi: 'फोटो से रंग का कोड निकालें',
     mr: 'फोटोमधून रंगाचा कोड काढा',

@@ -15,6 +15,8 @@ import {
   pageRangeSyntaxError,
   parsePageRange,
   readMetadata,
+  readProtection,
+  removeProtection,
   rotatePages,
   savePdf,
   verifyPdfOutput,
@@ -307,5 +309,30 @@ describe('verifyPdfOutput', () => {
       fileName: 'a.pdf',
     });
     expect(checks.find((check) => check.id === 'opens')?.status).toBe('fail');
+  });
+});
+
+describe('removeProtection', () => {
+  it.each([
+    ['an open password', 'u1', 'u1'],
+    ['an owner password used to open', 'u1', 'o1'],
+    ['only print and copy restrictions', '', undefined],
+  ] as const)('leaves no protection on a PDF with %s', async (_, user, password) => {
+    const locked = await PDFDocument.load(await makePdf(2));
+    locked.encrypt({
+      userPassword: user,
+      ownerPassword: 'o1',
+      permissions: { printing: false, copying: false },
+    });
+    const bytes = await locked.save({ useObjectStreams: user === 'u1' });
+    const protection = readProtection(bytes, user === '');
+    expect(protection).toEqual({ openPassword: user !== '', restricted: true });
+    const doc = await loadPdf(bytes, { ...limits, ...(password ? { password } : {}) });
+    removeProtection(doc);
+    const out = await savePdf(doc);
+    expect(readProtection(out, true)).toBeNull();
+    const reopened = await PDFDocument.load(out);
+    expect(reopened.isEncrypted).toBe(false);
+    expect(reopened.getPageCount()).toBe(2);
   });
 });

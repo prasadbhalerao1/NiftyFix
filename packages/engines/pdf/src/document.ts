@@ -20,21 +20,27 @@ export async function loadPdf(bytes: Uint8Array, limits: LoadLimits): Promise<PD
   let doc: PDFDocument;
   let pages: number;
   try {
+    // An empty password opens files that only restrict printing or copying, as every viewer does.
     doc = await PDFDocument.load(bytes, {
       updateMetadata: false,
       throwOnInvalidObject: false,
-      ...(limits.password ? { password: limits.password } : {}),
+      password: limits.password ?? '',
     });
     // A damaged catalogue can parse yet fail here, so this is inside the guard too.
     pages = doc.isEncrypted ? 0 : doc.getPageCount();
   } catch (error) {
-    if (limits.password && /password/i.test((error as Error)?.message ?? '')) {
+    const message = (error as Error)?.message ?? '';
+    if (limits.password && /password/i.test(message)) {
       throw new ToolError('PASSWORD_PROTECTED', `The password for ${which} is not right.`, {
         hint: 'Check capital letters and try again.',
         retryable: true,
       });
     }
-    if (error instanceof EncryptedPDFError || (error as Error)?.name === 'EncryptedPDFError') {
+    if (
+      error instanceof EncryptedPDFError ||
+      (error as Error)?.name === 'EncryptedPDFError' ||
+      /password/i.test(message)
+    ) {
       throw new ToolError('PASSWORD_PROTECTED', `${which} is protected with a password.`, {
         hint: 'Remove the password first (open it and save or print it as a new PDF), then try again.',
       });

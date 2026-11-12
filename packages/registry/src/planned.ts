@@ -62,7 +62,7 @@ export const PLANNED_TOOLS: readonly PlannedTool[] = [
     ['request-signatures', 'Request Signatures', 'server'],
     ['verify-pdf-signature', 'PDF Digital Signature Validator', 'gated'],
     ['protect-pdf', 'Protect PDF with a Password', 'gated'],
-    ['unlock-pdf', 'Unlock PDF', 'gated'],
+    ['unlock-pdf', 'Unlock PDF'],
     ['redact-pdf', 'Redact and Sanitise PDF', 'gated'],
     ['flatten-pdf', 'Flatten PDF'],
     ['pdf-metadata', 'PDF Metadata Editor'],

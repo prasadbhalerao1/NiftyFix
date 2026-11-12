@@ -69,14 +69,16 @@ import content32 from './pdf/sign-pdf/content';
 import manifest32 from './pdf/sign-pdf/manifest';
 import content33 from './pdf/split-pdf/content';
 import manifest33 from './pdf/split-pdf/manifest';
-import content34 from './pdf/watermark-pdf/content';
-import manifest34 from './pdf/watermark-pdf/manifest';
-import content35 from './text/case-converter/content';
-import manifest35 from './text/case-converter/manifest';
-import content36 from './text/krutidev-to-unicode/content';
-import manifest36 from './text/krutidev-to-unicode/manifest';
-import content37 from './text/word-counter/content';
-import manifest37 from './text/word-counter/manifest';
+import content34 from './pdf/unlock-pdf/content';
+import manifest34 from './pdf/unlock-pdf/manifest';
+import content35 from './pdf/watermark-pdf/content';
+import manifest35 from './pdf/watermark-pdf/manifest';
+import content36 from './text/case-converter/content';
+import manifest36 from './text/case-converter/manifest';
+import content37 from './text/krutidev-to-unicode/content';
+import manifest37 from './text/krutidev-to-unicode/manifest';
+import content38 from './text/word-counter/content';
+import manifest38 from './text/word-counter/manifest';
 
 export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'calculators/emi-calculator', manifest: manifest0, content: content0 },
@@ -113,8 +115,9 @@ export const TOOL_ENTRIES: readonly ToolEntry[] = [
   { dir: 'pdf/rotate-pdf', manifest: manifest31, content: content31 },
   { dir: 'pdf/sign-pdf', manifest: manifest32, content: content32 },
   { dir: 'pdf/split-pdf', manifest: manifest33, content: content33 },
-  { dir: 'pdf/watermark-pdf', manifest: manifest34, content: content34 },
-  { dir: 'text/case-converter', manifest: manifest35, content: content35 },
-  { dir: 'text/krutidev-to-unicode', manifest: manifest36, content: content36 },
-  { dir: 'text/word-counter', manifest: manifest37, content: content37 },
+  { dir: 'pdf/unlock-pdf', manifest: manifest34, content: content34 },
+  { dir: 'pdf/watermark-pdf', manifest: manifest35, content: content35 },
+  { dir: 'text/case-converter', manifest: manifest36, content: content36 },
+  { dir: 'text/krutidev-to-unicode', manifest: manifest37, content: content37 },
+  { dir: 'text/word-counter', manifest: manifest38, content: content38 },
 ];

@@ -195,6 +195,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'पीडीएफ वेगवेगळ्या फाईलमध्ये विभागा',
     latin: ['pdf alag kaise kare', 'pdf todna', 'pdf vegli kara'],
   },
+  'pdf.unlock-pdf': {
+    hi: 'पीडीएफ का पासवर्ड हटाएं',
+    mr: 'पीडीएफचा पासवर्ड काढा',
+    latin: ['pdf ka password kaise hataye', 'pdf password hatana', 'pdf password kadha'],
+  },
   'pdf.watermark-pdf': {
     hi: 'पीडीएफ पर वॉटरमार्क लगाएं',
     mr: 'पीडीएफवर वॉटरमार्क लावा',

@@ -12,3 +12,4 @@ export * from './functions';
 export * from './colour';
 export * from './grayscale';
 export * from './tone';
+export * from './unlock';

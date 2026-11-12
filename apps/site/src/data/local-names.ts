@@ -141,6 +141,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'पीडीएफचा साईज कमी करा',
     latin: ['pdf ka size kaise kam kare', 'pdf 200kb me kaise kare', 'pdf chi size kami kara'],
   },
+  'pdf.compare-pdf': {
+    hi: 'दो पीडीएफ की तुलना करें, फर्क देखें',
+    mr: 'दोन पीडीएफची तुलना करा, फरक पहा',
+    latin: ['do pdf compare kaise kare', 'pdf me farak dekhe', 'pdf tulna kara'],
+  },
   'pdf.crop-pdf': {
     hi: 'पीडीएफ पेज क्रॉप करें',
     mr: 'पीडीएफ पान क्रॉप करा',

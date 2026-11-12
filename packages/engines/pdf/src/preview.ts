@@ -103,6 +103,8 @@ export interface PreviewDocument {
     creator: string;
     producer: string;
   };
+  /** The text of page `index` (0-based), with line breaks where pdf.js ends a line. */
+  text(index: number): Promise<string>;
   /** Draw page `index` (0-based) into `canvas`, fitting `maxCssWidth` at the screen's density. */
   render(index: number, canvas: HTMLCanvasElement, maxCssWidth: number): Promise<void>;
   close(): Promise<void>;
@@ -159,6 +161,18 @@ export async function openPreview(file: Blob, password?: string): Promise<Previe
       keywords: text('Keywords'),
       creator: text('Creator'),
       producer: text('Producer'),
+    },
+    async text(index) {
+      const page = await doc.getPage(index + 1);
+      const content = await page.getTextContent();
+      let out = '';
+      for (const item of content.items) {
+        if (!('str' in item)) continue;
+        out += item.str;
+        if (item.hasEOL) out += '\n';
+      }
+      page.cleanup();
+      return out.replace(/[ \t]+\n/g, '\n').trimEnd();
     },
     async render(index, canvas, maxCssWidth) {
       const page = await doc.getPage(index + 1);

@@ -101,6 +101,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'फोटो फिरवा किंवा सरळ करा',
     latin: ['photo ulta ho gaya', 'photo ghumaye', 'photo phirva'],
   },
+  'image.split-image': {
+    hi: 'फोटो को कई हिस्सों में काटें (ग्रिड)',
+    mr: 'फोटोचे अनेक भाग करा (ग्रिड)',
+    latin: ['photo ke tukde kaise kare', 'instagram grid kaise banaye', 'photo che bhag kara'],
+  },
   'image.watermark-image': {
     hi: 'फोटो पर वॉटरमार्क या नाम लगाएं',
     mr: 'फोटोवर वॉटरमार्क किंवा नाव लावा',

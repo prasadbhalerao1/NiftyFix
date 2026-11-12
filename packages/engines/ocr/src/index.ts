@@ -9,10 +9,18 @@ import { OCR_ASSET_PATHS, type OcrLanguage } from './assets';
 
 export * from './assets';
 
+export interface OcrWord {
+  text: string;
+  /** Pixel box in the image: left, top, right, bottom. */
+  box: { x0: number; y0: number; x1: number; y1: number };
+}
+
 export interface OcrLine {
   text: string;
   /** 0 to 100, as Tesseract reports it. */
   confidence: number;
+  /** The line's words with their positions, in reading order. */
+  words: OcrWord[];
 }
 
 export interface OcrResult {
@@ -61,7 +69,11 @@ export async function recognizeText(image: Blob, options: RecognizeOptions): Pro
     const lines: OcrLine[] = (data.blocks ?? [])
       .flatMap((block) => block.paragraphs)
       .flatMap((paragraph) => paragraph.lines)
-      .map((line: Line) => ({ text: line.text.trim(), confidence: line.confidence }))
+      .map((line: Line) => ({
+        text: line.text.trim(),
+        confidence: line.confidence,
+        words: line.words.map((word) => ({ text: word.text, box: { ...word.bbox } })),
+      }))
       .filter((line) => line.text !== '');
     return { text: data.text.trim(), confidence: data.confidence, lines };
   } catch {

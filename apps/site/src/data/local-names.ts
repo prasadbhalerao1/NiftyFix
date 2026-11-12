@@ -61,6 +61,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'एका पानावर अनेक PDF पाने, पुस्तिका',
     latin: ['ek page par 4 page print', 'notes print kam paper me', 'pdf booklet kaise banaye'],
   },
+  'image.blur-image': {
+    hi: 'फोटो का हिस्सा धुंधला करें या छिपाएं',
+    mr: 'फोटोचा भाग धूसर करा किंवा लपवा',
+    latin: ['photo blur kaise kare', 'aadhaar number kaise chupaye', 'photo madhla bhag lapva'],
+  },
   'image.combine-images': {
     hi: 'फोटो जोड़ें, दो फोटो एक में',
     mr: 'फोटो जोडा, दोन फोटो एकत्र करा',

@@ -33,6 +33,13 @@ const ENGINE_PROCESSOR_BUDGETS: Record<string, number> = {
  * cached across tools, preloaded when a file is chosen.
  */
 const PDF_RENDER_PROCESSOR_BUDGET = 520 * KB;
+/**
+ * Processors that import an engine only when a file needs it (Extract Images
+ * loads pdf.js just for images pdf-lib cannot decode: CMYK, JPEG 2000, JBIG2,
+ * fax, masks). What always loads keeps its usual budget; this caps the worst
+ * case, pdf-lib and pdf.js together (~760 kB gzip, Nov 2026).
+ */
+const ON_DEMAND_PROCESSOR_BUDGET = 800 * KB;
 /** Chunks that bring pdf.js: the library itself, or the engine modules it is bundled into. */
 const USES_PDFJS = /pdfjs-dist|engines\/pdf\/src\/(render|preview)\.ts/;
 /** UIs that show page thumbnails load the pdf.js display layer (its parser runs in its own worker file). */
@@ -107,12 +114,18 @@ const manifest = JSON.parse(readFileSync(join(FRAME, '.vite/manifest.json'), 'ut
  * (the loader maps in tools/loaders.ts) are navigation, not cost, and are skipped.
  */
 const ENGINE_LAZY = /(^|\/)(node_modules|packages\/engines)\//;
-const closure = (key: string, dynamic = false, seen = new Set<string>()): Set<string> => {
+const closure = (
+  key: string,
+  dynamic = false,
+  seen = new Set<string>(),
+  ownLazy = true,
+): Set<string> => {
   const chunk = manifest[key];
   if (!chunk || seen.has(key)) return seen;
   seen.add(key);
   for (const dependency of chunk.imports ?? []) closure(dependency, dynamic, seen);
-  if (dynamic) {
+  // ownLazy false: skip the tool's own on-demand imports, keep the engines' (awaited every run).
+  if (dynamic && (ownLazy || ENGINE_LAZY.test(key))) {
     for (const dependency of chunk.dynamicImports ?? []) {
       if (ENGINE_LAZY.test(dependency)) closure(dependency, dynamic, seen);
     }
@@ -149,15 +162,24 @@ for (const dir of discoverToolDirs()) {
     );
   } else problems.push(`tool ${dir}: ui.tsx not found in frame build manifest`);
   // The worker bundles the same processor separately; the lazily loaded copy is a faithful size proxy.
-  if (manifest[processor])
+  if (manifest[processor]) {
+    const always = closure(processor, true, new Set(), false);
     measure(
       `tool ${dir} processor (lazy)`,
-      size(closure(processor, true), shell),
-      [...closure(processor, true)].some((key) => USES_PDFJS.test(key))
+      size(always, shell),
+      [...always].some((key) => USES_PDFJS.test(key))
         ? PDF_RENDER_PROCESSOR_BUDGET
         : (ENGINE_PROCESSOR_BUDGETS[dir.split('/')[0] ?? ''] ?? BUDGETS.toolProcessor),
     );
-  else if (!isInteractive(dir))
+    const everything = closure(processor, true);
+    if (everything.size > always.size) {
+      measure(
+        `tool ${dir} processor + on demand`,
+        size(everything, shell),
+        ON_DEMAND_PROCESSOR_BUDGET,
+      );
+    }
+  } else if (!isInteractive(dir))
     problems.push(`tool ${dir}: processor.ts not found in frame build manifest`);
 }
 

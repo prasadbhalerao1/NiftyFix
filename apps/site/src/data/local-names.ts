@@ -16,6 +16,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'वय कॅल्क्युलेटर, जन्मतारखेवरून वय काढा',
     latin: ['umar kaise nikale', 'age calculator as on date', 'vay kase kadhayche'],
   },
+  'calculators.percentage-calculator': {
+    hi: 'प्रतिशत कैलकुलेटर, अंकों का प्रतिशत निकालें',
+    mr: 'टक्केवारी कॅल्क्युलेटर, गुणांची टक्केवारी काढा',
+    latin: ['percentage kaise nikale', 'marks ka percentage', 'takkevari kashi kadhaychi'],
+  },
   'calculators.emi-calculator': {
     hi: 'ईएमआई कैलकुलेटर, लोन की किस्त निकालें',
     mr: 'ईएमआय कॅल्क्युलेटर, कर्जाचा हप्ता काढा',

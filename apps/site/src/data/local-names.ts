@@ -11,6 +11,11 @@ export interface LocalNames {
 }
 
 export const LOCAL_NAMES: Record<string, LocalNames> = {
+  'calculators.age-calculator': {
+    hi: 'उम्र कैलकुलेटर, जन्म तिथि से आयु निकालें',
+    mr: 'वय कॅल्क्युलेटर, जन्मतारखेवरून वय काढा',
+    latin: ['umar kaise nikale', 'age calculator as on date', 'vay kase kadhayche'],
+  },
   'calculators.emi-calculator': {
     hi: 'ईएमआई कैलकुलेटर, लोन की किस्त निकालें',
     mr: 'ईएमआय कॅल्क्युलेटर, कर्जाचा हप्ता काढा',

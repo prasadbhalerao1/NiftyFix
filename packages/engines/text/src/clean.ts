@@ -20,7 +20,8 @@ export interface CleanOptions {
 
 const INVISIBLE = /[\u200B-\u200D\u2060\uFEFF\u00AD]/g;
 /** Pictographs, flag letters, skin tones, and the variation and keycap marks that follow them. */
-const EMOJI = /\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}]|[\u{1F3FB}-\u{1F3FF}]|\uFE0F|\u20E3/gu;
+const EMOJI =
+  /\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}]|[\u{1F3FB}-\u{1F3FF}]|\uFE0F|\u20E3/gu;
 
 export function cleanText(input: string, o: CleanOptions): string {
   let text = input.replace(/\r\n?/g, '\n');

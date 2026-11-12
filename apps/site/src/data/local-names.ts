@@ -273,6 +273,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
       'line break kadha',
     ],
   },
+  'generators.password-generator': {
+    hi: 'मजबूत पासवर्ड बनाएं',
+    mr: 'मजबूत पासवर्ड तयार करा',
+    latin: ['strong password kaise banaye', 'password generator', 'majboot password'],
+  },
   'text.text-diff': {
     hi: 'दो टेक्स्ट की तुलना करें, फर्क देखें',
     mr: 'दोन मजकुरांची तुलना करा',

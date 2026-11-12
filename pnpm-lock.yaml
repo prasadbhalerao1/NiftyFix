@@ -176,6 +176,9 @@ importers:
       '@niftyfix/tool-sdk':
         specifier: workspace:*
         version: link:../../tool-sdk
+      fflate:
+        specifier: 0.8.3
+        version: 0.8.3
     devDependencies:
       vitest:
         specifier: 5.1.0

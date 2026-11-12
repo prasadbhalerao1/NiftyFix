@@ -10,7 +10,9 @@
  */
 import {
   getDocument,
+  ImageKind,
   InvalidPDFException,
+  OPS,
   PasswordException,
   type PDFDocumentProxy,
 } from 'pdfjs-dist';
@@ -100,6 +102,11 @@ export interface RenderOpenOptions {
   /** Origin serving /pdfjs/ assets: the frame's own origin (self.location.origin). */
   assetOrigin: string;
   label?: string;
+  /**
+   * Decode images to plain pixel arrays at full size, never to canvas bitmaps
+   * (which pdf.js downscales when large). For reading images, not drawing pages.
+   */
+  rawImages?: boolean;
 }
 
 /**
@@ -108,7 +115,7 @@ export interface RenderOpenOptions {
  */
 export async function openForRendering(
   bytes: Uint8Array,
-  { assetOrigin, label }: RenderOpenOptions,
+  { assetOrigin, label, rawImages = false }: RenderOpenOptions,
 ): Promise<{ doc: PDFDocumentProxy; close(): Promise<void> }> {
   await ensureParserLoaded();
   const asset = (dir: string): string => new URL(`${PDFJS_ASSET_PATH}${dir}/`, assetOrigin).href;
@@ -123,7 +130,8 @@ export async function openForRendering(
     iccUrl: asset('iccs'),
     // Explicit: pdf.js otherwise reads document.baseURI, which a worker has none of.
     useWorkerFetch: false,
-    isOffscreenCanvasSupported: typeof OffscreenCanvas !== 'undefined',
+    isOffscreenCanvasSupported: !rawImages && typeof OffscreenCanvas !== 'undefined',
+    ...(rawImages ? { isImageDecoderSupported: false } : {}),
     disableFontFace: true,
     useSystemFonts: false,
     enableXfa: false,
@@ -208,6 +216,80 @@ export async function pageText(doc: PDFDocumentProxy, index: number): Promise<st
       if (item.hasEOL) text += '\n';
     }
     return text.replace(/[ \t]+\n/g, '\n').trimEnd();
+  } finally {
+    page.cleanup();
+  }
+}
+
+export interface DecodedImage {
+  /** RGBA, row-major. */
+  data: Uint8ClampedArray;
+  width: number;
+  height: number;
+}
+
+interface PdfjsImage {
+  data: Uint8Array | Uint8ClampedArray | null;
+  width: number;
+  height: number;
+  kind: number;
+}
+
+/** pdf.js image data (1-bit gray, RGB or RGBA) as RGBA. */
+function toRgba({ data, width, height, kind }: PdfjsImage): DecodedImage | null {
+  if (!data) return null;
+  const rgba = new Uint8ClampedArray(width * height * 4);
+  if (kind === ImageKind.RGBA_32BPP) {
+    if (data.length < rgba.length) return null;
+    rgba.set(data.subarray(0, rgba.length));
+  } else if (kind === ImageKind.RGB_24BPP) {
+    if (data.length < width * height * 3) return null;
+    for (let p = 0, s = 0; p < rgba.length; p += 4, s += 3) {
+      rgba[p] = data[s] ?? 0;
+      rgba[p + 1] = data[s + 1] ?? 0;
+      rgba[p + 2] = data[s + 2] ?? 0;
+      rgba[p + 3] = 255;
+    }
+  } else if (kind === ImageKind.GRAYSCALE_1BPP) {
+    // Rows are padded to whole bytes; a set bit is white.
+    const rowBytes = (width + 7) >> 3;
+    if (data.length < rowBytes * height) return null;
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        const bit = ((data[y * rowBytes + (x >> 3)] ?? 0) >> (7 - (x & 7))) & 1;
+        const p = (y * width + x) * 4;
+        rgba[p] = rgba[p + 1] = rgba[p + 2] = bit ? 255 : 0;
+        rgba[p + 3] = 255;
+      }
+    }
+  } else {
+    return null;
+  }
+  return { data: rgba, width, height };
+}
+
+/**
+ * The pixels of the one image drawn on a page (0-based) of a document opened
+ * with `rawImages`, as made by `isolateImages`. Null if pdf.js cannot decode it.
+ */
+export async function decodePageImage(
+  doc: PDFDocumentProxy,
+  index: number,
+): Promise<DecodedImage | null> {
+  const page = await doc.getPage(index + 1);
+  try {
+    const { fnArray, argsArray } = await page.getOperatorList();
+    const at = fnArray.findIndex(
+      (fn) => fn === OPS.paintImageXObject || fn === OPS.paintImageXObjectRepeat,
+    );
+    const id: unknown = argsArray[at]?.[0];
+    if (typeof id !== 'string') return null;
+    // pdf.js keeps images shared across pages under ids starting with g_.
+    const store = id.startsWith('g_') ? page.commonObjs : page.objs;
+    const image = await new Promise<PdfjsImage | null>((resolve) => {
+      store.get(id, resolve);
+    });
+    return image ? toRgba(image) : null;
   } finally {
     page.cleanup();
   }

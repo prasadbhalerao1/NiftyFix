@@ -15,9 +15,17 @@ import { verifyPdfOutput } from './verify';
 export const MAX_PDF_PAGES = 2000;
 
 /** Read and parse one input file as a PDF. */
-export async function readPdf(input: ToolInputFile, label?: string): Promise<PDFDocument> {
+export async function readPdf(
+  input: ToolInputFile,
+  label?: string,
+  password?: string,
+): Promise<PDFDocument> {
   const bytes = new Uint8Array(await input.blob.arrayBuffer());
-  return loadPdf(bytes, { maxPages: MAX_PDF_PAGES, ...(label === undefined ? {} : { label }) });
+  return loadPdf(bytes, {
+    maxPages: MAX_PDF_PAGES,
+    ...(label === undefined ? {} : { label }),
+    ...(password ? { password } : {}),
+  });
 }
 
 export interface FinishOptions {

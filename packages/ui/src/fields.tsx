@@ -143,6 +143,8 @@ export interface TextInputProps {
   error?: string | undefined;
   placeholder?: string;
   testId?: string;
+  /** "password" hides what is typed. */
+  type?: 'text' | 'password';
 }
 
 export function TextInput({
@@ -153,13 +155,14 @@ export function TextInput({
   error,
   placeholder,
   testId,
+  type = 'text',
 }: TextInputProps) {
   const id = useId();
   return (
     <FieldShell id={id} label={label} hint={hint} error={error}>
       <input
         id={id}
-        type="text"
+        type={type}
         class={CONTROL}
         value={value}
         placeholder={placeholder}

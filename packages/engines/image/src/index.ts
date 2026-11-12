@@ -3,3 +3,5 @@ export * from './header';
 export * from './jfif';
 export * from './exif';
 export * from './metadata';
+export * from './png';
+export * from './orient';

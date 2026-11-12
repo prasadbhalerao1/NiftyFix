@@ -1,33 +1,54 @@
 import {
   decodePDFRawStream,
+  drawObject,
   PDFArray,
   PDFBool,
   PDFDict,
+  PDFDocument,
   PDFHexString,
   PDFName,
   PDFNumber,
+  PDFObjectCopier,
   PDFRawStream,
   PDFRef,
   PDFString,
-  type PDFDocument,
+  popGraphicsState,
+  pushGraphicsState,
 } from '@cantoo/pdf-lib';
+import { imagePlacements, type Matrix } from './content';
 
 /**
  * Pull raster images out of a PDF without rendering pages. JPEGs come out as
- * their original bytes (no quality loss); lossless images come out as raw RGBA
- * for the caller to encode (canvas lives outside this engine). Anything we
- * cannot decode faithfully is counted, never guessed at.
+ * their original bytes (no quality loss); simple lossless images come out as
+ * raw RGBA. Everything else (CMYK, JPEG 2000, JBIG2, fax, masks, unusual bit
+ * depths) is marked `decode`: `isolateImages` packs those into a small PDF
+ * for pdf.js, which has full decoders, to turn into pixels.
  */
-export type ExtractedImage =
-  | { kind: 'jpeg'; page: number; bytes: Uint8Array; width: number; height: number }
-  | { kind: 'rgba'; page: number; rgba: Uint8ClampedArray; width: number; height: number };
+interface Common {
+  /** 0-based page where the image is first drawn. */
+  page: number;
+  width: number;
+  height: number;
+  /** The image object, and its stable identity. */
+  ref: PDFRef;
+  key: string;
+  /** Every place it is drawn on the chosen pages; empty if the page could not be read. */
+  placements: { page: number; matrix: Matrix }[];
+}
+
+export type ExtractedImage = Common &
+  (
+    | { kind: 'jpeg'; bytes: Uint8Array }
+    | { kind: 'rgba'; rgba: Uint8ClampedArray }
+    | { kind: 'decode' }
+  );
 
 export interface ExtractReport {
   images: ExtractedImage[];
-  /** Images in a format we do not convert (CMYK, JPEG 2000, JBIG2, fax, unusual bit depths). */
-  unsupported: number;
   /** Images smaller than `minSide` on either side (icons, rules, spacers). */
   tiny: number;
+  /** Image objects without a usable size (damaged). */
+  broken: number;
 }
 
 const name = (value: unknown): string | null =>
@@ -133,14 +154,18 @@ function flateToRgba(
   return rgba;
 }
 
-/** Image XObjects used on the given pages (including inside form XObjects), first use only. */
-function imagesByPage(
-  doc: PDFDocument,
-  pages: readonly number[],
-): { page: number; ref: PDFRef; stream: PDFRawStream }[] {
+interface Found {
+  page: number;
+  ref: PDFRef;
+  stream: PDFRawStream;
+  placements: Common['placements'];
+}
+
+/** Image XObjects in a page's resources (including inside form XObjects). */
+function listedImages(doc: PDFDocument, page: number): { ref: PDFRef; stream: PDFRawStream }[] {
   const seen = new Set<string>();
-  const found: { page: number; ref: PDFRef; stream: PDFRawStream }[] = [];
-  const walk = (resources: unknown, page: number, depth: number): void => {
+  const found: { ref: PDFRef; stream: PDFRawStream }[] = [];
+  const walk = (resources: unknown, depth: number): void => {
     if (!(resources instanceof PDFDict) || depth > 8) return;
     const xobjects = resources.lookup(PDFName.of('XObject'));
     if (!(xobjects instanceof PDFDict)) return;
@@ -151,14 +176,33 @@ function imagesByPage(
       const object = doc.context.lookup(ref);
       if (!(object instanceof PDFRawStream)) continue;
       const subtype = name(object.dict.lookup(PDFName.of('Subtype')));
-      if (subtype === 'Image') found.push({ page, ref, stream: object });
-      else if (subtype === 'Form')
-        walk(object.dict.lookup(PDFName.of('Resources')), page, depth + 1);
+      if (subtype === 'Image') found.push({ ref, stream: object });
+      else if (subtype === 'Form') walk(object.dict.lookup(PDFName.of('Resources')), depth + 1);
     }
   };
-  const all = doc.getPages();
-  for (const index of pages) walk(all[index]?.node.Resources(), index, 0);
+  walk(doc.getPage(page).node.Resources(), 0);
   return found;
+}
+
+/** Images drawn on the given pages, in drawing order, each once with all its placements. */
+function imagesOnPages(doc: PDFDocument, pages: readonly number[]): Found[] {
+  const found = new Map<string, Found>();
+  for (const page of pages) {
+    let drawn: { ref: PDFRef; stream: PDFRawStream; matrix: Matrix | null }[];
+    try {
+      drawn = imagePlacements(doc, page);
+    } catch {
+      // Unreadable drawing instructions: fall back to the images the page lists.
+      drawn = listedImages(doc, page).map((image) => ({ ...image, matrix: null }));
+    }
+    for (const { ref, stream, matrix } of drawn) {
+      const key = ref.toString();
+      const entry = found.get(key) ?? { page, ref, stream, placements: [] };
+      if (matrix) entry.placements.push({ page, matrix });
+      found.set(key, entry);
+    }
+  }
+  return [...found.values()];
 }
 
 export function extractImages(
@@ -166,47 +210,83 @@ export function extractImages(
   options: { minSide: number; pages: readonly number[] },
   signal?: AbortSignal,
 ): ExtractReport {
-  const report: ExtractReport = { images: [], unsupported: 0, tiny: 0 };
-  for (const { page, stream } of imagesByPage(doc, options.pages)) {
+  const report: ExtractReport = { images: [], tiny: 0, broken: 0 };
+  for (const { page, ref, stream, placements } of imagesOnPages(doc, options.pages)) {
     signal?.throwIfAborted();
     const dict = stream.dict;
     const width = num(dict.lookup(PDFName.of('Width')));
     const height = num(dict.lookup(PDFName.of('Height')));
-    const mask = dict.lookup(PDFName.of('ImageMask'));
-    if (width === null || height === null || (mask instanceof PDFBool && mask.asBoolean())) {
-      report.unsupported += 1;
+    if (width === null || height === null || width < 1 || height < 1) {
+      report.broken += 1;
       continue;
     }
     if (width < options.minSide || height < options.minSide) {
       report.tiny += 1;
       continue;
     }
+    const common = { page, width, height, ref, key: ref.toString(), placements };
+    const decode = (): void => {
+      report.images.push({ ...common, kind: 'decode' });
+    };
+    const mask = dict.lookup(PDFName.of('ImageMask'));
     const filter = filterOf(dict);
     const colour = colourOf(dict.lookup(PDFName.of('ColorSpace')));
     const bits = num(dict.lookup(PDFName.of('BitsPerComponent')));
     const decodeArray = dict.lookup(PDFName.of('Decode')) !== undefined;
     try {
       const alpha = alphaOf(dict, width, height);
-      if (alpha === null || decodeArray || colour === null || bits !== 8) {
-        report.unsupported += 1;
-        continue;
-      }
-      if (filter === 'DCTDecode' && 'channels' in colour && alpha === undefined) {
-        report.images.push({ kind: 'jpeg', page, bytes: stream.contents, width, height });
+      if (
+        (mask instanceof PDFBool && mask.asBoolean()) ||
+        alpha === null ||
+        decodeArray ||
+        colour === null ||
+        bits !== 8
+      ) {
+        decode();
+      } else if (filter === 'DCTDecode' && 'channels' in colour && alpha === undefined) {
+        report.images.push({ ...common, kind: 'jpeg', bytes: stream.contents });
       } else if (
         (filter === 'FlateDecode' || filter === null) &&
         dict.lookup(PDFName.of('DecodeParms')) === undefined
       ) {
         const rgba = flateToRgba(stream, colour, width, height, alpha);
-        if (rgba) report.images.push({ kind: 'rgba', page, rgba, width, height });
-        else report.unsupported += 1;
+        if (rgba) report.images.push({ ...common, kind: 'rgba', rgba });
+        else decode();
       } else {
-        report.unsupported += 1;
+        decode();
       }
     } catch {
-      // One image that will not decode is reported, never fatal.
-      report.unsupported += 1;
+      // The quick decoder gave up; the full decoder may still manage.
+      decode();
     }
   }
   return report;
+}
+
+/**
+ * A PDF with one page per image, drawing only that image, for pdf.js to
+ * decode (page i holds refs[i]). Stencil masks become 1-bit gray images, so
+ * they come out as black ink on white instead of an invisible shape.
+ */
+export async function isolateImages(
+  doc: PDFDocument,
+  refs: readonly PDFRef[],
+): Promise<Uint8Array> {
+  const out = await PDFDocument.create();
+  const copier = PDFObjectCopier.for(doc.context, out.context);
+  for (const ref of refs) {
+    const source = doc.context.lookup(ref);
+    if (!(source instanceof PDFRawStream)) throw new Error('Not an image stream');
+    const copy = copier.copy(source);
+    const mask = copy.dict.lookup(PDFName.of('ImageMask'));
+    if (mask instanceof PDFBool && mask.asBoolean()) {
+      copy.dict.delete(PDFName.of('ImageMask'));
+      copy.dict.set(PDFName.of('ColorSpace'), PDFName.of('DeviceGray'));
+      copy.dict.set(PDFName.of('BitsPerComponent'), PDFNumber.of(1));
+    }
+    const page = out.addPage([1, 1]);
+    const image = page.node.newXObject('Im', out.context.register(copy));
+    page.pushOperators(pushGraphicsState(), drawObject(image), popGraphicsState());
+  }
+  return out.save({ useObjectStreams: false });
 }

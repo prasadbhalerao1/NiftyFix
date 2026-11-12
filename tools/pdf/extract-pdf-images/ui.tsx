@@ -4,11 +4,13 @@ import type { ProcessedFile } from '@niftyfix/tool-sdk';
 import {
   ALL_PAGES,
   Button,
+  CheckboxInput,
   cx,
   PageSelection,
   pageSelectionError,
   SegmentedControl,
   SingleFileTool,
+  TextInput,
   type PageSelectionValue,
   type ToolUiProps,
 } from '@niftyfix/ui';
@@ -127,8 +129,13 @@ function Gallery({ result }: { result: ProcessedFile }) {
 export default function ExtractPdfImages(props: ToolUiProps) {
   const [minSide, setMinSide] = useState<MinSide>(props.preset === 'photos' ? '150' : '50');
   const [pages, setPages] = useState<PageSelectionValue>(ALL_PAGES);
+  const [joinPieces, setJoinPieces] = useState(true);
+  const [asShown, setAsShown] = useState(true);
+  const [password, setPassword] = useState('');
   const options =
-    pageSelectionError(pages) === null ? { minSide: Number(minSide), pages, fileName: '' } : null;
+    pageSelectionError(pages) === null
+      ? { minSide: Number(minSide), pages, joinPieces, asShown, password, fileName: '' }
+      : null;
 
   return (
     <SingleFileTool
@@ -139,7 +146,7 @@ export default function ExtractPdfImages(props: ToolUiProps) {
       actionLabel="Extract images"
       busyLabel="Extracting…"
       successMessage="The images are saved at their original quality."
-      disclaimer="Each image was measured after it was saved to confirm it kept the pixel size stored in the PDF. JPEG photos are the exact bytes from the PDF."
+      disclaimer="Each image was measured after it was saved to confirm it kept every pixel stored in the PDF. JPEG photos keep their exact compressed data."
       options={options}
       resultPreview={(result) => <Gallery result={result} />}
     >
@@ -154,6 +161,25 @@ export default function ExtractPdfImages(props: ToolUiProps) {
         onChange={setMinSide}
       />
       <PageSelection label="Pages" value={pages} onChange={setPages} />
+      <CheckboxInput
+        label="Join pictures split into pieces"
+        hint="Some PDFs store one picture as many strips or tiles."
+        checked={joinPieces}
+        onChange={setJoinPieces}
+      />
+      <CheckboxInput
+        label="Turn pictures the way the page shows them"
+        hint="Fixes images that come out sideways or upside down."
+        checked={asShown}
+        onChange={setAsShown}
+      />
+      <TextInput
+        label="PDF password (only if it has one)"
+        type="password"
+        value={password}
+        onChange={setPassword}
+        testId="pdf-password"
+      />
     </SingleFileTool>
   );
 }

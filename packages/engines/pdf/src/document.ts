@@ -6,6 +6,8 @@ export interface LoadLimits {
   maxPages: number;
   /** Name shown in messages, e.g. when merging several files. */
   label?: string;
+  /** Opens a password-protected PDF (only in memory; nothing is saved without it). */
+  password?: string;
 }
 
 /**
@@ -18,10 +20,20 @@ export async function loadPdf(bytes: Uint8Array, limits: LoadLimits): Promise<PD
   let doc: PDFDocument;
   let pages: number;
   try {
-    doc = await PDFDocument.load(bytes, { updateMetadata: false, throwOnInvalidObject: false });
+    doc = await PDFDocument.load(bytes, {
+      updateMetadata: false,
+      throwOnInvalidObject: false,
+      ...(limits.password ? { password: limits.password } : {}),
+    });
     // A damaged catalogue can parse yet fail here, so this is inside the guard too.
     pages = doc.isEncrypted ? 0 : doc.getPageCount();
   } catch (error) {
+    if (limits.password && /password/i.test((error as Error)?.message ?? '')) {
+      throw new ToolError('PASSWORD_PROTECTED', `The password for ${which} is not right.`, {
+        hint: 'Check capital letters and try again.',
+        retryable: true,
+      });
+    }
     if (error instanceof EncryptedPDFError || (error as Error)?.name === 'EncryptedPDFError') {
       throw new ToolError('PASSWORD_PROTECTED', `${which} is protected with a password.`, {
         hint: 'Remove the password first (open it and save or print it as a new PDF), then try again.',

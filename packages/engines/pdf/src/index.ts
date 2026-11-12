@@ -6,3 +6,5 @@ export * from './job';
 export * from './forms';
 export * from './compress';
 export * from './images';
+export * from './content';
+export * from './strips';

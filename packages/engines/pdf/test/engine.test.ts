@@ -102,6 +102,17 @@ describe('loadPdf', () => {
     expect(await codeOf(loadPdf(await locked.save(), limits))).toBe('PASSWORD_PROTECTED');
   });
 
+  it('opens a password-protected PDF with its password, and says when it is wrong', async () => {
+    const locked = await PDFDocument.load(await makePdf(2));
+    locked.encrypt({ userPassword: 'ABCD1990', ownerPassword: 'owner' });
+    const bytes = await locked.save();
+    const opened = await loadPdf(bytes, { ...limits, password: 'ABCD1990' });
+    expect(opened.getPageCount()).toBe(2);
+    await expect(loadPdf(bytes, { ...limits, password: 'abcd1990' })).rejects.toThrow(
+      'The password for This PDF is not right.',
+    );
+  });
+
   it('names the file in messages when merging', async () => {
     try {
       await loadPdf(new Uint8Array([1, 2, 3]), { maxPages: 5, label: 'invoice.pdf' });

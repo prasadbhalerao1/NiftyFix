@@ -36,6 +36,11 @@ export default defineContent({
         'Shows photos as fine dots, like a newspaper, instead of solid black and white areas.',
     },
     {
+      name: 'PDF password',
+      description:
+        'Opens a password-protected PDF. The converted copy is protected with the same password. It is used only in this browser tab and never stored or sent anywhere.',
+    },
+    {
       name: 'Colour removed (Grayscale)',
       description:
         '100% is true grayscale. Lower values keep a little colour, for a softer, ink-saving look.',
@@ -48,7 +53,6 @@ export default defineContent({
     output: 'A PDF with solid black text and gray charts, ready for black-and-white printing',
   },
   limits: [
-    'Password-protected PDFs must be unlocked first.',
     'Images over 100 megapixels are too large to convert in a browser tab; they are listed in the report and kept as they were.',
   ],
   faqs: [

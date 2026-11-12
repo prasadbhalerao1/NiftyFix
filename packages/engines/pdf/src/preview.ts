@@ -108,7 +108,8 @@ export interface PreviewDocument {
   close(): Promise<void>;
 }
 
-export async function openPreview(file: Blob): Promise<PreviewDocument> {
+/** Open a PDF for previews; `password` opens a protected one. */
+export async function openPreview(file: Blob, password?: string): Promise<PreviewDocument> {
   GlobalWorkerOptions.workerSrc = workerUrl;
   const asset = (dir: string): string =>
     new URL(`${PDFJS_ASSET_PATH}${dir}/`, location.origin).href;
@@ -121,6 +122,7 @@ export async function openPreview(file: Blob): Promise<PreviewDocument> {
     iccUrl: asset('iccs'),
     enableXfa: false,
     verbosity: 0,
+    ...(password ? { password } : {}),
   });
   let doc: PDFDocumentProxy;
   try {

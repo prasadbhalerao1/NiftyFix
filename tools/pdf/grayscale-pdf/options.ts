@@ -28,6 +28,8 @@ export const GrayscalePdfOptions = v.object({
   strength: percent(0),
   /** Black and white: dither photos instead of a hard cut. */
   dither: v.boolean(),
+  /** Opens a protected PDF; the converted copy keeps it. Used in memory only. */
+  password: v.pipe(v.string(), v.maxLength(256)),
   fileName: FileNameSchema,
 });
 

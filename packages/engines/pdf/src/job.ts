@@ -39,14 +39,20 @@ export interface FinishOptions {
   warnings?: readonly string[];
   /** Set to false to leave the producer field alone (e.g. when the user cleared metadata). */
   stampProducer?: boolean;
+  /** Protect the output with the password the input was opened with. */
+  password?: string;
 }
 
 /** Save, re-open independently to verify, and describe the result for the report. */
 export async function finishPdf(doc: PDFDocument, options: FinishOptions): Promise<ProcessedFile> {
+  if (options.password) {
+    doc.encrypt({ userPassword: options.password, ownerPassword: options.password });
+  }
   const bytes = await savePdf(doc, { stampProducer: options.stampProducer ?? true });
   const { checks } = await verifyPdfOutput(bytes, {
     pages: options.pages,
     fileName: options.fileName,
+    ...(options.password ? { password: options.password } : {}),
     ...(options.rotations ? { rotations: options.rotations } : {}),
   });
   return {

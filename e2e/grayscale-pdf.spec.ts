@@ -10,6 +10,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { colourLeft } from '../packages/engines/pdf/src/grayscale';
 import { contentBytes } from '../packages/engines/pdf/src/content';
 import { readFixture, recordProblems } from './helpers';
+import { readFileSync } from 'node:fs';
 import { openPdfTool, runAndDownload, type PdfFile } from './pdf-helpers';
 
 const JPEG = readFixture('images/portrait-1200x1600.jpg');
@@ -102,5 +103,35 @@ test.describe('PDF to Black and White', () => {
     const bits = decodePDFRawStream(image).decode();
     expect(bits.length).toBe(Math.ceil(1200 / 8) * 1600);
     expect(colourLeft(doc)).toBe(0);
+  });
+
+  test('opens a password-protected PDF, and the converted copy keeps the password', async ({
+    page,
+  }) => {
+    const source = await PDFDocument.load((await colourNotes()).buffer);
+    source.encrypt({ userPassword: 'SURE1990', ownerPassword: 'owner' });
+    const locked = {
+      name: 'locked.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from(await source.save()),
+    };
+    const frame = await openPdfTool(page, '/pdf/grayscale-pdf/', /Choose a PDF/);
+    await frame.getByTestId('file-input').setInputFiles(locked);
+    await frame.getByTestId('prepare').click();
+    await expect(frame.getByTestId('error-view')).toContainText('protected with a password');
+    await frame.getByTestId('pdf-password').fill('SURE1990');
+    await frame.getByTestId('prepare').click();
+    await expect(frame.getByTestId('result')).toBeVisible({ timeout: 30_000 });
+    await expect(
+      frame.getByTestId('validation-report').locator('[data-status="fail"]'),
+    ).toHaveCount(0);
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      frame.getByTestId('download').click(),
+    ]);
+    const bytes = readFileSync(await download.path());
+    await expect(PDFDocument.load(bytes)).rejects.toThrow();
+    const opened = await PDFDocument.load(bytes, { password: 'SURE1990' });
+    expect(colourLeft(opened)).toBe(0);
   });
 });

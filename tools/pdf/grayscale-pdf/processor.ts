@@ -14,7 +14,12 @@ import {
   type ToneSettings,
 } from '@niftyfix/engine-pdf';
 import { resolveOutputName } from '@niftyfix/runtime';
-import { defineProcessor, type VerificationCheck } from '@niftyfix/tool-sdk';
+import {
+  defineProcessor,
+  isToolError,
+  ToolError,
+  type VerificationCheck,
+} from '@niftyfix/tool-sdk';
 import { GrayscalePdfOptions, MAX_PIXELS } from './options';
 
 const plural = (count: number, one: string, many: string): string =>
@@ -28,7 +33,17 @@ export default defineProcessor({
   options: GrayscalePdfOptions,
   async run(input, options, { progress, signal }) {
     progress(0.02, 'Reading the PDF');
-    const doc = await readPdf(input);
+    let doc;
+    try {
+      doc = await readPdf(input, undefined, options.password);
+    } catch (error) {
+      if (isToolError(error) && error.code === 'PASSWORD_PROTECTED' && !options.password) {
+        throw new ToolError('PASSWORD_PROTECTED', 'This PDF is protected with a password.', {
+          hint: 'Type its password in "PDF password" and try again. The converted copy keeps the same password.',
+        });
+      }
+      throw error;
+    }
     const settings: ToneSettings = {
       method: options.method,
       brightness: options.brightness / 100,
@@ -151,11 +166,13 @@ export default defineProcessor({
         { label: 'Images converted', value: String(images.length - failed) },
       ],
       warnings,
+      ...(options.password ? { password: options.password } : {}),
     });
     if (!isGrayOnly(settings)) return output;
     // Read the saved file back and look for any colour at all.
     const saved = await loadPdf(new Uint8Array(await output.blob.arrayBuffer()), {
       maxPages: MAX_PDF_PAGES,
+      ...(options.password ? { password: options.password } : {}),
     });
     const left = colourLeft(saved);
     const check: VerificationCheck = {

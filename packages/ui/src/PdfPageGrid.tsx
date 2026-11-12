@@ -11,7 +11,10 @@ const THUMB = 150;
  * Open a PDF for previews. pdf.js loads only now (a lazy chunk), and its
  * parser runs in its own worker.
  */
-export function usePdfPreview(file: File | null): {
+export function usePdfPreview(
+  file: File | null,
+  password?: string,
+): {
   preview: PreviewDocument | null;
   error: SerializedToolError | null;
 } {
@@ -24,7 +27,7 @@ export function usePdfPreview(file: File | null): {
     setPreview(null);
     setError(null);
     import('@niftyfix/engine-pdf/preview')
-      .then(({ openPreview }) => openPreview(file))
+      .then(({ openPreview }) => openPreview(file, password))
       .then(
         (doc) => {
           opened = doc;
@@ -37,7 +40,7 @@ export function usePdfPreview(file: File | null): {
       alive = false;
       void opened?.close();
     };
-  }, [file]);
+  }, [file, password]);
   return { preview, error };
 }
 

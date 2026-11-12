@@ -9,6 +9,7 @@ import {
   combinePages,
   createPdf,
   describePages,
+  finishPdf,
   flattenForm,
   loadPdf,
   pageRangeSyntaxError,
@@ -258,6 +259,25 @@ describe('operations', () => {
     expect(flattenForm(loaded)).toBe(1);
     const reopened = await loadPdf(await savePdf(loaded), limits);
     expect(reopened.getForm().getFields()).toHaveLength(0);
+  });
+});
+
+describe('finishPdf', () => {
+  it('keeps the password a PDF was opened with, and checks that it holds', async () => {
+    const locked = await PDFDocument.load(await makePdf(2));
+    locked.encrypt({ userPassword: 'SURE1990', ownerPassword: 'owner' });
+    const doc = await loadPdf(await locked.save(), { ...limits, password: 'SURE1990' });
+    const result = await finishPdf(doc, {
+      fileName: 'out.pdf',
+      pages: 2,
+      inputBytes: 1,
+      password: 'SURE1990',
+    });
+    expect(result.verification.every((check) => check.status === 'pass')).toBe(true);
+    expect(result.verification.map((check) => check.id)).toContain('password');
+    const bytes = new Uint8Array(await result.blob.arrayBuffer());
+    expect(await codeOf(loadPdf(bytes, limits))).toBe('PASSWORD_PROTECTED');
+    expect((await loadPdf(bytes, { ...limits, password: 'SURE1990' })).getPageCount()).toBe(2);
   });
 });
 

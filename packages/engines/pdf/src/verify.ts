@@ -7,6 +7,8 @@ export interface PdfExpectations {
   fileName: string;
   /** Expected rotation per page index, when the tool changed it. */
   rotations?: ReadonlyMap<number, number>;
+  /** The output must open with this password, and only with it. */
+  password?: string;
 }
 
 /**
@@ -29,9 +31,25 @@ export async function verifyPdfOutput(
 
   let reopened: PDFDocument | null = null;
   try {
-    reopened = await PDFDocument.load(bytes, { updateMetadata: false });
+    reopened = await PDFDocument.load(bytes, {
+      updateMetadata: false,
+      ...(expect.password ? { password: expect.password } : {}),
+    });
   } catch {
     reopened = null;
+  }
+  if (expect.password) {
+    const locked = await PDFDocument.load(bytes, { updateMetadata: false }).then(
+      (open) => open.isEncrypted,
+      () => true,
+    );
+    checks.push({
+      id: 'password',
+      label: 'Password kept',
+      required: 'Opens only with the password',
+      actual: locked ? 'Opens only with the password' : 'Opens without a password',
+      status: locked ? 'pass' : 'fail',
+    });
   }
   checks.push({
     id: 'opens',

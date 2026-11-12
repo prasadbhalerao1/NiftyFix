@@ -6,6 +6,7 @@ import {
   SegmentedControl,
   SelectInput,
   SingleFileTool,
+  TextInput,
   usePdfPreview,
   type ToolUiProps,
 } from '@niftyfix/ui';
@@ -31,12 +32,14 @@ function TonePreview({
   file,
   settings,
   dither,
+  password,
 }: {
   file: File;
   settings: ToneSettings;
   dither: boolean;
+  password: string;
 }) {
-  const { preview } = usePdfPreview(file);
+  const { preview } = usePdfPreview(file, password);
   const source = useRef<HTMLCanvasElement | null>(null);
   const target = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
@@ -100,6 +103,7 @@ export default function GrayscalePdf(props: ToolUiProps) {
   const [threshold, setThreshold] = useState(50);
   const [strength, setStrength] = useState(100);
   const [dither, setDither] = useState(false);
+  const [password, setPassword] = useState('');
   const options: GrayscalePdfOptions = {
     mode,
     method,
@@ -108,6 +112,7 @@ export default function GrayscalePdf(props: ToolUiProps) {
     threshold,
     strength,
     dither,
+    password,
     fileName: '',
   };
   const settings: ToneSettings = {
@@ -130,7 +135,9 @@ export default function GrayscalePdf(props: ToolUiProps) {
       successMessage="Your PDF is converted. Text is still text."
       disclaimer="The saved file was opened again and every page, drawing, gradient and image in it was checked for colour."
       options={options}
-      preview={(file) => <TonePreview file={file} settings={settings} dither={dither} />}
+      preview={(file) => (
+        <TonePreview file={file} settings={settings} dither={dither} password={password} />
+      )}
     >
       <SegmentedControl<Mode>
         label="Mode"
@@ -198,6 +205,14 @@ export default function GrayscalePdf(props: ToolUiProps) {
           onChange={setStrength}
         />
       ) : null}
+      <TextInput
+        label="PDF password (only if it has one)"
+        type="password"
+        value={password}
+        onChange={setPassword}
+        hint="The converted copy keeps the same password."
+        testId="pdf-password"
+      />
     </SingleFileTool>
   );
 }

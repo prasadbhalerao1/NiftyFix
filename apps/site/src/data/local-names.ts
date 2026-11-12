@@ -273,6 +273,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
       'line break kadha',
     ],
   },
+  'generators.qr-code-generator': {
+    hi: 'क्यूआर कोड बनाएं (UPI, वाई-फाई, लिंक)',
+    mr: 'क्यूआर कोड तयार करा (UPI, वाय-फाय, लिंक)',
+    latin: ['qr code kaise banaye', 'upi qr code kaise banaye', 'qr code banva'],
+  },
   'generators.password-generator': {
     hi: 'मजबूत पासवर्ड बनाएं',
     mr: 'मजबूत पासवर्ड तयार करा',

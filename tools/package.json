@@ -15,14 +15,15 @@
     "@niftyfix/constraints": "workspace:*",
     "@niftyfix/engine-image": "workspace:*",
     "@niftyfix/engine-ocr": "workspace:*",
-    "@niftyfix/engine-text": "workspace:*",
     "@niftyfix/engine-pdf": "workspace:*",
+    "@niftyfix/engine-text": "workspace:*",
     "@niftyfix/portal-specs": "workspace:*",
     "@niftyfix/registry": "workspace:*",
     "@niftyfix/runtime": "workspace:*",
     "@niftyfix/tool-sdk": "workspace:*",
     "@niftyfix/ui": "workspace:*",
     "preact": "10.29.8",
+    "qrcode-generator": "2.0.4",
     "valibot": "1.5.0"
   },
   "devDependencies": {

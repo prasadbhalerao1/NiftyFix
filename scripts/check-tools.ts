@@ -1,6 +1,6 @@
 /**
  * CI gate for the tool catalogue. Fails on: missing tool files, a stale
- * generated registry, invalid manifests/content, metadata files importing
+ * generated registry or tool list, invalid manifests/content, metadata files importing
  * code, and invalid portal specifications.
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
@@ -12,7 +12,9 @@ import {
   discoverToolDirs,
   GENERATED_FILE,
   renderRegistry,
+  renderToolList,
   requiredFiles,
+  TOOL_LIST_FILE,
   TOOLS_DIR,
 } from './lib/tools';
 
@@ -41,6 +43,9 @@ const expected = renderRegistry(dirs);
 const actual = existsSync(GENERATED_FILE) ? readFileSync(GENERATED_FILE, 'utf8') : '';
 if (actual !== expected)
   problems.push('tools/registry.generated.ts is out of date: run `pnpm registry`');
+const list = existsSync(TOOL_LIST_FILE) ? readFileSync(TOOL_LIST_FILE, 'utf8') : '';
+if (list !== renderToolList(dirs))
+  problems.push('docs/tool-list.md is out of date: run `pnpm registry`');
 
 const { TOOL_ENTRIES } = (await import(pathToFileURL(GENERATED_FILE).href)) as {
   TOOL_ENTRIES: readonly ToolEntry[];

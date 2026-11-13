@@ -26,6 +26,11 @@ export const LOCAL_NAMES: Record<string, LocalNames> = {
     mr: 'एसआयपी कॅल्क्युलेटर, म्युच्युअल फंड परतावा',
     latin: ['sip calculator', 'sip me kitna paisa banega', 'sip return kiti milel'],
   },
+  'calculators.date-difference': {
+    hi: 'दो तारीखों के बीच दिन गिनें',
+    mr: 'दोन तारखांमधील दिवस मोजा',
+    latin: ['do date ke beech kitne din', 'aaj se 90 din baad', 'divas moja'],
+  },
   'calculators.emi-calculator': {
     hi: 'ईएमआई कैलकुलेटर, लोन की किस्त निकालें',
     mr: 'ईएमआय कॅल्क्युलेटर, कर्जाचा हप्ता काढा',

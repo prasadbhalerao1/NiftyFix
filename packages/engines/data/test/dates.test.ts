@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { ageOn, compare, eligibleBirthWindow, nextBirthday, parseYmd, weekday } from './age';
+import {
+  addDays,
+  ageOn,
+  compare,
+  daysBetween,
+  eligibleBirthWindow,
+  nextBirthday,
+  parseYmd,
+  weekday,
+  workingDays,
+} from '../src';
 
 const d = (s: string) => {
   const date = parseYmd(s);
@@ -63,5 +73,23 @@ describe('eligibleBirthWindow', () => {
   it('rejects impossible dates', () => {
     expect(parseYmd('2025-02-29')).toBeNull();
     expect(parseYmd('2024-02-29')).not.toBeNull();
+  });
+});
+
+describe('date calculator', () => {
+  it('adds and subtracts days across months and leap years', () => {
+    expect(addDays(d('2024-02-28'), 1)).toEqual(d('2024-02-29'));
+    expect(addDays(d('2026-01-10'), -15)).toEqual(d('2025-12-26'));
+    expect(daysBetween(d('2026-01-01'), d('2026-12-31'))).toBe(364);
+    expect(daysBetween(d('2026-12-31'), d('2026-01-01'))).toBe(-364);
+  });
+
+  it('counts working days, skipping weekends and holidays', () => {
+    // 1 to 31 January 2026: 22 weekdays; Republic Day (26th, a Monday) off leaves 21.
+    expect(workingDays(d('2026-01-01'), d('2026-01-31'), [0, 6])).toBe(22);
+    expect(workingDays(d('2026-01-01'), d('2026-01-31'), [0, 6], [d('2026-01-26')])).toBe(21);
+    // Sunday-only weekend (six-day week).
+    expect(workingDays(d('2026-01-01'), d('2026-01-31'), [0])).toBe(27);
+    expect(workingDays(d('2026-01-31'), d('2026-01-01'), [0, 6])).toBe(22);
   });
 });

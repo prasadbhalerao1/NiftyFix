@@ -1,5 +1,5 @@
 /**
- * Calendar age arithmetic on plain dates (no time zones, no clocks): exact
+ * Calendar arithmetic on plain dates (no time zones, no clocks): exact
  * years, months and days the way people count them, totals, next birthday,
  * and the date-of-birth window for an exam's age limits on a cut-off date.
  */
@@ -118,4 +118,30 @@ export function eligibleBirthWindow(
     earliest: fromSerial(serial(addYears(cutoff, -(max + 1))) + 1),
     latest: addYears(cutoff, -min),
   };
+}
+
+/** The date `days` after (or, negative, before) `date`. */
+export const addDays = (date: Ymd, days: number): Ymd => fromSerial(serial(date) + days);
+
+/** Days from `a` to `b` (negative when `b` is earlier). */
+export const daysBetween = (a: Ymd, b: Ymd): number => serial(b) - serial(a);
+
+/**
+ * Working days from `start` to `end`, both included, skipping the given
+ * weekdays (0 Sunday to 6 Saturday) and any listed holidays.
+ */
+export function workingDays(
+  start: Ymd,
+  end: Ymd,
+  weekend: readonly number[],
+  holidays: readonly Ymd[] = [],
+): number {
+  const [from, to] = compare(start, end) <= 0 ? [start, end] : [end, start];
+  const off = new Set(holidays.map(serial));
+  let count = 0;
+  for (let day = serial(from); day <= serial(to); day += 1) {
+    const weekday = new Date(day * 86_400_000).getUTCDay();
+    if (!weekend.includes(weekday) && !off.has(day)) count += 1;
+  }
+  return count;
 }

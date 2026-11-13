@@ -168,6 +168,12 @@ importers:
         specifier: 5.1.0
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.5(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
 
+  packages/engines/data:
+    devDependencies:
+      vitest:
+        specifier: 5.1.0
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.5(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+
   packages/engines/image:
     dependencies:
       '@niftyfix/constraints':
@@ -306,6 +312,9 @@ importers:
       '@niftyfix/constraints':
         specifier: workspace:*
         version: link:../packages/constraints
+      '@niftyfix/engine-data':
+        specifier: workspace:*
+        version: link:../packages/engines/data
       '@niftyfix/engine-image':
         specifier: workspace:*
         version: link:../packages/engines/image

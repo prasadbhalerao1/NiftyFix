@@ -9,7 +9,7 @@ import {
   parseYmd,
   weekday,
   type Ymd,
-} from './age';
+} from '@niftyfix/engine-data';
 
 const today = (): string => {
   const now = new Date();

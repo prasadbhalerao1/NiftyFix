@@ -29,6 +29,14 @@ describe('simulate', () => {
     expect(result.months).toBeLessThan(200);
   });
 
+  it('extra monthly payments shorten the loan', () => {
+    // $100 extra a month on $300,000 at 7% for 30 years.
+    const mortgage = { principal: 300_000, annualRate: 7, months: 360 };
+    const result = simulate(mortgage, { monthly: 100, strategy: 'reduce-tenure' });
+    expect(result.months).toBe(310);
+    expect(emi(mortgage).totalInterest - result.totalInterest).toBeGreaterThan(69_000);
+  });
+
   it('a rate rise either stretches the tenure or raises the EMI', () => {
     const rateChange = { month: 37, annualRate: 9.5 };
     const longer = simulate(loan, { rateChange, strategy: 'reduce-tenure' });

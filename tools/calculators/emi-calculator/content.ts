@@ -2,9 +2,9 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'To calculate EMI, enter the loan amount, interest rate and tenure: the monthly EMI, total interest and year-by-year schedule appear at once. Know your EMI, and then the two decisions that change what a loan really costs. Should a part-prepayment cut your tenure or your EMI? And when a floating rate rises, should you accept a longer loan or a higher EMI? Enter the loan once and see the EMI, total interest, both decisions side by side in rupees and months, and a year-by-year breakdown.',
+    'To calculate EMI, enter the loan amount, interest rate and tenure: the monthly EMI, total interest and year-by-year schedule appear at once. Know your EMI, and then the two decisions that change what a loan really costs. Should a part-prepayment cut your tenure or your EMI? And when a floating rate rises, should you accept a longer loan or a higher EMI? Enter the loan once and see the EMI, total interest, both decisions side by side in money and months, and a year-by-year breakdown. It works in rupees, dollars, pounds and euros, and has a Home mode for a mortgage with a down payment, property tax, insurance and PMI.',
   howTo: [
-    'Enter the loan amount in rupees.',
+    'Choose your currency, then enter the loan amount (or choose Home for a mortgage).',
     'Enter the yearly interest rate your bank quotes, for example 8.5.',
     'Enter the tenure in years or months.',
     'Read your EMI, total interest and total payment.',
@@ -26,6 +26,16 @@ export default defineContent({
       name: 'If your rate changes',
       description:
         'For floating-rate loans. Many banks keep the EMI the same when rates rise and make the loan longer. The table compares that with paying a higher EMI and finishing on time, and warns when the old EMI would no longer cover the interest at all.',
+    },
+    {
+      name: 'Currency',
+      description:
+        'Rupees, US, Canadian and Australian dollars, pounds or euros, written the way each country writes them (₹12,34,567 or $1,234,567). The maths is the same in every currency; your choice is remembered on this device.',
+    },
+    {
+      name: 'Home (mortgage)',
+      description:
+        'Enter the home price and down payment or deposit instead of the loan amount. In dollars you can add property tax, homeowners insurance, PMI and HOA dues for the full monthly payment (PITI). Outside India you can also choose an interest-only mortgage.',
     },
     {
       name: 'Year by year',
@@ -66,8 +76,14 @@ export default defineContent({
         'Enter your loan and the new rate under If your rate changes. It shows how much longer the loan runs and how much extra interest you pay, compared with raising the EMI. You can ask your bank to raise the EMI instead.',
     },
     {
+      question: 'Does it work in dollars, pounds or euros?',
+      answer:
+        'Yes. Choose the currency at the top; it changes the symbol and digit grouping, and outside rupees the labels say payment and term instead of EMI and tenure. The calculation is the same reducing-balance formula lenders use everywhere.',
+    },
+    {
       question: 'Is my data saved anywhere?',
-      answer: 'No. The calculation runs in your browser; nothing you enter is sent anywhere.',
+      answer:
+        'No. The calculation runs in your browser; nothing you enter is sent anywhere. Only your currency choice is remembered, on this device.',
     },
   ],
   variants: [
@@ -122,6 +138,75 @@ export default defineContent({
           question: 'Why is the interest so high on a personal loan?',
           answer:
             'Personal loans are unsecured (no property or vehicle backs them), so lenders charge a higher rate. Even a 1% lower rate saves noticeably over the tenure.',
+        },
+      ],
+    },
+    {
+      slug: 'mortgage-calculator',
+      preset: 'mortgage',
+      label: 'Mortgage (US)',
+      h1: 'Mortgage calculator with taxes, insurance and PMI',
+      seoTitle: 'Mortgage Calculator: payment with tax, insurance, PMI | NiftyFix',
+      seoDescription:
+        'Calculate your monthly mortgage payment with property tax, homeowners insurance, PMI and HOA, plus extra payments and an amortization table. Free.',
+      intro:
+        'To calculate a mortgage payment, enter the home price, down payment, rate and term: the principal and interest, and the full monthly payment with property tax, insurance, PMI and HOA (PITI), appear at once. This page opens on a $400,000 home with 20% down at 6.5% for 30 years; change any figure to see your own.',
+      faqs: [
+        {
+          question: 'When does PMI stop?',
+          answer:
+            'On a conventional loan, PMI is charged when you put down less than 20%. Under the Homeowners Protection Act your lender must end it once the scheduled balance reaches 78% of the original home value, and you can ask to cancel it at 80%. The calculator shows roughly how many years you would pay it.',
+        },
+        {
+          question: 'How much does an extra $100 a month save?',
+          answer:
+            'On a $300,000 loan at 7% for 30 years, an extra $100 every month pays it off about 4 years early and saves about $69,000 in interest. Enter your own figure under Overpay and save.',
+        },
+        {
+          question: 'What is PITI?',
+          answer:
+            'Principal, interest, taxes and insurance: the full monthly housing payment lenders use to judge whether you can afford a loan. HOA dues, if any, come on top.',
+        },
+      ],
+    },
+    {
+      slug: 'mortgage-calculator-uk',
+      preset: 'uk-mortgage',
+      label: 'Mortgage (UK)',
+      h1: 'Mortgage calculator UK: monthly repayments and overpayments',
+      seoTitle: 'Mortgage Calculator UK: repayments, overpayments, free | NiftyFix',
+      seoDescription:
+        'Work out UK mortgage monthly repayments in pounds, repayment or interest only, with loan to value, overpayment savings and a yearly balance table.',
+      intro:
+        'To work out your mortgage repayments, enter the property price, your deposit, the rate and the term: the monthly repayment, total interest and loan to value appear at once. This page opens in pounds on a £300,000 home with a 10% deposit at 4.5% over 25 years. Switch to interest only, or add a monthly overpayment to see how much sooner you finish.',
+      faqs: [
+        {
+          question: 'Should I overpay my mortgage?',
+          answer:
+            'Overpaying cuts the balance that interest is charged on, so it shortens the mortgage and saves interest. Many UK fixed-rate deals allow overpayments of up to 10% of the balance a year without an early repayment charge; check your own deal first.',
+        },
+        {
+          question: 'What is the difference between repayment and interest only?',
+          answer:
+            'A repayment mortgage pays off interest and some of the loan every month, so it is cleared by the end of the term. An interest-only mortgage costs less a month, but the whole loan is still owed at the end and must be repaid another way.',
+        },
+      ],
+    },
+    {
+      slug: 'loan-calculator',
+      preset: 'loan',
+      label: 'Loan',
+      h1: 'Loan calculator: monthly payment and total interest',
+      seoTitle: 'Loan Calculator: monthly payment, interest, payoff | NiftyFix',
+      seoDescription:
+        'Calculate the monthly payment, total interest and payoff schedule for any loan, in dollars, pounds, euros or rupees, with extra payments. Free.',
+      intro:
+        'To calculate a loan payment, enter the amount, the yearly interest rate and the term: the monthly payment, total interest and a year-by-year payoff schedule appear at once. It works for personal, auto, student and business loans in your currency.',
+      faqs: [
+        {
+          question: 'How is a monthly loan payment calculated?',
+          answer:
+            'Payment = P x r x (1 + r)^n / ((1 + r)^n - 1), where P is the amount borrowed, r the monthly rate (APR / 12 / 100) and n the number of months. Each payment covers the interest for that month first; the rest reduces the balance.',
         },
       ],
     },

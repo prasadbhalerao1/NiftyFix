@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
+import { formatMoney, type Currency } from '@niftyfix/engine-data';
 import { NumberInput, Panel } from '@niftyfix/ui';
-import { emi, rupees, type Loan } from './emi';
+import { emi, type Loan } from './emi';
 import { simulate, type Simulation } from './simulate';
 
 /** "18 years 4 months". */
@@ -37,11 +38,23 @@ function Row({ label, values, strong }: { label: string; values: string[]; stron
   );
 }
 
+interface PlannerProps {
+  loan: Loan;
+  currency: Currency;
+}
+
+/** "EMI" in rupees, "payment" for lenders elsewhere. */
+const paymentWord = (currency: Currency): string => (currency === 'INR' ? 'EMI' : 'payment');
+
 /** Part-prepayments: what each choice the bank offers actually saves. */
-export function PrepaymentPlanner({ loan }: { loan: Loan }) {
-  const [oneTime, setOneTime] = useState<number | null>(200_000);
+export function PrepaymentPlanner({ loan, currency }: PlannerProps) {
+  const indian = currency === 'INR';
+  const money = (amount: number): string => formatMoney(amount, currency);
+  // Indian borrowers prepay a lump sum; elsewhere an extra amount every month is the usual habit.
+  const [oneTime, setOneTime] = useState<number | null>(indian ? 200_000 : 0);
   const [year, setYear] = useState<number | null>(2);
   const [yearly, setYearly] = useState<number | null>(0);
+  const [monthly, setMonthly] = useState<number | null>(indian ? 0 : 100);
   const years = Math.ceil(loan.months / 12);
   const yearError =
     year === null || year < 1 || year > years ? `Enter a year from 1 to ${years}.` : undefined;
@@ -51,27 +64,36 @@ export function PrepaymentPlanner({ loan }: { loan: Loan }) {
     const events = {
       ...(oneTime ? { oneTime: { month: (year ?? 1) * 12, amount: oneTime } } : {}),
       ...(yearly ? { yearly } : {}),
+      ...(monthly ? { monthly } : {}),
     };
     return {
       none: simulate(loan, { strategy: 'reduce-tenure' }),
       tenure: simulate(loan, { ...events, strategy: 'reduce-tenure' }),
       lowerEmi: simulate(loan, { ...events, strategy: 'reduce-emi' }),
     };
-  }, [loan.principal, loan.annualRate, loan.months, oneTime, year, yearly, yearError]);
+  }, [loan.principal, loan.annualRate, loan.months, oneTime, year, yearly, monthly, yearError]);
 
   const saved = (s: Simulation): string =>
-    results ? rupees(results.none.totalInterest - s.totalInterest) : '';
+    results ? money(results.none.totalInterest - s.totalInterest) : '';
 
   return (
-    <Panel title="Prepay and save">
+    <Panel title={indian ? 'Prepay and save' : 'Overpay and save'}>
       <p class="mb-4 text-sm text-stone-600 dark:text-stone-400">
-        After a part-prepayment the bank asks whether to cut your tenure or your EMI. Cutting the
-        tenure usually saves far more interest. RBI does not allow prepayment charges on
-        floating-rate home loans taken by individuals.
+        {indian
+          ? 'After a part-prepayment the bank asks whether to cut your tenure or your EMI. Cutting the tenure usually saves far more interest. RBI does not allow prepayment charges on floating-rate home loans taken by individuals.'
+          : 'Extra payments go straight to the balance. Most lenders then keep your payment and finish sooner, which saves the most interest; some can lower the payment instead. Check whether your loan has an overpayment limit or charge.'}
       </p>
-      <div class="grid gap-3 sm:grid-cols-3">
+      <div class="grid gap-3 sm:grid-cols-2">
         <NumberInput
-          label="One-time prepayment (₹)"
+          label="Extra every month"
+          value={monthly}
+          min={0}
+          step={50}
+          onChange={setMonthly}
+          testId="prepay-monthly"
+        />
+        <NumberInput
+          label="One-time prepayment"
           value={oneTime}
           min={0}
           step={10_000}
@@ -88,7 +110,7 @@ export function PrepaymentPlanner({ loan }: { loan: Loan }) {
           testId="prepay-year"
         />
         <NumberInput
-          label="Extra every year (₹)"
+          label="Extra every year"
           value={yearly}
           min={0}
           step={5_000}
@@ -96,15 +118,15 @@ export function PrepaymentPlanner({ loan }: { loan: Loan }) {
           testId="prepay-yearly"
         />
       </div>
-      {results && (oneTime || yearly) ? (
+      {results && (oneTime || yearly || monthly) ? (
         <div class="mt-4 overflow-x-auto">
           <table class="w-full text-xs sm:text-sm" data-testid="prepay-table">
             <thead>
               <tr>
                 <th class="sr-only">Measure</th>
-                <th class={head}>No prepayment</th>
-                <th class={head}>Reduce tenure</th>
-                <th class={head}>Reduce EMI</th>
+                <th class={head}>{indian ? 'No prepayment' : 'No extra'}</th>
+                <th class={head}>{indian ? 'Reduce tenure' : 'Finish sooner'}</th>
+                <th class={head}>{indian ? 'Reduce EMI' : 'Lower payment'}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-stone-200 dark:divide-stone-800">
@@ -115,15 +137,15 @@ export function PrepaymentPlanner({ loan }: { loan: Loan }) {
                 )}
               />
               <Row
-                label="EMI after prepaying"
+                label={`${indian ? 'EMI' : 'Payment'} after prepaying`}
                 values={[results.none, results.tenure, results.lowerEmi].map((s) =>
-                  rupees(s.finalEmi),
+                  money(s.finalEmi),
                 )}
               />
               <Row
                 label="Total interest"
                 values={[results.none, results.tenure, results.lowerEmi].map((s) =>
-                  rupees(s.totalInterest),
+                  money(s.totalInterest),
                 )}
               />
               <Row
@@ -140,7 +162,9 @@ export function PrepaymentPlanner({ loan }: { loan: Loan }) {
 }
 
 /** Floating rates: the hidden cost when the bank keeps the EMI and stretches the loan. */
-export function RateChangePlanner({ loan }: { loan: Loan }) {
+export function RateChangePlanner({ loan, currency }: PlannerProps) {
+  const money = (amount: number): string => formatMoney(amount, currency);
+  const word = paymentWord(currency);
   const [newRate, setNewRate] = useState<number | null>(loan.annualRate + 1);
   const [fromYear, setFromYear] = useState<number | null>(3);
   const years = Math.ceil(loan.months / 12);
@@ -166,13 +190,13 @@ export function RateChangePlanner({ loan }: { loan: Loan }) {
   }, [loan.principal, loan.annualRate, loan.months, newRate, fromYear, errors.rate, errors.year]);
 
   const extra = (s: Simulation): string =>
-    results ? rupees(s.totalInterest - results.before.totalInterest) : '';
+    results ? money(s.totalInterest - results.before.totalInterest) : '';
 
   return (
     <Panel title="If your rate changes">
       <p class="mb-4 text-sm text-stone-600 dark:text-stone-400">
-        When a floating rate rises, many banks keep your EMI the same and quietly make the loan
-        longer. You can ask for a higher EMI instead. Compare the two:
+        When a floating or variable rate rises, many lenders keep your {word} the same and quietly
+        make the loan longer. You can ask for a higher {word} instead. Compare the two:
       </p>
       <div class="grid gap-3 sm:grid-cols-2">
         <NumberInput
@@ -201,9 +225,9 @@ export function RateChangePlanner({ loan }: { loan: Loan }) {
             class="mt-4 rounded-[var(--radius-control)] bg-red-50 px-3 py-2 text-sm text-red-900 dark:bg-red-950 dark:text-red-200"
             data-testid="never-ends"
           >
-            At this rate your current EMI ({rupees(emi(loan).emi)}) would no longer cover the
-            monthly interest, so the loan would never be repaid. The EMI must go up to at least{' '}
-            {rupees(results.raiseEmi.finalEmi)} to finish on time.
+            At this rate your current {word} ({money(emi(loan).emi)}) would no longer cover the
+            monthly interest, so the loan would never be repaid. The {word} must go up to at least{' '}
+            {money(results.raiseEmi.finalEmi)} to finish on time.
           </p>
         ) : (
           <div class="mt-4 overflow-x-auto">
@@ -211,14 +235,14 @@ export function RateChangePlanner({ loan }: { loan: Loan }) {
               <thead>
                 <tr>
                   <th class="sr-only">Measure</th>
-                  <th class={head}>Keep EMI, longer loan</th>
-                  <th class={head}>Raise EMI, same end date</th>
+                  <th class={head}>Keep {word}, longer loan</th>
+                  <th class={head}>Raise {word}, same end date</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-stone-200 dark:divide-stone-800">
                 <Row
-                  label="EMI"
-                  values={[rupees(results.keepEmi.finalEmi), rupees(results.raiseEmi.finalEmi)]}
+                  label={word === 'EMI' ? 'EMI' : 'Payment'}
+                  values={[money(results.keepEmi.finalEmi), money(results.raiseEmi.finalEmi)]}
                 />
                 <Row
                   label="Loan ends in"

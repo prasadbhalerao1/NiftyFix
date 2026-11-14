@@ -21,3 +21,4 @@ export * from './TextResult';
 export * from './StatTile';
 export * from './ExamPicker';
 export * from './clipboard';
+export * from './CurrencySelect';

@@ -1,10 +1,10 @@
 import { emi, type Loan } from './emi';
 
 /**
- * Month-by-month loan simulation with what actually happens to Indian loans:
- * part-prepayments, and floating rates that change mid-loan. After either, the
- * bank either keeps the EMI and changes the tenure, or keeps the tenure and
- * changes the EMI; this shows the cost of each.
+ * Month-by-month loan simulation with what actually happens to loans:
+ * part-prepayments or extra monthly payments, and floating rates that change
+ * mid-loan. After either, the bank either keeps the EMI and changes the
+ * tenure, or keeps the tenure and changes the EMI; this shows the cost of each.
  */
 export type Strategy = 'reduce-tenure' | 'reduce-emi';
 
@@ -13,6 +13,8 @@ export interface LoanEvents {
   oneTime?: { month: number; amount: number };
   /** Extra amount paid every 12 months, starting in month 12. */
   yearly?: number;
+  /** Extra amount paid every month, as US and UK lenders allow. */
+  monthly?: number;
   /** New annual rate from a given month (1-based) onwards. */
   rateChange?: { month: number; annualRate: number };
   strategy: Strategy;
@@ -54,7 +56,8 @@ export function simulate(loan: Loan, events: LoanEvents): Simulation {
 
     const extra =
       (events.oneTime && month === events.oneTime.month ? events.oneTime.amount : 0) +
-      (events.yearly && month % 12 === 0 ? events.yearly : 0);
+      (events.yearly && month % 12 === 0 ? events.yearly : 0) +
+      (events.monthly ?? 0);
     if (extra > 0 && balance > 0) {
       balance = Math.max(0, balance - extra);
       if (events.strategy === 'reduce-emi' && balance > 0)

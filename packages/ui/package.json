@@ -18,6 +18,7 @@
     "@fontsource-variable/geist": "5.3.0",
     "@fontsource/instrument-serif": "5.3.0",
     "@niftyfix/constraints": "workspace:*",
+    "@niftyfix/engine-data": "workspace:*",
     "@niftyfix/engine-image": "workspace:*",
     "@niftyfix/engine-pdf": "workspace:*",
     "@niftyfix/runtime": "workspace:*",

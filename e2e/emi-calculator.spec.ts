@@ -4,6 +4,9 @@ test.describe('EMI Calculator', () => {
   test('updates the EMI as the loan changes', async ({ page }) => {
     await page.goto('/calculators/emi-calculator/');
     const frame = page.frameLocator('iframe[data-tool-frame]');
+    // The test browser says en-US, so the main page opens in dollars.
+    await expect(frame.getByTestId('currency')).toHaveValue('USD');
+    await frame.getByTestId('currency').selectOption('INR');
     await frame.getByTestId('principal').fill('1000000');
     await frame.getByTestId('rate').fill('10');
     await frame.getByTestId('tenure').fill('10');
@@ -17,6 +20,31 @@ test.describe('EMI Calculator', () => {
     const frame = page.frameLocator('iframe[data-tool-frame]');
     await expect(frame.getByTestId('principal')).toHaveValue('800000');
     await expect(frame.getByTestId('tenure')).toHaveValue('5');
+  });
+});
+
+test.describe('Mortgage calculator', () => {
+  test('the US page adds tax, insurance and PMI, and extra payments save interest', async ({
+    page,
+  }) => {
+    await page.goto('/calculators/mortgage-calculator/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await expect(frame.getByTestId('emi')).toHaveText('$2,023');
+    await expect(frame.getByTestId('monthly-total')).toHaveText('$2,539');
+    await expect(frame.getByTestId('pmi')).toHaveText('$0');
+    await frame.getByTestId('down').fill('40000');
+    await expect(frame.getByTestId('pmi')).toHaveText('$150');
+    await expect(frame.getByTestId('prepay-table')).toContainText('Finish sooner');
+  });
+
+  test('the UK page opens in pounds and offers interest only', async ({ page }) => {
+    await page.goto('/calculators/mortgage-calculator-uk/');
+    const frame = page.frameLocator('iframe[data-tool-frame]');
+    await expect(frame.getByTestId('currency')).toHaveValue('GBP');
+    await expect(frame.getByTestId('ltv')).toContainText('90%');
+    await frame.getByText('Interest only', { exact: true }).click();
+    await expect(frame.getByTestId('emi')).toHaveText('£1,013');
+    await expect(frame.getByTestId('schedule')).toHaveCount(0);
   });
 });
 

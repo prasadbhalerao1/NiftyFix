@@ -1,7 +1,8 @@
 /**
- * Equated monthly instalment (EMI) on a reducing-balance loan, the method
- * Indian banks use: EMI = P × r × (1 + r)^n / ((1 + r)^n − 1), with r the
- * monthly rate (annual rate / 12 / 100) and n the number of months.
+ * Equated monthly instalment (EMI) on a reducing-balance loan, the fixed
+ * monthly payment banks everywhere use:
+ * EMI = P × r × (1 + r)^n / ((1 + r)^n − 1), with r the monthly rate
+ * (annual rate / 12 / 100) and n the number of months.
  */
 export interface Loan {
   principal: number;
@@ -51,6 +52,3 @@ export function yearlySchedule(loan: Loan): ScheduleYear[] {
   }
   return years;
 }
-
-/** "₹12,34,567" in the Indian grouping, rounded to whole rupees. */
-export const rupees = (amount: number): string => `₹${Math.round(amount).toLocaleString('en-IN')}`;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { emi, rupees, yearlySchedule } from './emi';
+import { emi, yearlySchedule } from './emi';
 
 describe('emi', () => {
   it('matches the standard formula', () => {
@@ -27,11 +27,5 @@ describe('yearlySchedule', () => {
     expect(interest).toBeCloseTo(emi(loan).totalInterest, 2);
     // Early years are mostly interest; later years mostly principal.
     expect(years[0]!.interestPaid).toBeGreaterThan(years[4]!.interestPaid);
-  });
-});
-
-describe('rupees', () => {
-  it('uses Indian digit grouping', () => {
-    expect(rupees(1234567.4)).toBe('₹12,34,567');
   });
 });

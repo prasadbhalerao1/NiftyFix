@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Change an image to the exact width and height you need: in pixels, as a percentage, or in centimetres and inches for printing. Proportions are kept unless you choose otherwise, and if you change the shape you decide whether the edges are cropped, borders are added or the image is stretched. The new file is measured before you download it.',
+    'To resize an image, choose it, type the new width and height in pixels, percent, centimetres or inches, and download. Proportions are kept unless you choose otherwise, and if you change the shape you decide whether the edges are cropped, borders are added or the image is stretched. The new file is measured before you download it.',
   howTo: [
     'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF).',
     'Pick how to resize: pixels, percentage, centimetres or inches.',
@@ -44,6 +44,16 @@ export default defineContent({
     'Animated GIFs become a single still image.',
   ],
   faqs: [
+    {
+      question: 'How do I resize an image without losing quality?',
+      answer:
+        'Making an image smaller keeps it sharp. Making it bigger cannot add detail that was never there, so enlarge only a little, and choose PNG if you want no compression at all.',
+    },
+    {
+      question: 'How do I resize an image to 50 KB or 100 KB?',
+      answer:
+        'Resizing changes pixels, which changes KB only indirectly. For a KB limit use Compress Image with Target size, or the Form Photo Resizer when a form gives both pixels and KB.',
+    },
     {
       question: 'Will resizing reduce the file size?',
       answer:

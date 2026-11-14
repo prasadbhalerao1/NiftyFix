@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Scanned bundles come out in the wrong order, with a sideways page or a blank one in the middle. Organize PDF shows every page as a thumbnail so you can fix all of that at once: drag pages into place, turn them the right way up and remove the ones you do not need. Nothing is changed until you save, and the saved file is checked page by page against what you arranged.',
+    'To reorder PDF pages, choose the file, move the page thumbnails into order, then save and download. Scanned bundles come out in the wrong order, with a sideways page or a blank one in the middle. Organize PDF shows every page as a thumbnail so you can fix all of that at once: drag pages into place, turn them the right way up and remove the ones you do not need. Nothing is changed until you save, and the saved file is checked page by page against what you arranged.',
   howTo: [
     'Choose a PDF. Thumbnails of every page appear.',
     'Drag a page to a new position, or use the ← and → buttons under it.',
@@ -31,6 +31,16 @@ export default defineContent({
     'Very long documents (hundreds of pages) take a moment to show all thumbnails; they appear as you scroll.',
   ],
   faqs: [
+    {
+      question: 'How do I rearrange pages in a PDF without Adobe?',
+      answer:
+        'Choose the PDF here and drag the thumbnails into the order you want. It is free, runs in your browser on any computer or phone, and needs no Acrobat.',
+    },
+    {
+      question: 'How do I delete a page from a PDF?',
+      answer:
+        'Select the ✕ under that page thumbnail, then save and download. Remove several pages the same way; the other pages keep their order and quality, and ↶ brings a page back.',
+    },
     {
       question: 'Can I undo a change?',
       answer:

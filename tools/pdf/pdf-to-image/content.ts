@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Some upload forms accept only images, and some apps cannot show a PDF at all. This tool draws each page of your PDF as an image (JPG for small files, PNG for perfectly crisp text) at the resolution you pick. One page downloads as a single image; several come together in a ZIP, named in page order. Each image is checked for its exact pixel size before you download.',
+    'To convert a PDF to JPG, choose it, pick JPG or PNG and a resolution, and download one image per page. Some upload forms accept only images, and some apps cannot show a PDF at all. This tool draws each page of your PDF as an image (JPG for small files, PNG for perfectly crisp text) at the resolution you pick. One page downloads as a single image; several come together in a ZIP, named in page order. Each image is checked for its exact pixel size before you download.',
   howTo: [
     'Choose a PDF.',
     'Pick JPG or PNG and the resolution: 72 DPI for screens, 150 for most uses, 300 for printing.',
@@ -37,6 +37,16 @@ export default defineContent({
     'Rare colour effects that need a full browser page (transfer functions) are skipped, so a few unusual PDFs may show slightly different colours.',
   ],
   faqs: [
+    {
+      question: 'How do I convert a PDF to JPG in high quality?',
+      answer:
+        'Choose a higher Resolution (DPI), such as 300 for printing or sharp zoomed text, and PNG if you need no compression at all. Higher settings make bigger files.',
+    },
+    {
+      question: 'How do I convert a PDF to JPG on iPhone or Mac?',
+      answer:
+        'Open this page in Safari, choose the PDF and download the images. Nothing to install, and the PDF is never uploaded.',
+    },
     {
       question: 'Which resolution should I choose?',
       answer:

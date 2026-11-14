@@ -12,7 +12,7 @@ export const GET: APIRoute = () => {
   const lines = [
     `# ${SITE_NAME}`,
     '',
-    '> Free online tools for photos, images, signatures and PDFs: compress to a KB limit, resize, convert, crop, merge, split and more, then verify the result. Every tool runs in the browser: files are never uploaded. Built for Indian application, exam and government portals, and usable anywhere.',
+    '> Free online tools for PDFs, images, photos, signatures, text and everyday calculations: compress to a KB limit, resize, convert, crop, merge, split and more, then verify the result. Every tool runs in the browser: files are never uploaded. Built for the upload limits of application, exam, visa and job portals in India, the US, the UK and elsewhere.',
     '',
     'Key facts:',
     '',

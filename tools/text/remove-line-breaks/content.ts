@@ -34,6 +34,11 @@ export default defineContent({
   limits: ['Tables and lists copied from PDFs may need tidying by hand after joining lines.'],
   faqs: [
     {
+      question: 'How do I remove line breaks in Word or Excel?',
+      answer:
+        'In Word, open Find and Replace, search for ^p (paragraph mark) or ^l (line break) and replace it with a space. In Excel, use =SUBSTITUTE(A1,CHAR(10)," "). Pasting here does it without formulas and keeps real paragraphs apart.',
+    },
+    {
       question: 'How do I remove line breaks from text copied from a PDF?',
       answer:
         'Paste it here with "Join broken lines" on. Lines are joined into sentences, paragraphs stay separate, and you can copy the result straight away.',
@@ -55,6 +60,13 @@ export default defineContent({
         'Turn any text into a single line: every line break removed and spaces tidied, for form fields, spreadsheet cells, code strings and captions. Free.',
       intro:
         'Need text in a single line for a form field, a spreadsheet cell, a caption or a code string? Paste it here and every line break is removed, with extra spaces tidied, ready to copy.',
+      faqs: [
+        {
+          question: 'How do I put text on one line?',
+          answer:
+            'Paste it here: every line break and repeated space is removed, so the text becomes a single line you can paste into a form field, a spreadsheet cell or code.',
+        },
+      ],
     },
   ],
 });

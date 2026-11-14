@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Know your EMI, and then the two decisions that change what a loan really costs. Should a part-prepayment cut your tenure or your EMI? And when a floating rate rises, should you accept a longer loan or a higher EMI? Enter the loan once and see the EMI, total interest, both decisions side by side in rupees and months, and a year-by-year breakdown.',
+    'To calculate EMI, enter the loan amount, interest rate and tenure: the monthly EMI, total interest and year-by-year schedule appear at once. Know your EMI, and then the two decisions that change what a loan really costs. Should a part-prepayment cut your tenure or your EMI? And when a floating rate rises, should you accept a longer loan or a higher EMI? Enter the loan once and see the EMI, total interest, both decisions side by side in rupees and months, and a year-by-year breakdown.',
   howTo: [
     'Enter the loan amount in rupees.',
     'Enter the yearly interest rate your bank quotes, for example 8.5.',
@@ -45,6 +45,16 @@ export default defineContent({
     'Banks may round the EMI or calculate the first and last instalments slightly differently, so their figure can differ by a few rupees.',
   ],
   faqs: [
+    {
+      question: 'What is the EMI formula?',
+      answer:
+        'EMI = P x r x (1 + r)^n / ((1 + r)^n - 1), where P is the loan amount, r the monthly interest rate (annual rate / 12 / 100) and n the number of months. The calculator applies it and shows the full schedule.',
+    },
+    {
+      question: 'Is an EMI the same as a monthly loan payment?',
+      answer:
+        'Yes. EMI (equated monthly instalment) is the Indian name for the fixed monthly payment on a loan or mortgage. The maths is the same everywhere; amounts here are labelled in rupees, but any currency works.',
+    },
     {
       question: 'Should a prepayment reduce my tenure or my EMI?',
       answer:

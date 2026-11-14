@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Every PDF carries hidden details: a title, the author’s name, the program that made it, keywords. They show up in search results, in file properties and in browser tabs, and they can reveal more than you intend, such as a colleague’s name on a document you are forwarding. This tool shows those details, lets you correct them, or removes all of them, including the second hidden copy (XMP) most tools miss.',
+    'To edit or remove PDF metadata, choose the file, change the title, author, subject or keywords, or remove them all, and download. Every PDF carries hidden details: a title, the author’s name, the program that made it, keywords. They show up in search results, in file properties and in browser tabs, and they can reveal more than you intend, such as a colleague’s name on a document you are forwarding. This tool shows those details, lets you correct them, or removes all of them, including the second hidden copy (XMP) most tools miss.',
   howTo: [
     'Choose a PDF. Its current details appear in the fields.',
     'Change any field, or select "Remove all metadata".',
@@ -29,6 +29,11 @@ export default defineContent({
     'Password-protected PDFs must be unlocked first.',
   ],
   faqs: [
+    {
+      question: "How do I check a PDF's metadata?",
+      answer:
+        'Choose the PDF: its title, author, subject, keywords and the program that made it are shown at once, before you change anything.',
+    },
     {
       question: 'Why would I remove metadata?',
       answer:

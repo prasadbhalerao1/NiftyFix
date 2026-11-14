@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Photos from phones and cameras carry hidden details: often the exact place the photo was taken, the date and time, and the phone or camera model, sometimes with its serial number. Anyone you send the file to can read them. This tool shows what your photo contains, then removes it. The picture itself is copied byte for byte, so there is no loss of quality.',
+    'To remove EXIF data from a photo, choose it to see what it hides, then download a clean copy without the location, camera and date details. Photos from phones and cameras carry hidden details: often the exact place the photo was taken, the date and time, and the phone or camera model, sometimes with its serial number. Anyone you send the file to can read them. This tool shows what your photo contains, then removes it. The picture itself is copied byte for byte, so there is no loss of quality.',
   howTo: [
     'Choose a photo (JPG, PNG or WebP); the details it contains are listed straight away. You can also choose up to 50 photos and clean them all at once.',
     'Select "Remove metadata".',
@@ -32,6 +32,16 @@ export default defineContent({
     'WhatsApp, Instagram and most social apps usually remove location when you share; email, cloud links and file transfers usually do not.',
   ],
   faqs: [
+    {
+      question: 'How do I remove the location from photos on iPhone or Android?',
+      answer:
+        'Choose the photo here in the phone browser and download the clean copy to share. On an iPhone you can also tap Options at the top of the share sheet and turn off Location before you send.',
+    },
+    {
+      question: 'Does removing EXIF data reduce quality?',
+      answer:
+        'No. The picture is copied byte for byte; only the hidden details are left out, so the photo looks exactly the same.',
+    },
     {
       question: 'How do I know the location is really gone?',
       answer:
@@ -65,11 +75,11 @@ export default defineContent({
       slug: 'remove-location-from-photo',
       label: 'Remove location',
       h1: 'Remove the location from a photo',
-      seoTitle: 'Remove location (GPS) from a photo online, free | NiftyFix',
+      seoTitle: 'Remove location (GPS geotag) from a photo, free | NiftyFix',
       seoDescription:
         'Remove the GPS location hidden in a photo before you share it, without changing the picture. Free, and nothing is uploaded.',
       intro:
-        'Phone photos often record exactly where they were taken, down to a few metres. Before you email a photo or post it where strangers can download it, remove the location here. The picture stays exactly the same.',
+        'To remove the location (geotag) from a photo, choose it below and download the clean copy. Phone photos often record exactly where they were taken, down to a few metres. Before you email a photo or post it where strangers can download it, remove the location here. The picture stays exactly the same.',
       faqs: [
         {
           question: 'How can I stop my phone saving the location?',

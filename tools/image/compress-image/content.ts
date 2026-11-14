@@ -11,8 +11,8 @@ function sizePage(
     preset: `target-${kb}kb`,
     label: `${kb} KB`,
     h1: `Compress an image to ${kb} KB`,
-    seoTitle: `Compress image to ${kb}KB online, free | NiftyFix`,
-    seoDescription: `Reduce a JPG, PNG or WebP photo to under ${kb} KB for online forms. The result is checked before you download. Free, nothing uploaded.`,
+    seoTitle: `Compress image to ${kb}KB: reduce image size, free | NiftyFix`,
+    seoDescription: `Reduce or resize a JPG, PNG or WebP photo to under ${kb} KB for online forms, job applications and email. Checked before you download. Free.`,
     intro,
     faqs: [faq],
   };
@@ -20,7 +20,7 @@ function sizePage(
 
 export default defineContent({
   intro:
-    'Photos from a phone are often 3 to 8 MB, while forms, email and chat apps ask for far less. This tool re-encodes your image at a lower quality, and only when a size limit cannot be met that way does it make the image smaller in pixels too. It then measures the file it produced. If your image was already as small as it can sensibly be, you get your original back rather than a bigger file.',
+    'To compress an image, choose it, pick a level or type the KB limit you need, and download a smaller file. Photos from a phone are often 3 to 8 MB, while forms, email and chat apps ask for far less. This tool re-encodes your image at a lower quality, and only when a size limit cannot be met that way does it make the image smaller in pixels too. It then measures the file it produced. If your image was already as small as it can sensibly be, you get your original back rather than a bigger file.',
   howTo: [
     'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Pick a level (Recommended suits most photos) or choose Target size and enter the limit.',
@@ -57,6 +57,16 @@ export default defineContent({
   ],
   faqs: [
     {
+      question: 'How do I compress an image without losing quality?',
+      answer:
+        'Choose Less: the photo looks the same, yet usually shrinks a lot, because phones save photos at very high quality. Only strict KB limits need visible trade-offs, and even then quality is lowered before any pixels are removed.',
+    },
+    {
+      question: 'How do I reduce photo size in KB on an iPhone or Android phone?',
+      answer:
+        'Open this page in the phone browser, choose the photo and pick Target size with your limit, such as 50 KB. The smaller photo is saved to your downloads, and nothing is uploaded.',
+    },
+    {
       question: 'Is my photo uploaded anywhere?',
       answer:
         'No. Compression runs inside your browser on your own device. The image is never sent to our servers or anyone else.',
@@ -75,7 +85,7 @@ export default defineContent({
   variants: [
     sizePage(
       20,
-      'Some forms ask for photos and scans of 20 KB or less. The target is already set to 20 KB: choose your image and the tool finds the best quality that fits, reducing the pixel size if needed and telling you the final dimensions.',
+      'To compress an image to 20 KB, choose it below: the target is already set, and the tool finds the best quality under 20 KB, reducing the pixel size if needed and telling you the final dimensions. Exam forms and some government portals ask for photos and signatures this small.',
       {
         question: 'Will a 20 KB photo still look clear?',
         answer:
@@ -84,7 +94,7 @@ export default defineContent({
     ),
     sizePage(
       50,
-      '50 KB is a common limit on exam and job application forms. The target is already set to 50 KB: choose your image and get a JPG that fits, with every check measured on the file itself.',
+      'To compress an image to 50 KB, choose it below: the target is already set, and you get a JPG under 50 KB, with every check measured on the file itself. It is a common limit on exam, visa and job application forms.',
       {
         question: 'My form says between 20 KB and 50 KB. Will this work?',
         answer:
@@ -93,7 +103,7 @@ export default defineContent({
     ),
     sizePage(
       100,
-      '100 KB keeps a photo clear on screen while fitting most upload limits. The target is already set to 100 KB: choose your image and the tool finds the highest quality under the limit.',
+      'To compress or resize an image to 100 KB, choose it below: the target is already set, and the tool finds the highest quality under 100 KB. That keeps a photo clear on screen while fitting most upload limits for forms, profiles and listings.',
       {
         question: 'Do I need to resize my photo first?',
         answer:
@@ -102,7 +112,7 @@ export default defineContent({
     ),
     sizePage(
       200,
-      '200 KB is enough for a sharp photo at full screen size, and fits most email, chat and document-upload limits. The target is already set to 200 KB.',
+      'To compress an image to 200 KB, choose it below: the target is already set, and the tool keeps as much quality as fits. 200 KB is enough for a sharp photo at full screen size, and fits most email, chat and document-upload limits.',
       {
         question: 'Will the image dimensions change?',
         answer:

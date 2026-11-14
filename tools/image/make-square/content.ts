@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    "WhatsApp, Instagram and shopping sites show photos as squares, so a tall or wide photo gets its head or edges cut off. This tool keeps the whole photo and fills the empty space instead: plain white, black, any colour, or a soft blurred copy of the photo itself. Or keep the photo's shape and add an even border around it. Nothing is cropped or stretched.",
+    "To make a photo square without cropping, choose it and pick a background: the whole picture fits inside the square. WhatsApp, Instagram and shopping sites show photos as squares, so a tall or wide photo gets its head or edges cut off. This tool keeps the whole photo and fills the empty space instead: plain white, black, any colour, or a soft blurred copy of the photo itself. Or keep the photo's shape and add an even border around it. Nothing is cropped or stretched.",
   howTo: [
     'Choose an image, or several: each gets the same settings.',
     'Pick "Make square" or "Add border", and how much space to add.',
@@ -38,6 +38,11 @@ export default defineContent({
     'Transparent PNG areas are filled with the background you choose. Animated GIFs use their first frame.',
   ],
   faqs: [
+    {
+      question: 'How do I post a full photo on Instagram without cropping?',
+      answer:
+        'Make it square here with a white or blurred background, then post it. Instagram shows the whole picture, with nothing cut off at the edges.',
+    },
     {
       question: 'How do I put a full photo as my WhatsApp DP without cropping?',
       answer:

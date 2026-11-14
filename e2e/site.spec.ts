@@ -135,8 +135,8 @@ test.describe('site', () => {
     await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
     const jsonLd = await page.locator('script[type="application/ld+json"]').allTextContents();
     const types = jsonLd.map((text) => (JSON.parse(text) as { '@type': string })['@type']);
-    // FAQPage mirrors the visible questions, for AI assistants (no Google rich result since 2026).
-    expect(types).toEqual(['BreadcrumbList', 'WebApplication', 'FAQPage']);
+    // HowTo and FAQPage mirror the visible steps and questions, for AI assistants and answer engines.
+    expect(types).toEqual(['BreadcrumbList', 'WebApplication', 'HowTo', 'FAQPage']);
     await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('Form-ready');
     for (const heading of [
       'How to use it',

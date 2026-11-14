@@ -63,6 +63,13 @@ export default defineContent({
         'Check how strong a password is and how long it would take to crack, with warnings for common words, keyboard runs and years. Never leaves your device.',
       intro:
         'Type a password to see how strong it is, roughly how long a fast attacker would need to crack it, and what makes it weaker: common passwords, keyboard runs like qwerty, repeated characters or years. The check runs on this page only; nothing you type is sent anywhere.',
+      faqs: [
+        {
+          question: 'What makes a password strong?',
+          answer:
+            'Length matters most: 16 or more random characters, or a passphrase of five or more random words. Avoid names, dates and predictable swaps such as P@ssw0rd, which attackers try first, and never reuse a password across sites.',
+        },
+      ],
     },
   ],
 });

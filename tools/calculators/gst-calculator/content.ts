@@ -44,6 +44,16 @@ export default defineContent({
   ],
   faqs: [
     {
+      question: 'How do I calculate GST from a total amount?',
+      answer:
+        'Divide the total by 1 plus the rate. At 18%, the price before GST is total / 1.18, and the GST is the total minus that. Choose to remove GST and the tool does it for you.',
+    },
+    {
+      question: 'Can I use it for GST in Australia, Canada or New Zealand, or for VAT?',
+      answer:
+        'Yes for the maths: enter any rate, such as 10% GST in Australia, 15% in New Zealand, 5% in Canada or 20% VAT in the UK, and add or remove it. Ignore the CGST and SGST split, which applies only in India.',
+    },
+    {
       question: 'What are the GST rates now?',
       answer:
         'From 22 September 2025, after the 56th GST Council meeting, the main rates are 5% and 18%, with 40% for items such as tobacco, aerated drinks and bigger cars. Essentials can be exempt. The old 12% and 28% slabs were removed; use Other for older invoices.',

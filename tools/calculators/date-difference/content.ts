@@ -31,6 +31,11 @@ export default defineContent({
   ],
   faqs: [
     {
+      question: 'How do I calculate the days between two dates in Excel?',
+      answer:
+        'Subtract them: =B1-A1, or use =DAYS(B1,A1). For working days use =NETWORKDAYS(A1,B1), which skips Saturdays and Sundays and can also take a list of holidays.',
+    },
+    {
       question: 'How many days are there between two dates?',
       answer:
         'Choose both dates above. The count excludes the end date unless you tick "Include the end date".',

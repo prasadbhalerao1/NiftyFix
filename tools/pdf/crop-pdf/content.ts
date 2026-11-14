@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Two common fixes for awkward PDFs. Crop trims the white margins off scanned or exported pages, with a live preview so you see exactly what stays. Resize puts every page on a standard paper size (A4 for India and most of the world, Letter for the US), scaling the content to fit without stretching it, and keeping links working.',
+    'To crop a PDF, choose it and set how much to trim from each edge while the preview shows the result; to resize a PDF to A4, choose Resize to and pick A4. Two common fixes for awkward PDFs. Crop trims the white margins off scanned or exported pages, with a live preview so you see exactly what stays. Resize puts every page on a standard paper size (A4 for India and most of the world, Letter for the US), scaling the content to fit without stretching it, and keeping links working.',
   howTo: [
     'Choose a PDF.',
     'Pick Crop margins or Resize pages.',
@@ -27,6 +27,11 @@ export default defineContent({
     'Password-protected PDFs must be unlocked first.',
   ],
   faqs: [
+    {
+      question: 'How do I resize a PDF to A4?',
+      answer:
+        'Choose the PDF, pick A4 under Resize to and download. Each page is scaled to fit A4 without stretching, so Letter, legal or odd-sized scans print correctly on A4 paper.',
+    },
     {
       question: 'How do I change a PDF from Letter to A4?',
       answer:

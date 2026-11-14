@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'A photo can look upright on your phone and still arrive sideways on a form or a computer, because phones often store the rotation as a separate tag that some software ignores. This tool turns the pixels themselves, so the image is the right way up everywhere. You can also mirror a selfie or flip an image top to bottom, and see the result before you save.',
+    'To rotate an image, choose it, turn it left or right or flip it, and download. A photo can look upright on your phone and still arrive sideways on a form or a computer, because phones often store the rotation as a separate tag that some software ignores. This tool turns the pixels themselves, so the image is the right way up everywhere. You can also mirror a selfie or flip an image top to bottom, and see the result before you save.',
   howTo: [
     'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Use Left or Right to turn it in 90° steps, and tick a flip if you need one. The preview shows the result.',
@@ -36,6 +36,16 @@ export default defineContent({
     'Location and camera details (EXIF) are removed from the saved image.',
   ],
   faqs: [
+    {
+      question: 'How do I rotate a picture 90 degrees and save it?',
+      answer:
+        'Select Right or Left once for 90 degrees, or twice for 180, then download. The pixels themselves are turned, so the picture stays rotated on every phone, computer and website.',
+    },
+    {
+      question: 'How do I flip or mirror a photo?',
+      answer:
+        'Select Flip left to right for a mirror image, which selfies and scanned text often need, or Flip top to bottom to turn it over.',
+    },
     {
       question: 'Why does my photo look fine on my phone but sideways after upload?',
       answer:

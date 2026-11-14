@@ -86,6 +86,13 @@ export default defineContent({
         'Make a QR code that connects phones to your Wi-Fi without typing the password. For homes, cafes, offices and guests. Works on Android and iPhone.',
       intro:
         'Guests scan the code with their phone camera and join your Wi-Fi without typing the password. Enter the network name and password, print it for your cafe, office or living room, and it works on both Android and iPhone.',
+      faqs: [
+        {
+          question: 'How do I connect to Wi-Fi with a QR code?',
+          answer:
+            'Point the phone camera at the code. iPhones and most Android phones offer to join the network directly, so guests never type or see the password.',
+        },
+      ],
     },
   ],
 });

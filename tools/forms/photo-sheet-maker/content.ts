@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Forms, admissions, SIM cards and ID cards often want several printed passport photos. Instead of paying a studio again, put many copies on one sheet and print it at any photo shop or at home. The tool fits as many photos as the paper allows, turning the sheet sideways when that fits more, and adds thin guides to cut along.',
+    'To print passport photos on one sheet, choose your photo, pick 4 x 6 inch photo paper or A4, and download a print-ready sheet. Forms, admissions, SIM cards and ID cards often want several printed passport photos. Instead of paying a studio again, put many copies on one sheet and print it at any photo shop or at home. The tool fits as many photos as the paper allows, turning the sheet sideways when that fits more, and adds thin guides to cut along.',
   howTo: [
     'Choose a photo. For the best result, make it in the Passport Photo Maker first so the head size is right.',
     'Pick the photo size and the paper: 4 × 6 inch photo paper, 5 × 7 inch, or A4.',
@@ -38,6 +38,11 @@ export default defineContent({
     'Some home printers cannot print right to the edge; a 3 mm margin is left on every side.',
   ],
   faqs: [
+    {
+      question: 'How many passport photos fit on a 4 x 6 inch print?',
+      answer:
+        'Eight photos of 35 x 45 mm fit on 4 x 6 inch (10 x 15 cm) photo paper, and up to 30 on an A4 sheet. Print at 100% scale so each photo keeps its exact size.',
+    },
     {
       question: 'Why are my printed photos the wrong size?',
       answer:

@@ -63,6 +63,13 @@ export default defineContent({
         'Compare two JSON documents by content: keys are sorted and formatted first, so only real changes in values and structure show. Private, free.',
       intro:
         'Paste two JSON documents, such as API responses or config files. Both are formatted and their keys sorted, so the comparison shows only real changes: values that differ, keys added or removed, and items in arrays. Invalid JSON is pointed out with the parser’s message.',
+      faqs: [
+        {
+          question: 'How do I compare two JSON files online?',
+          answer:
+            'Paste or open the two files, one on each side. Both are formatted and their keys sorted first, so only real differences show: changed values, added or removed keys, and changed array items.',
+        },
+      ],
     },
   ],
 });

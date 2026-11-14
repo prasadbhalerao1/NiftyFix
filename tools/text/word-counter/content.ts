@@ -47,6 +47,16 @@ export default defineContent({
   ],
   faqs: [
     {
+      question: 'How many words is one page?',
+      answer:
+        'About 500 words single-spaced, or 250 double-spaced, in a 12-point font with normal margins. Paste your text here to see the exact count and reading time.',
+    },
+    {
+      question: 'How do I count words in a PDF or Google Docs?',
+      answer:
+        'In Google Docs use Tools, Word count (Ctrl+Shift+C). For a PDF, copy its text, or extract it with PDF to Text, and paste it here.',
+    },
+    {
       question: 'Is my text saved or sent anywhere?',
       answer:
         'No. Counting happens in your browser as you type. The text is never sent to our servers or stored.',

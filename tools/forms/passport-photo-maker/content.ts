@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Passport and visa photos are rejected for small reasons: the wrong print size, a head that is too big or too small, or a file outside the upload limits. Choose the document, take or pick a photo against a plain light wall, and fit your head into the guide. The tool makes the photo at the exact size from the official requirements, which we read from the government source and list with the date we checked it.',
+    'To make a passport photo online, choose the document, take or pick a photo against a plain light wall, and fit your head into the guide. Passport and visa photos are rejected for small reasons: the wrong print size, a head that is too big or too small, or a file outside the upload limits. The tool makes the photo at the exact size from the official requirements, which we read from the government source and list with the date we checked it.',
   howTo: [
     'Choose the document: Indian passport, Indian visa, US passport or visa, or UK passport.',
     'Choose a recent, sharp photo of your face against a plain light wall, taken from about 1.5 metres away.',
@@ -44,6 +44,16 @@ export default defineContent({
     'Requirements change. Each one shows the date we checked it; confirm on the official site before you apply.',
   ],
   faqs: [
+    {
+      question: 'What size is a passport photo in the US, UK and India?',
+      answer:
+        'US: 2 x 2 inches (51 x 51 mm). UK: 35 x 45 mm. India: 35 x 45 mm (3.5 x 4.5 cm). Choose the country here and the tool sets the size and where your head goes.',
+    },
+    {
+      question: 'Can I take a passport photo at home with my phone?',
+      answer:
+        'Yes. Stand facing the camera in front of a plain light wall, in even daylight with no shadows, and have someone take the photo from about 1.5 m away at head height. Then choose it here and fit your head into the guide.',
+    },
     {
       question: 'How do I print it at the right size?',
       answer:

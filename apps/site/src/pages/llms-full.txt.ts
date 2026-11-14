@@ -12,7 +12,7 @@ export const GET: APIRoute = () => {
   const lines: string[] = [
     `# ${SITE_NAME}: full tool reference`,
     '',
-    `> ${SITE_NAME} (${absoluteUrl('/')}) is a free website of file tools for photos, images, signatures and PDFs. Every tool runs in the browser, so files are processed on the user's device and never uploaded. There is no sign-up, no daily limit and no watermark. Each tool checks the file it produced (for example pixel size, KB size and format) and reports every requirement as passed or failed. Built for Indian application, exam and government portals, and usable anywhere.`,
+    `> ${SITE_NAME} (${absoluteUrl('/')}) is a free website of tools for PDFs, images, photos, signatures, text and everyday calculations. Every tool runs in the browser, so files are processed on the user's device and never uploaded. There is no sign-up, no daily limit and no watermark. Each tool checks the file it produced (for example pixel size, KB size and format) and reports every requirement as passed or failed. Built for the upload limits of application, exam, visa and job portals in India, the US, the UK and elsewhere, and for everyday file jobs anywhere.`,
     '',
     `Short index: ${absoluteUrl('/llms.txt')}`,
     '',

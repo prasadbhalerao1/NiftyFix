@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Printing a 200-page set of notes or previous year papers one page per sheet costs a lot at a print shop. Put 2, 4, 6 or 9 pages on every sheet instead, in reading order, and the PDF prints on a fraction of the paper. Or make a booklet: pages are reordered so that a double-sided print folds in half and reads in order. The pages are placed as they are, not turned into pictures, so text stays sharp and searchable.',
+    'To print several PDF pages on one sheet, choose the PDF, pick 2, 4, 6 or 9 pages per sheet, and download a PDF that prints that way on any printer. Printing a 200-page set of notes or previous year papers one page per sheet costs a lot at a print shop. With several pages on every sheet, in reading order, it prints on a fraction of the paper. Or make a booklet: pages are reordered so that a double-sided print folds in half and reads in order. The pages are placed as they are, not turned into pictures, so text stays sharp and searchable.',
   howTo: [
     'Choose a PDF.',
     'Pick how many pages go on each sheet, or "Booklet".',
@@ -38,6 +38,11 @@ export default defineContent({
     'Password-protected PDFs cannot be opened.',
   ],
   faqs: [
+    {
+      question: 'How do I print 2 pages per sheet from a PDF?',
+      answer:
+        'Choose 2 pages per sheet and download. The new PDF already has two pages on each sheet, so print it normally at 100% or Fit, double-sided if you like, from any printer or print shop.',
+    },
     {
       question: 'Will the text still be readable at 4 pages per sheet?',
       answer:

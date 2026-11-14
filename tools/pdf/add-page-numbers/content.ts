@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Theses, reports, legal bundles and application packs usually need numbered pages, and merged documents rarely have them. This tool stamps a number on each page in the corner or centre you choose, in a plain style such as "3" or "Page 3 of 10". Numbers stay upright even on rotated pages, you can start from any number, and you can skip a cover page.',
+    'To add page numbers to a PDF, choose it, pick where the number goes and its style (such as Page 3 of 10), and download. Theses, reports, legal bundles and application packs usually need numbered pages, and merged documents rarely have them. This tool stamps a number on each page in the corner or centre you choose, in a plain style such as "3" or "Page 3 of 10". Numbers stay upright even on rotated pages, you can start from any number, and you can skip a cover page.',
   howTo: [
     'Choose a PDF.',
     'Pick where the number goes and its style.',
@@ -37,6 +37,16 @@ export default defineContent({
     'Password-protected PDFs must be unlocked first.',
   ],
   faqs: [
+    {
+      question: 'How do I add page numbers from a specific page?',
+      answer:
+        'Use Start at to choose the first number, and Pages to number only some pages, for example from page 3 so a cover and contents page stay blank.',
+    },
+    {
+      question: 'Can I add page numbers without Adobe Acrobat?',
+      answer:
+        'Yes. This tool is free in any browser, on a computer or a phone, and your PDF stays on your device.',
+    },
     {
       question: 'Can I skip the first page?',
       answer:

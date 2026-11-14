@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Printing a document just to sign it and scan it back is slow and makes the file blurry. Here you draw your signature with a mouse, finger or stylus (or upload a photo of it, which is cleaned so only the ink remains) then drag it exactly where it belongs on the page and save. The signature can go on one page or every page, and the saved file is checked to make sure it landed where you placed it.',
+    'To sign a PDF online, choose the document, add your signature, place it on the page and download the signed copy. Printing a document just to sign it and scan it back is slow and makes the file blurry. Here you draw your signature with a mouse, finger or stylus (or upload a photo of it, which is cleaned so only the ink remains) then drag it exactly where it belongs on the page and save. The signature can go on one page or every page, and the saved file is checked to make sure it landed where you placed it.',
   howTo: [
     'Choose the PDF to sign. Its first page appears.',
     'Draw your signature in the box, or upload a photo of it on white paper.',
@@ -31,6 +31,16 @@ export default defineContent({
     'Password-protected PDFs must be unlocked first.',
   ],
   faqs: [
+    {
+      question: 'How do I sign a PDF on my phone, iPhone or Mac?',
+      answer:
+        'Open this page in the browser, choose the PDF and draw your signature with a finger, stylus or trackpad. Place it on the page and download. Nothing to install and no account needed.',
+    },
+    {
+      question: 'Is this a digital signature (DSC)?',
+      answer:
+        'No. This adds a picture of your handwritten signature, which is what most forms, letters and agreements need. A certificate-based digital signature (DSC), required for some tax and company filings, needs your own signing certificate and software.',
+    },
     {
       question: 'Is a signature added this way legally valid?',
       answer:

@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'A signature photographed on a phone usually comes out grey, shadowed and far too large. Portals then reject it for its size, its dimensions, or a dirty background. This tool crops the signature, evens out the lighting, whitens the paper while keeping thin pen strokes, and produces exact pixels inside your KB range, with a report that measures the final file.',
+    'To resize a signature for an online form, photograph it on white paper, choose it here and enter the pixel size and KB range, or pick your exam. A signature photographed on a phone usually comes out grey, shadowed and far too large. Portals then reject it for its size, its dimensions, or a dirty background. This tool crops the signature, evens out the lighting, whitens the paper while keeping thin pen strokes, and produces exact pixels inside your KB range, with a report that measures the final file.',
   howTo: [
     'Sign on plain white paper with a dark pen, then photograph or scan it in good, even light.',
     'Choose the image. The tool crops to the signature automatically; drag the frame or its corner to adjust.',
@@ -50,6 +50,11 @@ export default defineContent({
     'iPhone HEIC photos are not supported yet; share the photo as JPEG instead.',
   ],
   faqs: [
+    {
+      question: 'How do I make a signature image for an online form?',
+      answer:
+        'Sign on plain white paper in dark ink, take a photo in good light and choose it here. The tool crops it, makes the paper pure white, and saves a JPG at the pixel size and KB range the form asks for.',
+    },
     {
       question: 'Will cleaning the background make my signature look different?',
       answer:
@@ -124,6 +129,13 @@ export default defineContent({
         'Make the UPSC triple signature: sign three times one below the other in black ink, one JPG of 20 to 100 KB, 350 to 500 pixels. Free and private.',
       intro:
         'UPSC asks for a triple signature: sign three times, one below the other, in black ink on plain white paper with clear gaps between them, and scan all three as one image. Save it as a JPG named "signature", between 20 KB and 100 KB, with image dimensions of 350 to 500 pixels. Photograph your sheet below; the KB range is already filled in, and the tool cleans the paper to white. Source: the UPSC instructions for uploading the photo and signature on upsconline.nic.in.',
+      faqs: [
+        {
+          question: 'How do I scan a triple signature for UPSC?',
+          answer:
+            'Sign three times, one below the other, on plain white paper in black ink, and photograph or scan all three as one image. Choose it here: the background is cleaned to white and the file is kept between 20 KB and 100 KB as UPSC asks.',
+        },
+      ],
     },
     {
       slug: 'ibps-po-signature-size',
@@ -135,6 +147,13 @@ export default defineContent({
         'Make your signature for the IBPS PO/MT-XVI or Clerk (CSA-XVI) form: black ink on white, 140 x 60 pixels, 10 to 20 KB, JPG. Free and private.',
       intro:
         'The IBPS PO/MT-XVI and Clerk (CSA-XVI) notices ask you to sign on white paper with a black ink pen and upload it as a JPG of 140 x 60 pixels (preferred) between 10 KB and 20 KB; the PO notice adds that it must not be in capital letters. These numbers are filled in below: take a photo of your signature, and the tool cleans the background and fits the size. Sources: the official IBPS CRP PO/MT-XVI notification (30 June 2026, Annexure III) and the CRP CSA-XVI notification (1 August 2026) on ibps.in.',
+      faqs: [
+        {
+          question: 'Can my IBPS signature be in capital letters?',
+          answer:
+            'No. The IBPS PO notice says the signature must not be in capital letters. Sign in your normal running hand in black ink, then resize it here to 140 x 60 pixels and 10 to 20 KB.',
+        },
+      ],
     },
     {
       slug: 'signature-resize-10-to-20kb',
@@ -164,6 +183,13 @@ export default defineContent({
         'Get a signature image between 10 and 50 KB at exact pixel dimensions, with a clean white background. Free, and nothing is uploaded.',
       intro:
         'A 10–50 KB range is easy to meet once the background is clean: the tool whitens the paper, darkens the ink, and keeps the file inside the range. The range is already set; choose your signature photo and enter the pixel size your form asks for.',
+      faqs: [
+        {
+          question: 'How do I make my signature between 10 and 50 KB?',
+          answer:
+            'The range is already filled in: choose a photo or scan of your signature, and the tool cleans the background and fits the file inside 10 to 50 KB, checking the result before you download.',
+        },
+      ],
     },
   ],
 });

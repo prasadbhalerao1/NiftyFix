@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Portals and offices usually ask for documents as a PDF, but your marksheet or ID is a photo on your phone. Add the photos, put them in order, and this tool makes one PDF with one image per page. JPEG and PNG images go in unchanged, at full quality; sideways phone photos are turned upright automatically. Pages can be A4, US Letter, or exactly the size of each image.',
+    'To convert JPG to PDF, add your photos, put them in order and download one PDF with one image per page. Portals and offices usually ask for documents as a PDF, but your marksheet or ID is a photo on your phone. JPEG and PNG images go in unchanged, at full quality; sideways phone photos are turned upright automatically. Pages can be A4, US Letter, or exactly the size of each image.',
   howTo: [
     'Choose your images (JPEG, PNG, WebP, AVIF, BMP or GIF). You can add more later.',
     'Put them in order with the arrows. Each image becomes one page.',
@@ -38,6 +38,16 @@ export default defineContent({
     'iPhone HEIC photos are not supported yet; share them as JPEG instead.',
   ],
   faqs: [
+    {
+      question: 'How do I convert JPG to PDF on an iPhone or Android phone?',
+      answer:
+        'Open this page in the phone browser, add the photos from your gallery or files, and download the PDF. No app and no sign-up, and the photos are never uploaded.',
+    },
+    {
+      question: 'How do I make a JPG to PDF under 200 KB or 500 KB?',
+      answer:
+        'Make the PDF here, then open it in Compress PDF and choose Target size. Photos are reduced only as much as needed to fit the limit.',
+    },
     {
       question: 'Will my photos lose quality?',
       answer:

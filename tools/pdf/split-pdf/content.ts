@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Some portals accept one document per upload, and a single scan of all your certificates will not do. Split PDF turns one file into several: one per page, one per fixed number of pages, or one per range you type. Every part is opened again to check its pages, and all parts download together as a ZIP named in page order.',
+    'To split a PDF, choose it, then cut it every N pages (N = 1 gives one file per page) or type the page ranges you want. Some portals accept one document per upload, and a single scan of all your certificates will not do. Every part is opened again to check its pages, and all parts download together as a ZIP named in page order.',
   howTo: [
     'Choose a PDF.',
     'Choose how to split: every few pages (1 = every page on its own), or by ranges.',
@@ -33,6 +33,21 @@ export default defineContent({
     'Each part keeps its pages exactly; bookmarks and form fields are not carried over.',
   ],
   faqs: [
+    {
+      question: 'How do I split a PDF into separate pages?',
+      answer:
+        'Choose the PDF, pick Every N pages and set N to 1. Every page becomes its own PDF, numbered in page order, and they all download in one ZIP.',
+    },
+    {
+      question: 'How do I split a PDF into two files?',
+      answer:
+        'Choose By ranges and type two ranges, for example 1-5, 6- (6- means page 6 to the end). You get two PDFs. To save only some pages as one new file, Extract PDF Pages is quicker.',
+    },
+    {
+      question: 'Can I split a PDF without Adobe Acrobat?',
+      answer:
+        'Yes. Splitting here is free, runs in any modern browser on Windows, Mac, iPhone or Android, and never uploads your file.',
+    },
     {
       question: 'How are the files named?',
       answer:

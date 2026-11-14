@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'A watermark says who a picture belongs to, or limits what a copy can be used for. Photographers add a small credit in a corner; people sharing an ID or certificate add "For verification only" across it so the copy cannot be reused elsewhere. This tool adds text in a corner, in the centre, or repeated across the whole image, at the size and strength you choose.',
+    'To watermark a photo, choose it, type your text, pick the position, size, opacity and colour, and download. A watermark says who a picture belongs to, or limits what a copy can be used for. Photographers add a small credit in a corner; people sharing an ID or certificate add "For verification only" across it so the copy cannot be reused elsewhere. This tool adds text in a corner, in the centre, or repeated across the whole image, at the size and strength you choose.',
   howTo: [
     'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Type the text and pick where it goes.',
@@ -43,6 +43,11 @@ export default defineContent({
     'Location and camera details (EXIF) are removed from the watermarked image.',
   ],
   faqs: [
+    {
+      question: 'How do I add a watermark to a photo for free?',
+      answer:
+        'Choose the photo here, type your name or a note such as For verification only, and download. It is free with no sign-up, and no logo or mark of ours is added.',
+    },
     {
       question: 'Should I watermark ID copies I send to others?',
       answer:

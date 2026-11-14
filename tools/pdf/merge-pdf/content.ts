@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Application portals, offices and email often want one PDF, not five. Add your PDFs, put them in order, and this tool joins every page into a single file. Pages are copied exactly as they are (text stays selectable, and nothing is re-compressed or re-printed) and the merged file is opened again to confirm its page count before you download it.',
+    'To merge PDF files into one, add them below, put them in order with the arrows and select Merge PDFs. Application portals, offices and email often want one PDF, not five, and this tool joins every page into a single file on your device. Pages are copied exactly as they are (text stays selectable, and nothing is re-compressed or re-printed) and the merged file is opened again to confirm its page count before you download it.',
   howTo: [
     'Choose two or more PDF files, or drop them onto the box. You can add more later.',
     'Put the files in order with the up and down arrows. Pages follow the file order.',
@@ -33,6 +33,16 @@ export default defineContent({
     'Merging does not make a file smaller. Use Compress PDF afterwards if there is a size limit.',
   ],
   faqs: [
+    {
+      question: 'How do I merge PDF files on a Mac, iPhone or Android phone?',
+      answer:
+        'Open this page in Safari or Chrome on the device, add the PDFs and select Merge PDFs. It works the same on phones, tablets and computers, with no app to install and no sign-up.',
+    },
+    {
+      question: 'Can I merge PDFs without Adobe Acrobat?',
+      answer:
+        'Yes. This tool is free and runs in your web browser, so you need no Acrobat subscription or other software, and your files are never uploaded.',
+    },
     {
       question: 'Are my files uploaded?',
       answer:

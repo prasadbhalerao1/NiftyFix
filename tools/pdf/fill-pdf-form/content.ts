@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Many application, bank and government forms are fillable PDFs, but phones and some browsers will not let you type into them or save the answers. Choose the form here and every field appears as a normal web form: text boxes, tick boxes, radio buttons and drop-downs with the form’s own options. Fill it in, optionally lock the answers, and download a completed PDF whose answers are checked before you get it.',
+    'To fill a PDF form online, choose the form, type into its fields, tick its boxes and download the completed copy. Many application, bank and government forms are fillable PDFs, but phones and some browsers will not let you type into them or save the answers. Choose the form here and every field appears as a normal web form: text boxes, tick boxes, radio buttons and drop-downs with the form’s own options. Fill it in, optionally lock the answers, and download a completed PDF whose answers are checked before you get it.',
   howTo: [
     'Choose a fillable PDF form. Its fields appear in the order of the pages.',
     'Type your answers and pick options.',
@@ -28,6 +28,11 @@ export default defineContent({
     'Signature fields are not filled here; use Sign PDF.',
   ],
   faqs: [
+    {
+      question: 'Can I fill a PDF form for free without signing up?',
+      answer:
+        'Yes. There is no account, no trial and no watermark. The form is filled inside your browser, so it works on Windows, Mac, iPhone and Android and is never uploaded.',
+    },
     {
       question: 'Why can I not type into this PDF on my phone?',
       answer:

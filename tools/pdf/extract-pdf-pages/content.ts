@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'When a portal wants only your marksheet but it sits on page 4 of a 20-page document, you need just that page as its own PDF. Type the pages you want and this tool copies exactly those into a new file, in the order you typed them, so it can also reorder pages. Text stays selectable and nothing is re-compressed.',
+    'To extract pages from a PDF, choose it, type the pages you want (for example 1, 4-6) and download them as a new PDF. When a portal wants only your marksheet but it sits on page 4 of a 20-page document, you need just that page as its own PDF. The tool copies exactly those pages into a new file, in the order you typed them, so it can also reorder pages. Text stays selectable and nothing is re-compressed.',
   howTo: [
     'Choose a PDF.',
     'Type the pages to keep, separated by commas, for example 4, or 1-3, 7.',
@@ -27,6 +27,11 @@ export default defineContent({
     'Bookmarks and form fields are not carried over.',
   ],
   faqs: [
+    {
+      question: 'How do I extract pages from a PDF to make a new PDF?',
+      answer:
+        'Type the pages in Pages, in the order you want them, and download. You get a new PDF with only those pages; the original file is not changed.',
+    },
     {
       question: 'Is my original PDF changed?',
       answer: 'No. You download a new file; the original stays exactly as it was.',

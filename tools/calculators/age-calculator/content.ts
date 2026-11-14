@@ -33,6 +33,11 @@ export default defineContent({
   ],
   faqs: [
     {
+      question: 'How do I calculate age in Excel?',
+      answer:
+        'Use =DATEDIF(A1,TODAY(),"Y") for completed years, where A1 holds the date of birth. "YM" and "MD" in place of "Y" give the extra months and days.',
+    },
+    {
       question: 'How is age counted in years, months and days?',
       answer:
         'Completed years first, then completed months, then the days left over. A birthday on the 31st counts as the last day of shorter months.',
@@ -59,6 +64,13 @@ export default defineContent({
         'Calculate your age as on an exam cut-off date and check the minimum and maximum age limit, with the exact eligible date-of-birth range. Free.',
       intro:
         'Government and job exam notifications set an age limit counted on a cut-off date. Enter your date of birth, the cut-off date from the notification, and the minimum and maximum age (after any category relaxation): you get your exact age on that day, whether you are eligible, and the range of birth dates that qualify.',
+      faqs: [
+        {
+          question: 'How is age calculated for an exam?',
+          answer:
+            'Exams count your completed age on a cut-off date printed in the notice, such as 1 August of the exam year, not on the day you apply. Enter that date as the age-on date: the years, months and days shown are what the age limit is checked against.',
+        },
+      ],
     },
   ],
 });

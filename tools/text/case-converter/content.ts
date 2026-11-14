@@ -37,6 +37,11 @@ export default defineContent({
   ],
   faqs: [
     {
+      question: 'How do I change uppercase to lowercase without retyping?',
+      answer:
+        'Paste the text here, choose lower case or Sentence case, and copy it back. In Microsoft Word, Shift+F3 cycles the case of selected text, and Excel has the LOWER, UPPER and PROPER functions.',
+    },
+    {
       question: 'Is my text sent anywhere?',
       answer: 'No. The conversion happens in your browser; nothing you type leaves your device.',
     },

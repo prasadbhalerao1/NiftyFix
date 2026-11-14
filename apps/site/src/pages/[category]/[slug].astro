@@ -91,6 +91,17 @@ const jsonLd = [
       logo: absoluteUrl('/icon-512.png'),
     },
   },
+  // The steps from "How to use it", so answer engines can quote them in order.
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: page.h1,
+    step: content.howTo.map((text, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      text,
+    })),
+  },
   // The page's questions and answers, also shown in full on the page.
   ...(faqs.length > 0
     ? [

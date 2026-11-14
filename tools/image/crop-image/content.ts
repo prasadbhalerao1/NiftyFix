@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Remove the edges you do not want: a cluttered background, other people, a screenshot border. Crop freely, or lock the frame to a shape such as square for a profile picture, 16:9 for a slide, or passport-photo proportions. The pixels you keep are copied as they are, not resized, so the crop is as sharp as the original.',
+    'To crop an image, choose it, drag the frame over the part you want and download. Remove the edges you do not want: a cluttered background, other people, a screenshot border. Crop freely, or lock the frame to a shape such as square for a profile picture, 16:9 for a slide, or passport-photo proportions. The pixels you keep are copied as they are, not resized, so the crop is as sharp as the original.',
   howTo: [
     'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF).',
     'Pick a shape, or leave it on Free.',
@@ -33,6 +33,16 @@ export default defineContent({
     'Location and camera details (EXIF) are removed from the cropped image.',
   ],
   faqs: [
+    {
+      question: 'How do I crop a photo to a square for a profile picture?',
+      answer:
+        'Pick Square under Shape and drag the frame over your face. If you would rather keep the whole photo, Make Square fits it inside a square with a background instead of cutting it.',
+    },
+    {
+      question: 'How do I crop an image on iPhone, Android or Mac?',
+      answer:
+        'Open this page in the browser, choose the image and drag the frame with your finger or mouse. It needs no app or account, and the photo stays on your device.',
+    },
     {
       question: 'Does cropping reduce quality?',
       answer:

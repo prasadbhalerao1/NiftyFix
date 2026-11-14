@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Copying text from a PDF viewer often scrambles lines and columns, and long documents take ages to select. This tool reads the text layer of every page and saves it as a plain .txt file in reading order, with an optional marker before each page. If some pages are scanned images with no text layer, the report names them, so you know they need OCR rather than silently getting blank pages.',
+    'To extract text from a PDF, choose it and download a plain .txt file with all its text, page by page. Copying text from a PDF viewer often scrambles lines and columns, and long documents take ages to select. This tool reads the text layer of every page and saves it as a plain .txt file in reading order, with an optional marker before each page. If some pages are scanned images with no text layer, the report names them, so you know they need OCR rather than silently getting blank pages.',
   howTo: [
     'Choose a PDF.',
     'Keep "All pages" or choose the pages you need.',
@@ -26,6 +26,11 @@ export default defineContent({
     'Password-protected PDFs must be unlocked first.',
   ],
   faqs: [
+    {
+      question: 'How do I extract text from a scanned PDF?',
+      answer:
+        'A scan is a picture with no text inside, so the result will be empty for those pages and the tool tells you which. Turn those pages into images with PDF to JPG, then read them with Image to Text (OCR).',
+    },
     {
       question: 'Why is my extracted text empty?',
       answer:

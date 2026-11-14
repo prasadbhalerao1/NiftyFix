@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Application portals usually reject a photo for one of four reasons: wrong pixel dimensions, a file that is too large, a file that is too small, or the wrong format. This tool fixes all four in one pass and then measures the file it produced, so you can see each requirement pass or fail before you upload.',
+    'To resize a photo for an application form, choose it and enter the pixel size and KB range the form gives, or pick your exam to fill them in. Application portals usually reject a photo for one of four reasons: wrong pixel dimensions, a file that is too large, a file that is too small, or the wrong format. This tool fixes all four in one pass and then measures the file it produced, so you can see each requirement pass or fail before you upload.',
   howTo: [
     'Choose your photo (JPEG, PNG, WebP, AVIF, BMP or GIF).',
     'Enter the width and height in pixels exactly as your form states them, or pick a common size.',
@@ -55,6 +55,11 @@ export default defineContent({
     'Very large images (over 50 megapixels on phones, 100 megapixels on computers) are rejected to protect your device’s memory.',
   ],
   faqs: [
+    {
+      question: 'How do I resize a photo for an online application form?',
+      answer:
+        'Enter the width and height in pixels and the minimum and maximum KB from the form, or pick your exam, then choose your photo. The tool crops, resizes and compresses it, then checks each requirement before you download.',
+    },
     {
       question: 'Is my photo uploaded anywhere?',
       answer:
@@ -284,6 +289,13 @@ export default defineContent({
         'Make a photo smaller than 50 KB at the pixel size your form needs. Crop, resize and compress in one step. Free, nothing is uploaded.',
       intro:
         'Many forms cap the photo at 50 KB. The maximum is already set: choose your photo, enter the width and height in pixels from the form, centre your face, and the tool produces a JPEG under 50 KB at the best quality that fits.',
+      faqs: [
+        {
+          question: 'How do I reduce a photo to 50 KB without losing quality?',
+          answer:
+            'A face photo under 50 KB still looks clear at the size forms display it. The tool lowers JPG quality before it reduces pixels, and shows the final size and dimensions. If the form also gives pixel dimensions, enter them too.',
+        },
+      ],
     },
     {
       slug: 'resize-photo-to-100kb',
@@ -295,6 +307,13 @@ export default defineContent({
         'Compress a photo to under 100 KB without making it look blurry. Set exact pixel dimensions and crop in one step. Free and private.',
       intro:
         'With a 100 KB limit there is room for a sharp photo at most form sizes. The maximum is already set to 100 KB; choose your photo and set the dimensions, and the tool keeps as much quality as fits, then confirms the final size before you upload.',
+      faqs: [
+        {
+          question: 'Will my photo look blurry at 100 KB?',
+          answer:
+            'Not for a face or ID photo: 100 KB is plenty at the sizes forms display. A large, detailed photo may be reduced in pixels to fit, and the report shows the result before you download.',
+        },
+      ],
     },
   ],
 });

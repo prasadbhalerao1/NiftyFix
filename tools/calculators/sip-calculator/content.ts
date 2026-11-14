@@ -63,6 +63,13 @@ export default defineContent({
         'Calculate what a one-time mutual fund investment grows to at an expected return, with a year-by-year table and its value after inflation. Free.',
       intro:
         "Enter a one-time investment, the expected yearly return and the number of years to see its future value, the gains, and a year-by-year table, plus what the amount is worth in today's money after inflation.",
+      faqs: [
+        {
+          question: 'How is a lumpsum return calculated?',
+          answer:
+            'Final value = amount x (1 + annual return) to the power of the number of years. For example, 100,000 at 12% a year for 10 years grows to about 310,585, in any currency. The year-by-year table shows how it builds.',
+        },
+      ],
     },
     {
       slug: 'step-up-sip-calculator',
@@ -74,6 +81,13 @@ export default defineContent({
         'See how a SIP that increases every year grows: set the monthly amount, the yearly step-up, return and time. Year-by-year table included. Free.',
       intro:
         'A step-up SIP raises your monthly amount every year, usually with your salary. It starts here at a 10% yearly step-up: change the amount, step-up, return and years to see how much more it builds than a flat SIP.',
+      faqs: [
+        {
+          question: 'Is a step-up SIP better than a regular SIP?',
+          answer:
+            'For the same starting amount, yes: raising the SIP each year as your income grows adds bigger instalments that still have years left to compound. Compare both here with your own numbers; the table shows the difference year by year.',
+        },
+      ],
     },
   ],
 });

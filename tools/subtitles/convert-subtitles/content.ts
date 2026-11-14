@@ -68,6 +68,13 @@ export default defineContent({
         'Fix subtitles that are early, late or drift out of sync: shift all timings by seconds or correct a frame-rate mismatch. SRT, VTT, ASS and SBV. Free.',
       intro:
         'Subtitles showing too early or too late? Open the file, enter how many seconds to move them (negative for earlier), and download it in the same format. If they drift further off as the video plays, choose a frame-rate fix such as 23.976 to 25 fps.',
+      faqs: [
+        {
+          question: 'How do I fix subtitles that are a few seconds late?',
+          answer:
+            'Enter that many seconds as a negative shift, for example -2, so every line appears earlier; a positive number delays them. If they start right but drift later as the video plays, use a frame-rate fix instead.',
+        },
+      ],
     },
   ],
 });

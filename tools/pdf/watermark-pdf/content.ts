@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'A watermark says what a document is for. Marking a copy of your ID "Only for bank KYC, 2026" limits how it can be misused, and "DRAFT" or "CONFIDENTIAL" tells readers how to treat a report. This tool draws your text across the centre of each page, sized so it always fits, at the transparency and colour you choose.',
+    'To watermark a PDF, choose it, type the text (such as CONFIDENTIAL, DRAFT or COPY), set the opacity and layout, and download the stamped copy. A watermark says what a document is for. Marking a copy of your ID "Only for bank KYC, 2026" limits how it can be misused, and "DRAFT" or "CONFIDENTIAL" tells readers how to treat a report. This tool draws your text across the centre of each page, sized so it always fits, at the transparency and colour you choose.',
   howTo: [
     'Choose a PDF.',
     'Type the watermark text, for example "Copy for passport application only".',
@@ -31,6 +31,11 @@ export default defineContent({
     'Image and logo watermarks are not supported yet.',
   ],
   faqs: [
+    {
+      question: 'How do I add a watermark to a PDF for free?',
+      answer:
+        'Choose the PDF here, type your watermark text and download. It is free, adds no extra branding of ours, and works in the browser on Windows, Mac, iPhone and Android.',
+    },
     {
       question: 'Should I watermark copies of my ID documents?',
       answer:

@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Some forms accept only JPG, some apps want PNG, and many websites save images as WebP or AVIF that older software cannot open. This tool converts between them in your browser: choose an image, pick JPG, PNG or WebP, and download a file that is checked to really be in that format, not just renamed.',
+    'To convert an image, choose it, pick JPG, PNG or WebP and download the converted file. Some forms accept only JPG, some apps want PNG, and many websites save images as WebP or AVIF that older software cannot open. The conversion runs in your browser, and the file you download is checked to really be in that format, not just renamed.',
   howTo: [
     'Choose an image (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 50 at once: each gets the same settings, and they download together as a ZIP.',
     'Pick the format you need: JPG, PNG or WebP.',
@@ -44,6 +44,16 @@ export default defineContent({
     'Converting a JPG to PNG does not restore detail lost to JPG compression; it only changes the container.',
   ],
   faqs: [
+    {
+      question: 'How do I convert PNG to JPG without losing quality?',
+      answer:
+        'Set Quality to 90 or more: at that level a photo looks the same as the PNG. JPG has no transparency, so see-through areas become white; keep PNG or choose WebP if you need them.',
+    },
+    {
+      question: 'How do I convert an image to JPG on iPhone or Mac?',
+      answer:
+        'Open this page in Safari, choose the image and pick JPG. There is nothing to install, and the image never leaves the device.',
+    },
     {
       question: 'Is my image uploaded?',
       answer:

@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'A filled PDF form keeps its answers in separate form fields. Some viewers and portals do not show those fields, so a form you filled carefully can arrive looking blank, and anyone can still edit the answers. Flattening draws each answer into the page itself: it looks the same everywhere, prints correctly and can no longer be changed by editing the field.',
+    'To flatten a PDF, choose it and download a copy in which every filled form field is part of the page. A filled PDF form keeps its answers in separate form fields. Some viewers and portals do not show those fields, so a form you filled carefully can arrive looking blank, and anyone can still edit the answers. Flattening draws each answer into the page itself: it looks the same everywhere, prints correctly and can no longer be changed by editing the field.',
   howTo: [
     'Fill in your form and save it.',
     'Choose the filled PDF here.',
@@ -21,6 +21,11 @@ export default defineContent({
     'Password-protected PDFs must be unlocked first.',
   ],
   faqs: [
+    {
+      question: 'What does flattening a PDF mean?',
+      answer:
+        'Flattening turns the form fields of a PDF (text boxes, tick boxes, choices) into plain page content. The page looks the same, but the answers can no longer be changed, and every viewer and portal shows them.',
+    },
     {
       question: 'Why does my filled form look empty on a portal?',
       answer:

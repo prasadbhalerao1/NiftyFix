@@ -56,6 +56,13 @@ export default defineContent({
         'Paste text or a list to remove duplicate lines instantly, keeping the first copy of each in place. Ignore case if needed; see how many were removed.',
       intro:
         'Paste any text or list and every repeated line is removed at once, keeping the first copy of each in its original position. Turn on "Ignore upper and lower case" to treat "Apple" and "apple" as the same, and optionally sort the cleaned list.',
+      faqs: [
+        {
+          question: 'How do I remove duplicate lines in Excel or Notepad++?',
+          answer:
+            'In Excel, select the column and use Data, Remove Duplicates. In Notepad++, use Edit, Line Operations, Remove Duplicate Lines. Or paste the list here for the same result in any browser, with an option to ignore upper and lower case.',
+        },
+      ],
     },
     {
       slug: 'sort-lines-alphabetically',
@@ -67,6 +74,13 @@ export default defineContent({
         'Alphabetize any list A to Z or Z to A, or sort by number or length. Ignores case if you like, and can remove duplicates too. Free and private.',
       intro:
         'Paste a list and it is sorted A to Z straight away. Switch to Z to A, number order (so 2 comes before 10) or length, ignore upper and lower case, and remove duplicates in the same step.',
+      faqs: [
+        {
+          question: 'How do I sort a list alphabetically in Word or Excel?',
+          answer:
+            'In Word, select the list and choose Home, Sort. In Excel, select the column and choose Data, Sort A to Z. Here you paste the list and it is sorted at once; choose Numbers in order to put 2 before 10.',
+        },
+      ],
     },
   ],
 });

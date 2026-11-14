@@ -39,7 +39,8 @@ export const CATEGORIES = {
   subtitles: {
     name: 'Subtitles',
     h1: 'Subtitle and transcript tools',
-    description: 'Edit, convert, synchronise and fix subtitles and transcripts.',
+    description:
+      'Convert SRT, VTT, ASS and SBV subtitles, fix their timing, and turn them into transcripts.',
   },
   ocr: {
     name: 'OCR & files',

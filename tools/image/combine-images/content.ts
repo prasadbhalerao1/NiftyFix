@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Offices, banks and colleges often want the front and back of a card on one page, and forms sometimes allow only one image where you have two. Add your photos, put them in order, and join them into a single image: one under another, side by side, or in a grid. The "ID card front and back on A4" layout places each image at the real size of an Aadhaar, PAN or driving licence card (85.6 x 54 mm) on an A4 page at 300 DPI, so it prints at the right size.',
+    'To combine images into one, add your photos, choose one under another, side by side or a grid, and download a single image. Offices, banks and colleges often want the front and back of a card on one page, and forms sometimes allow only one image where you have two. The "ID card front and back on A4" layout places each image at the real size of an Aadhaar, PAN or driving licence card (85.6 x 54 mm) on an A4 page at 300 DPI, so it prints at the right size.',
   howTo: [
     'Choose 2 to 20 images. For a card, crop the front and back photos to the card edges first.',
     'Put them in order with the arrows.',
@@ -39,6 +39,16 @@ export default defineContent({
     'For a PDF with one image per page, use JPG to PDF instead.',
   ],
   faqs: [
+    {
+      question: 'How do I put two photos side by side?',
+      answer:
+        'Add both photos and choose Side by side under Arrange. They are matched to the shorter height, never stretched, and saved as one image you can share or upload.',
+    },
+    {
+      question: 'How do I combine images into one PDF?',
+      answer:
+        'Use JPG to PDF: each photo becomes a page of one PDF. Combine Images makes a single picture instead, which suits forms that accept only one image.',
+    },
     {
       question: 'How do I put the Aadhaar card front and back on one page?',
       answer:

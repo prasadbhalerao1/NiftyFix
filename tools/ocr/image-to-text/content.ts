@@ -2,7 +2,7 @@ import { defineContent } from '@niftyfix/tool-sdk';
 
 export default defineContent({
   intro:
-    'Retyping text from a photo of a notice, a certificate or a screenshot is slow and error-prone. This tool reads the text for you (OCR) in English, Hindi and Marathi, and gives it back to copy, edit or save as a text file. Recognition runs in your browser, so documents with personal details never leave your device. Lines the reader is unsure of are listed, so you know what to check.',
+    'To copy text from an image, choose or paste it, tick the languages it contains, and copy the text that appears. Retyping text from a photo of a notice, a certificate or a screenshot is slow and error-prone. This tool reads the text for you (OCR) in English, Hindi and Marathi, and gives it back to copy, edit or save as a text file. Recognition runs in your browser, so documents with personal details never leave your device. Lines the reader is unsure of are listed, so you know what to check.',
   howTo: [
     'Choose an image: a photo, scan or screenshot (JPG, PNG, WebP, AVIF, BMP or GIF), or up to 20 at once.',
     'Tick every language in the image. English and Hindi are selected to start with.',
@@ -34,6 +34,16 @@ export default defineContent({
     'The first use of each language downloads its data (1 to 3 MB). After that it is read from your device.',
   ],
   faqs: [
+    {
+      question: 'How do I copy text from an image on iPhone, Android or a computer?',
+      answer:
+        'Open this page in the browser and choose the image, or paste a screenshot. Phones can also select text in photos themselves (Live Text on iPhone, Google Lens on Android); this tool helps with Hindi and Marathi, long pages, and computers.',
+    },
+    {
+      question: 'How do I convert an image to text in Word?',
+      answer:
+        'Read the text here, copy it and paste it into Word, Google Docs or any editor. The words come across; layout such as tables and columns does not.',
+    },
     {
       question: 'Is my image uploaded to read the text?',
       answer:

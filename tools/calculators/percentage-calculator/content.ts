@@ -29,6 +29,11 @@ export default defineContent({
   limits: ['Answers are rounded to 4 decimal places.'],
   faqs: [
     {
+      question: 'How do I calculate a percentage in Excel?',
+      answer:
+        'For what percent A1 is of B1, use =A1/B1 and format the cell as a percentage. For 15% of a number, use =B1*15%. For the change from an old to a new value, use =(New-Old)/Old.',
+    },
+    {
       question: 'How do I calculate a percentage?',
       answer:
         'Divide the part by the whole and multiply by 100: 45 out of 60 is 45 / 60 x 100 = 75%.',
@@ -55,6 +60,13 @@ export default defineContent({
         'Convert marks to a percentage: enter marks obtained and total marks to get your percentage instantly, for board exams, semesters and job forms.',
       intro:
         'Enter the marks you obtained and the total (maximum) marks to get your percentage instantly, as board exam results, semester mark sheets and job application forms ask for it. The other percentage calculators are below if you need them.',
+      faqs: [
+        {
+          question: 'How do I calculate the percentage of my marks?',
+          answer:
+            'Add the marks you scored, divide by the total maximum marks and multiply by 100. For 425 out of 500: 425 / 500 x 100 = 85%. Type your marks and the total, and the percentage appears as you type.',
+        },
+      ],
     },
   ],
 });
